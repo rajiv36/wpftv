@@ -1,0 +1,131 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="NDTV.SlateApp.View.CricketCalendarControl"
+    xmlns:view="clr-namespace:NDTV.SlateApp.View"
+    xmlns:touch="http://schemas.microsoft.com/surface/2008"
+	x:Name="UserControl"
+	>
+    <UserControl.Resources>
+        <DataTemplate x:Key="RecentMatchHeader" >
+            <Grid x:Name="upcoming" Margin="10,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{DynamicResource CricketCalendarFirstColumn}" />
+                    <ColumnDefinition Width="{DynamicResource CricketCalendarColumn}" />
+                    <ColumnDefinition Width="{DynamicResource CricketCalendarColumn}" />
+                    <ColumnDefinition Width="{DynamicResource CricketCalendarColumn}" />
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Fill="#FFB1B1B1" Height="1" VerticalAlignment="Bottom" Grid.ColumnSpan="5" Margin="0,0,0,-1"/>
+                <TextBlock TextWrapping="Wrap" Text="Date/ Time" d:LayoutOverrides="Width, Height" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" Foreground="#FFB10010"/>
+                <TextBlock TextWrapping="Wrap" Text="Match" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" Foreground="#FFB10010" Grid.Column="1"/>
+                <TextBlock TextWrapping="Wrap" Text="Teams" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" Foreground="#FFB10010" Grid.Column="2"/>
+                <TextBlock TextWrapping="Wrap" Text="Match Type" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" Foreground="#FFB10010" Grid.Column="3"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="RecentMatchesTemplate">
+            <touch:SurfaceButton Click="ShowScorecard" Padding="0" Tag="{Binding MatchFile}"  >
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{DynamicResource CricketCalendarFirstColumn}" />
+                        <ColumnDefinition Width="{DynamicResource CricketCalendarColumn}" />
+                        <ColumnDefinition Width="{DynamicResource CricketCalendarColumn}" />
+                        <ColumnDefinition Width="{DynamicResource CricketCalendarColumn}" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding MatchDateIST}" d:LayoutOverrides="Width, Height" FontFamily="{DynamicResource Segoe360Font}" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="11" Margin="0,0,5,0"/>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" Orientation="Vertical" Width="Auto" d:LayoutOverrides="Height" Margin="0,0,5,5">
+                        <TextBlock TextWrapping="Wrap" Text="{Binding DayOrDayNight}" FontFamily="{DynamicResource Segoe360Font}" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="11" Margin="0" d:LayoutOverrides="Width" FontWeight="Bold"/>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding Venue}" FontFamily="{DynamicResource Segoe360Font}" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="11" Margin="0,4,0,0" d:LayoutOverrides="Width"/>
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding MatchTeams}" FontFamily="{DynamicResource Segoe360Font}" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="11" Margin="0,0,5,0" Grid.Column="2" FontWeight="Bold"/>
+                    <StackPanel Grid.Column="3" HorizontalAlignment="Left" Orientation="Vertical" VerticalAlignment="Top" Width="Auto" Margin="0,0,0,5">
+                        <TextBlock TextWrapping="Wrap" Text="{Binding MatchResult}" FontFamily="{DynamicResource Segoe360Font}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="11" Margin="0" d:LayoutOverrides="Width"/>
+                    </StackPanel>
+                    <Rectangle Fill="#FFB1B1B1" Grid.ColumnSpan="5" VerticalAlignment="Bottom" Height="1"/>
+                </Grid>
+            </touch:SurfaceButton>
+        </DataTemplate>
+
+        <DataTemplate x:Key="UpcomingMatchesTemplate">
+            <touch:SurfaceButton  >
+                <Grid   >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{DynamicResource CricketCalendarFirstColumn}" />
+                        <ColumnDefinition Width="{DynamicResource CricketCalendarColumn}" />
+                        <ColumnDefinition Width="{DynamicResource CricketCalendarColumn}" />
+                        <ColumnDefinition Width="{DynamicResource CricketCalendarColumn}" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock TextWrapping="Wrap" Text="{Binding MatchDateIST}" d:LayoutOverrides="Width, Height" FontFamily="{DynamicResource Segoe360Font}" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="11" Margin="0,0,5,0"/>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding UpcomingDateTimeFormat}" d:LayoutOverrides="Width, Height" FontFamily="{DynamicResource Segoe360Font}" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="11" Margin="0,0,5,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" Orientation="Vertical" Width="Auto" d:LayoutOverrides="Height" Margin="0,0,5,5">
+                        <TextBlock TextWrapping="Wrap" Text="{Binding DayOrDayNight}" FontFamily="{DynamicResource Segoe360Font}" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="11" Margin="0" d:LayoutOverrides="Width" FontWeight="Bold"/>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding Venue}" FontFamily="{DynamicResource Segoe360Font}" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="11" Margin="0,4,0,0" d:LayoutOverrides="Width"/>
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding MatchTeams}" FontFamily="{DynamicResource Segoe360Font}" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="11" Margin="0,0,5,0" Grid.Column="2" FontWeight="Bold"/>
+                    <StackPanel Grid.Column="3" HorizontalAlignment="Left" Orientation="Vertical" VerticalAlignment="Top" Width="Auto" Margin="0,0,0,5">
+                        <TextBlock TextWrapping="Wrap" Text="{Binding MatchType}" FontFamily="{DynamicResource Segoe360Font}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="11" Margin="0" d:LayoutOverrides="Width"/>
+                    </StackPanel>
+                    <Rectangle Fill="#FFB1B1B1" Grid.ColumnSpan="5" VerticalAlignment="Bottom" Height="1"/>
+                </Grid>
+            </touch:SurfaceButton>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot" Margin="{DynamicResource ScoreCardControlMargin}" >
+        <!-- For Landscape -Width : 400
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="{DynamicResource RelatedVideoGridLength}"/>
+        </Grid.ColumnDefinitions>-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="{DynamicResource RelatedVideoGridLength}" x:Name="LayoutGridColumnOne"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" x:Name="RecentMatchGrid" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition MinHeight="125"/>
+            </Grid.RowDefinitions>
+            <ContentControl x:Name="recent" ContentTemplate="{DynamicResource RecentMatchHeader}"/>
+            <touch:SurfaceScrollViewer Tag="Vertical" Grid.Row="1"  FocusVisualStyle="{x:Null}" Elasticity="0,.4"  Margin="10,0,0,10" HorizontalScrollBarVisibility="Disabled" >
+                <ItemsControl ItemTemplate="{DynamicResource RecentMatchesTemplate}" ItemsSource="{Binding RecentMatchList}"/>
+            </touch:SurfaceScrollViewer>
+        </Grid>
+        <Grid Grid.Row="1" x:Name="UpcomingMatchGrid" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition MinHeight="125"/>
+            </Grid.RowDefinitions>
+            <ContentControl x:Name="upcoming" ContentTemplate="{DynamicResource RecentMatchHeader}"/>
+
+            <touch:SurfaceScrollViewer Tag="Vertical" Grid.Row="1"  FocusVisualStyle="{x:Null}" Elasticity="0,.4"  Margin="10,0,0,10" HorizontalScrollBarVisibility="Disabled" >
+                <ItemsControl ItemTemplate="{DynamicResource UpcomingMatchesTemplate}" ItemsSource="{Binding UpcomingMatchList}"/>
+            </touch:SurfaceScrollViewer>
+        </Grid>
+        <!-- For Landscape Grid.Row=1 , Grid.Column =1
+        <Grid Grid.Row="1" Grid.Column="1">-->
+
+        <Grid x:Name="RightGrid" Grid.Row="1" Grid.Column="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+            <view:RelatedVideosAndNewsControl x:Name="RelatedVideosAndNews" />
+            <view:AdBannerControl x:Name="AdvertisementControl" Grid.Row="1" CurrentPage="CricketFullCommentary"/>
+        </Grid>
+    </Grid>
+</UserControl>

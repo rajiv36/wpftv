@@ -1,0 +1,441 @@
+﻿<base:SlateWindow x:Class="NDTV.SlateApp.View.SensexScorecard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:base="clr-namespace:NDTV.SlateApp"
+        xmlns:local="clr-namespace:NDTV.SlateApp.View"
+        xmlns:touch="http://schemas.microsoft.com/surface/2008"
+        xmlns:ViewModel ="clr-namespace:NDTV.SlateApp.ViewModel"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:controls="clr-namespace:NDTV.SlateApp.Controls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
+        Title="SensexScorecard" Height="550" Width="950" WindowStyle="None" WindowState="Normal" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" >
+
+     <base:SlateWindow.Resources>
+        <Style TargetType="TextBlock" x:Key="ColumnHeaderTextBlock">
+            <Setter Property="FontFamily" Value="{DynamicResource Segoe360Font}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="DataTextBlock">
+            <Setter Property="FontFamily" Value="{DynamicResource Segoe360Font}"/>
+            <Setter Property="FontSize" Value="10.667"/>
+            <Setter Property="Foreground" Value="{DynamicResource BlackFontBrush}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+        <Storyboard x:Key="LandscapeAnimateNewsControl">
+            <DoubleAnimation Storyboard.TargetName="LandscapeFlashNewsItemsControl" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="00:00:00.3"/>
+        </Storyboard>
+        <Storyboard x:Key="PotraitAnimateNewsControl">
+            <DoubleAnimation Storyboard.TargetName="PotraitFlashNewsItemsControl" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="00:00:00.3"/>
+        </Storyboard>
+        <DataTemplate x:Key="LandscapeStockDetailsTemplate">
+            <StackPanel HorizontalAlignment="Left" Orientation="Vertical" Margin="20,5">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="{DynamicResource DarkGrayBrush}" FontSize="13.333"></TextBlock>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="ISIN: " Style="{DynamicResource DataTextBlockStyle}" Foreground="{DynamicResource DarkBlueBrush}"></TextBlock>
+                        <TextBlock Text="{Binding ISIN}" Style="{DynamicResource DataTextBlockStyle}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Market Capitlaization: " Style="{DynamicResource DataTextBlockStyle}" Foreground="{DynamicResource DarkBlueBrush}"></TextBlock>
+                        <TextBlock Text="{Binding MarketCapital}" Style="{DynamicResource DataTextBlockStyle}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="PE Value: " Style="{DynamicResource DataTextBlockStyle}" Foreground="{DynamicResource DarkBlueBrush}"></TextBlock>
+                        <TextBlock Text="{Binding PEValue}" Style="{DynamicResource DataTextBlockStyle}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Dividend: " Style="{DynamicResource DataTextBlockStyle}" Foreground="{DynamicResource DarkBlueBrush}"></TextBlock>
+                        <TextBlock Text="{Binding Dividend}" Style="{DynamicResource DataTextBlockStyle}"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <HeaderedContentControl x:Name="BSEDataDisplay" Header="BSE"  Margin="0,5,0,0" Content="{Binding Path=BombayStockExchangeDetails}"  Style="{DynamicResource HeaderedContentControlStyle}" ContentTemplate="{StaticResource StockDetailsDataTemplate}"></HeaderedContentControl>
+                <HeaderedContentControl  x:Name="NIFTYDataDisplay" Header="NSE"  Margin="0,5,0,0" Content="{Binding Path=NationalStockExchangeDetails}" Style="{DynamicResource HeaderedContentControlStyle}" ContentTemplate="{StaticResource StockDetailsDataTemplate}"></HeaderedContentControl>
+            </StackPanel>
+
+        </DataTemplate>        
+        <DataTemplate x:Key="PotraitStockDetailsTemplate">
+            <Border BorderThickness="0,1,0,1" BorderBrush="#FFacc8d3">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Gainsboro" Offset="0"/>
+                        <GradientStop Color="#FFE2E2E2" Offset="1"/>
+                        <GradientStop Color="#FFFEFEFE" Offset="0.065"/>
+                        <GradientStop Color="#FFFEFEFE" Offset="0.929"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <StackPanel HorizontalAlignment="Left" Orientation="Vertical" Margin="10,5">
+                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="{DynamicResource DarkGrayBrush}" FontSize="13.333"></TextBlock>
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <StackPanel Orientation="Horizontal" >
+                            <TextBlock Text="ISIN: " Style="{DynamicResource DataTextBlockStyle}" Foreground="{DynamicResource DarkBlueBrush}"></TextBlock>
+                            <TextBlock Text="{Binding ISIN}" Style="{DynamicResource DataTextBlockStyle}"></TextBlock>
+                        </StackPanel>
+                        <Rectangle Fill="#FF6e6e6c" Width="1" Margin="5,2"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Market Capitlaization: " Style="{DynamicResource DataTextBlockStyle}" Foreground="{DynamicResource DarkBlueBrush}"></TextBlock>
+                            <TextBlock Text="{Binding MarketCapital}" Style="{DynamicResource DataTextBlockStyle}"></TextBlock>
+                        </StackPanel>
+                        <Rectangle Fill="#FF6e6e6c" Width="1" Margin="5,2"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="PE Value: " Style="{DynamicResource DataTextBlockStyle}" Foreground="{DynamicResource DarkBlueBrush}"></TextBlock>
+                            <TextBlock Text="{Binding PEValue}" Style="{DynamicResource DataTextBlockStyle}"></TextBlock>
+                        </StackPanel>
+                        <Rectangle Fill="#FF6e6e6c" Width="1" Margin="5,2"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Dividend: " Style="{DynamicResource DataTextBlockStyle}" Foreground="{DynamicResource DarkBlueBrush}"></TextBlock>
+                            <TextBlock Text="{Binding Dividend}" Style="{DynamicResource DataTextBlockStyle}"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <HeaderedContentControl Tag="Potrait" x:Name="BSEDataDisplay" Header="BSE"  Margin="5" Content="{Binding Path=BombayStockExchangeDetails}"  Style="{DynamicResource HeaderedContentControlStyle}" ContentTemplate="{StaticResource StockDetailsDataTemplate}"></HeaderedContentControl>
+                        <Rectangle Width="1" Grid.Column="1" Margin="0,5" HorizontalAlignment="Center" Fill="#FFd7d7d7"/>
+                        <HeaderedContentControl Grid.Column="2" Tag="Potrait" x:Name="NIFTYDataDisplay" Header="NSE"  Margin="5,5,5,5" Content="{Binding Path=NationalStockExchangeDetails}" Style="{DynamicResource HeaderedContentControlStyle}" ContentTemplate="{StaticResource StockDetailsDataTemplate}"></HeaderedContentControl>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="BusinessArticleItemTemplate">
+            <touch:SurfaceButton Background="Transparent" Click="OnBusinessArticleClick">
+                <TextBlock x:Name="BusinessArticleTextBlock" HorizontalAlignment="Left" Style="{DynamicResource DataTextBlock}" FontSize="12" Foreground="#FF476e97" TextWrapping="Wrap" Text="{Binding Title}" 
+                                                   TextTrimming="CharacterEllipsis" MaxHeight="40" />
+            </touch:SurfaceButton>
+        </DataTemplate>
+        <Storyboard x:Key="PotraitAnimation">
+            <DoubleAnimation Storyboard.TargetName="LandScapeMainPane" Storyboard.TargetProperty="Opacity" From="1" To="0"
+                             Duration="00:00:00.0" />
+            <DoubleAnimation Storyboard.TargetName="PortraitMainPane" Storyboard.TargetProperty="Opacity" From="0" To="1"
+                             Duration="00:00:00.6" />
+        </Storyboard>
+        <Storyboard x:Key="LandscapeAnimation">
+            <DoubleAnimation Storyboard.TargetName="LandScapeMainPane" Storyboard.TargetProperty="Opacity" From="0" To="1"
+                             Duration="00:00:00.6" />
+            <DoubleAnimation Storyboard.TargetName="PortraitMainPane" Storyboard.TargetProperty="Opacity" From="0" To="0"
+                             Duration="00:00:00.0" />
+        </Storyboard>
+    </base:SlateWindow.Resources>
+     <Grid x:Name="LayoutRoot">
+        <controls:PopupBaseControl x:Name="LandscapeSensexScoreCard"  HeaderText="SENSEX SCORECARD" Style="{DynamicResource PopupBaseContainerStyle}" Background="{StaticResource LayoutRootBackground}" FooterVisible="Collapsed">
+                <Grid x:Name="LandScapeMainPane"  >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
+                <Grid x:Name="LeftPane" Margin="20,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="45"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="45"/>
+                        <RowDefinition Height="70"/>
+                </Grid.RowDefinitions>
+                        <Grid x:Name="NewsFlash">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Path x:Name="NewsFlashPath" Style="{StaticResource NewsFlashPathStyle}"></Path>
+                            <TextBlock x:Name="NewsFlashTextBlock" Text="NEWS FLASH" Style="{StaticResource NewsFlashTextBlockStyle}" Margin="10,0,25,0"/>
+                            <Grid Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0">
+                                <touch:SurfaceScrollViewer IsEnabled="False" Height="30" x:Name="LandscapeNewsFlashItemsScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden"  Padding="0" BorderThickness="0" Background="Transparent">
+                                    <ItemsControl Opacity="0" x:Name="LandscapeFlashNewsItemsControl" ItemsSource="{Binding NewsflashItems}" >
+                                        <ItemsControl.Triggers>
+                                            <EventTrigger RoutedEvent="Loaded">
+                                                <BeginStoryboard>
+                                                    <Storyboard Storyboard.TargetName="LandscapeFlashNewsItemsControl" Storyboard.TargetProperty="Opacity">
+                                                        <DoubleAnimation To="1" BeginTime="00:00:00.5" Duration="00:00:00.3"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </ItemsControl.Triggers>                                     
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate >
+                                                <Grid Height="30">
+                                                    <TextBlock  TextWrapping="Wrap" Text="{Binding}" VerticalAlignment="Center" Foreground="{DynamicResource NormalButtonBorderBrush}" FontSize="10" Margin="0,0,10,0"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </touch:SurfaceScrollViewer>
+                            </Grid>
+                        </Grid>
+                    <touch:SurfaceListBox Grid.Row="1" touch:SurfaceScrollViewer.Elasticity="0.4,0" Grid.ColumnSpan="3" Style="{DynamicResource SurfaceListBoxStyle}"  Background="Transparent"  Padding="0" 
+                                          ItemContainerStyle="{DynamicResource CategoryListBoxItemStyle}" 
+                                      ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False"
+                             IsSynchronizedWithCurrentItem="True" VerticalAlignment="Center" Focusable="True" 
+                                      x:Name="LandscapeCategoryChoser" BorderThickness="0" ItemsSource="{Binding ActiveStockCategories}" 
+                                      ItemsPanel="{StaticResource CategoryChoserItemsPanel}" Margin="-3,0,0,0"/>
+                   <!-- <ListBox Background="Transparent"  Padding="0" ItemContainerStyle="{DynamicResource SensexListBoxItemStyle}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False"
+                             IsSynchronizedWithCurrentItem="True"  VerticalAlignment="Center" Focusable="True" x:Name="LandscapeCategoryChoser" BorderThickness="0" ItemsSource="{Binding ActiveStockCategories}" ItemsPanel="{StaticResource CategoryChoserItemsPanel}" Margin="-5,0,0,0"></ListBox>-->
+                        <Border HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" BorderBrush="#FFB2B2B2" Background="White" BorderThickness="1">
+                            <ItemsControl ItemsPanel="{StaticResource StockMarketItemsPanel}" ItemTemplate="{StaticResource StockMarketItemsItemTemplate}" Background="Transparent" ItemsSource="{Binding StockTickerDetails}"></ItemsControl>
+                        </Border>
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border >
+                            <Border.Background>
+                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                    <GradientStop Color="#FF464646" Offset="0"/>
+                                    <GradientStop Color="#FF454545" Offset="0.5"/>
+                                    <GradientStop Color="#FF454545" Offset="0.5"/>
+                                    <GradientStop Color="#FF151515" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="52"/>
+                                    <ColumnDefinition Width="110"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="65"/>
+                                    <ColumnDefinition Width="65"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Stocks" Grid.Column="0" Style="{DynamicResource ColumnHeaderTextBlock}" HorizontalAlignment="Left" Margin="6,0,0,0"/>
+                                <TextBlock Text="Price" Grid.Column="1" Style="{DynamicResource ColumnHeaderTextBlock}"/>
+                                <TextBlock Text="Change" Grid.Column="2" Style="{DynamicResource ColumnHeaderTextBlock}"/>
+                                <TextBlock Text="Volume" Grid.Column="3" Style="{DynamicResource ColumnHeaderTextBlock}"/>
+                                <TextBlock Text="High" Grid.Column="4" Style="{DynamicResource ColumnHeaderTextBlock}"/>
+                                <TextBlock Text="Low" Grid.Column="5" Style="{DynamicResource ColumnHeaderTextBlock}"/>
+                            </Grid>
+                        </Border>
+                        <touch:SurfaceListBox x:Name="LandscapeStockDisplayListBox" Style="{DynamicResource StockSurfaceListBoxStyle}" ItemContainerStyle="{DynamicResource SensexSurfaceListBoxItemStyle}"  Grid.Row="1" SelectedIndex="{Binding Path=ChosenCompanyIndex,Mode=TwoWay}" ItemsSource="{Binding ActiveStockMarketDataDetails}" ScrollViewer.ScrollChanged="OnLandscapeStockDisplayListBoxScrollChanged" >
+                            <touch:SurfaceListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid  Background="Transparent">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="180"/>
+                                            <ColumnDefinition Width="52"/>
+                                            <ColumnDefinition Width="110"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="65"/>
+                                            <ColumnDefinition Width="65"/>
+                                            <ColumnDefinition Width="70"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Name}" Grid.Column="0" Style="{DynamicResource DataTextBlock}" HorizontalAlignment="Left"  Margin="5,0,0,0"/>
+                                        <TextBlock Text="{Binding HighPrice}" Grid.Column="1" Style="{DynamicResource DataTextBlock}"/>
+                                        <TextBlock Grid.Column="2" x:Name="StockChangeTextBlock" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" FontSize="10.667">
+                                            <Run Text="{Binding Path=Change}"></Run>
+                                            <Run Text="("></Run>
+                                            <Run Text="{Binding Path=PriceDifference}"></Run>
+                                            <Run Text="%)"></Run>
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding TotalTradedQuantity}" Grid.Column="3" Style="{DynamicResource DataTextBlock}"/>
+                                        <TextBlock Text="{Binding HighPrice}" Grid.Column="4" Style="{DynamicResource DataTextBlock}"/>
+                                        <TextBlock Text="{Binding LowPrice}" Grid.Column="5" Style="{DynamicResource DataTextBlock}"/>
+                                        <Image Grid.Column="6" HorizontalAlignment="Left" Height="32" Width="32" Stretch="Uniform" Source="{Binding Path=Chart, Converter={StaticResource ChartURLParser}}"></Image>
+                                    </Grid>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Path=StockDirection}" Value="Up">
+                                            <Setter TargetName="StockChangeTextBlock" Property="Foreground" Value="{DynamicResource GreenBrush}"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=StockDirection}" Value="Down">
+                                            <Setter TargetName="StockChangeTextBlock" Property="Foreground" Value="{DynamicResource HighlightRedBrush}"></Setter>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </touch:SurfaceListBox.ItemTemplate>
+                        </touch:SurfaceListBox>
+                    </Grid>
+
+                        <local:AdBannerControl x:Name="LandscapeLocalAdvertisement" Grid.Row="4"   />
+                </Grid>
+                    <Grid x:Name="RightPane" Grid.Column="1" Background="White">
+                        <!--<local:StockExchangeDataDisplay HorizontalAlignment="Left" x:Name="StockDisplayCustomControl" Stock="{Binding SelectedCompanyDetails}"></local:StockExchangeDataDisplay>-->
+                    <ContentControl ContentTemplate="{DynamicResource LandscapeStockDetailsTemplate}" DataContext="{Binding SelectedCompanyDetails}" Content="{Binding}" HorizontalAlignment="Left"/>
+                    </Grid>
+                    <local:PreLoader IsBusy="{Binding IsScorecardDetailsPaneBusy}" Grid.Column="1"></local:PreLoader>
+            </Grid>
+            </controls:PopupBaseControl>
+        <controls:PopupBaseControl x:Name="PotraitSensexScoreCard" HeaderText="SENSEX SCORECARD" Style="{DynamicResource PopupBaseContainerStyle}" Background="{StaticResource LayoutRootBackground}" FooterVisible="Collapsed">
+            <Grid x:Name="PortraitMainPane" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="285"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Path  Style="{StaticResource NewsFlashPathStyle}"></Path>
+                    <TextBlock  Text="NEWS FLASH" Style="{StaticResource NewsFlashTextBlockStyle}" Margin="10,0,25,0"/>
+                    <Grid Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0">
+                        <touch:SurfaceScrollViewer IsEnabled="False" Height="30" x:Name="PotraitNewsFlashItemsScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden"  Padding="0" BorderThickness="0" Background="Transparent">
+                            <ItemsControl Opacity="0" x:Name="PotraitFlashNewsItemsControl" ItemsSource="{Binding NewsflashItems}" >
+                                <ItemsControl.Triggers>
+                                    <EventTrigger RoutedEvent="Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard Storyboard.TargetName="PotraitFlashNewsItemsControl" Storyboard.TargetProperty="Opacity">
+                                                <DoubleAnimation To="1" BeginTime="00:00:00.5" Duration="00:00:00.3"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </ItemsControl.Triggers>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate >
+                                        <Grid Height="30">
+                                            <TextBlock  TextWrapping="Wrap" Text="{Binding}" VerticalAlignment="Center" Foreground="{DynamicResource NormalButtonBorderBrush}" FontSize="10" Margin="0,0,10,0"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </touch:SurfaceScrollViewer>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="1" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
+                    <touch:SurfaceListBox touch:SurfaceScrollViewer.Elasticity="0.4,0" Grid.ColumnSpan="3" Style="{DynamicResource SurfaceListBoxStyle}"  Background="Transparent"  Padding="0" 
+                                          ItemContainerStyle="{DynamicResource CategoryListBoxItemStyle}" 
+                                      ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False"
+                             IsSynchronizedWithCurrentItem="True" VerticalAlignment="Center" Focusable="True" 
+                                      x:Name="PotraitCategoryChoser" BorderThickness="0" ItemsSource="{Binding ActiveStockCategories}" 
+                                      ItemsPanel="{StaticResource CategoryChoserItemsPanel}" Margin="-3,0,0,0"/>
+                    <Rectangle Stroke="{x:Null}" Margin="0,3" RadiusX="5" RadiusY="5" Visibility="Collapsed">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.845,0.465" StartPoint="-0.101,0.465">
+                                <GradientStop Color="#7F8B8B8B"/>
+                                <GradientStop Offset="1" Color="#00585858"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle Stroke="{x:Null}" Grid.Column="2" Margin="0,3" RadiusX="5" RadiusY="5" Visibility="Collapsed">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.103,0.465" StartPoint="1.217,0.465">
+                                <GradientStop Color="#7F505050" Offset="0.003"/>
+                                <GradientStop Offset="1" Color="#00585858"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Grid>
+                <Border HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" BorderBrush="#FFB2B2B2" Background="White" BorderThickness="1">
+                    <ItemsControl ItemsPanel="{StaticResource StockMarketItemsPanel}" ItemTemplate="{StaticResource StockMarketItemsItemTemplate}" Background="Transparent" ItemsSource="{Binding StockTickerDetails}"></ItemsControl>
+                </Border>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border >
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                <GradientStop Color="#FF464646" Offset="0"/>
+                                <GradientStop Color="#FF454545" Offset="0.5"/>
+                                <GradientStop Color="#FF454545" Offset="0.5"/>
+                                <GradientStop Color="#FF151515" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="52"/>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="65"/>
+                                <ColumnDefinition Width="65"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Stocks" Grid.Column="0" Style="{DynamicResource ColumnHeaderTextBlock}" HorizontalAlignment="Left" Margin="6,0,0,0"/>
+                            <TextBlock Text="Price" Grid.Column="1" Style="{DynamicResource ColumnHeaderTextBlock}"/>
+                            <TextBlock Text="Change" Grid.Column="2" Style="{DynamicResource ColumnHeaderTextBlock}"/>
+                            <TextBlock Text="Volume" Grid.Column="3" Style="{DynamicResource ColumnHeaderTextBlock}"/>
+                            <TextBlock Text="High" Grid.Column="4" Style="{DynamicResource ColumnHeaderTextBlock}"/>
+                            <TextBlock Text="Low" Grid.Column="5" Style="{DynamicResource ColumnHeaderTextBlock}"/>
+                        </Grid>
+                    </Border>
+                    <touch:SurfaceListBox x:Name="PotraitStockDisplayListBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                          Style="{DynamicResource StockSurfaceListBoxStyle}" 
+                                          ItemContainerStyle="{DynamicResource PotraitSensexSurfaceListBoxItemStyle}"  Grid.Row="1" 
+                                          SelectedIndex="{Binding Path=ChosenCompanyIndex,Mode=TwoWay}"
+                                          ItemsSource="{Binding ActiveStockMarketDataDetails}" ScrollViewer.ScrollChanged="OnPotraitStockDisplayListBoxScrollChanged">
+                        <touch:SurfaceListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid  Background="Transparent">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="52"/>
+                                        <ColumnDefinition Width="110"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="65"/>
+                                        <ColumnDefinition Width="65"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Name}" Grid.Column="0" Style="{DynamicResource DataTextBlock}" HorizontalAlignment="Left"  Margin="5,0,0,0"/>
+                                    <TextBlock Text="{Binding HighPrice}" Grid.Column="1" Style="{DynamicResource DataTextBlock}"/>
+                                    <TextBlock Grid.Column="2" x:Name="StockChangeTextBlock" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" FontSize="10.667">
+                                            <Run Text="{Binding Path=Change}"></Run>
+                                            <Run Text="("></Run>
+                                            <Run Text="{Binding Path=PriceDifference}"></Run>
+                                            <Run Text="%)"></Run>
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding TotalTradedQuantity}" Grid.Column="3" Style="{DynamicResource DataTextBlock}"/>
+                                    <TextBlock Text="{Binding HighPrice}" Grid.Column="4" Style="{DynamicResource DataTextBlock}"/>
+                                    <TextBlock Text="{Binding LowPrice}" Grid.Column="5" Style="{DynamicResource DataTextBlock}"/>
+                                    <Image Grid.Column="6" HorizontalAlignment="Left" Height="32" Width="32" Stretch="Uniform" Source="{Binding Path=Chart, Converter={StaticResource ChartURLParser}}"></Image>
+                                </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Path=StockDirection}" Value="Up">
+                                        <Setter TargetName="StockChangeTextBlock" Property="Foreground" Value="{DynamicResource GreenBrush}"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=StockDirection}" Value="Down">
+                                        <Setter TargetName="StockChangeTextBlock" Property="Foreground" Value="{DynamicResource HighlightRedBrush}"></Setter>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </touch:SurfaceListBox.ItemTemplate>
+                    </touch:SurfaceListBox>
+                </Grid>
+                <Rectangle Fill="Transparent"/>
+                <Grid Grid.Row="4" Background="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="10"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
+                    <Border  BorderThickness="0,1,0,1" BorderBrush="#FFacc8d3"  Grid.Row="1" Margin="5,0">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="Gainsboro" Offset="0"/>
+                                <GradientStop Color="#FFE2E2E2" Offset="1"/>
+                                <GradientStop Color="#FFFEFEFE" Offset="0.065"/>
+                                <GradientStop Color="#FFFEFEFE" Offset="0.929"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <touch:SurfaceScrollViewer Margin="5,5"  FocusVisualStyle="{x:Null}"    VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" >
+                            <!--ItemTemplate="{DynamicResource BusinessArticleItemTemplate}"-->
+                            <ItemsControl x:Name="BusinessArticlesList" ItemTemplate="{DynamicResource BusinessArticleItemTemplate}" ItemsSource="{Binding RelatedBusinessNews}"/>
+                        </touch:SurfaceScrollViewer>
+                    </Border>
+                    <local:AdBannerControl x:Name="PortraitLocalAdvertisement" Grid.Column="1" Grid.Row="1" CurrentPage="SensexScorecardBig" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                </Grid>
+            </Grid>
+        </controls:PopupBaseControl>
+            <Rectangle Fill="#FF000000" Opacity=".85" Visibility="Collapsed" x:Name="ModalBG"/>
+    </Grid>
+</base:SlateWindow>

@@ -1,0 +1,115 @@
+﻿<Base:SlateWindow 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" 
+    x:Class="NDTV.SlateApp.View.LiveTVView"
+    x:Name="UserControl"
+    xmlns:Base="clr-namespace:NDTV.SlateApp"
+    xmlns:view="clr-namespace:NDTV.SlateApp.View"
+    xmlns:controls="clr-namespace:NDTV.SlateApp.Controls"
+    xmlns:touch="http://schemas.microsoft.com/surface/2008"
+    xmlns:converter="clr-namespace:NDTV.SlateApp.Converter"
+    Title="Live TV"
+    WindowStyle="none"
+    WindowStartupLocation="CenterOwner"
+    ResizeMode="NoResize"
+    Width="955"
+    Height="550"
+    ShowInTaskbar="False">
+    <Base:SlateWindow.Resources>
+        <converter:VisibilityConverter x:Key="visibilityConverter"/>
+        <Storyboard x:Key="PotraitLandscapeAnimation">
+            <DoubleAnimation From="0" To="1" Storyboard.TargetName="MainContainer" Storyboard.TargetProperty="Opacity" Duration="00:00:00.6"/>
+        </Storyboard>
+    </Base:SlateWindow.Resources>
+    <Grid  x:Name="LayoutRoot" >
+        
+            <controls:PopupBaseControl HeaderText="LIVE TV" Style="{DynamicResource PopupBaseContainerStyle}" FooterVisible="Collapsed" >
+            <Grid x:Name="MainContainer" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button Content="Button" Name="btnClose" HorizontalAlignment="Right" VerticalAlignment="Top"  Height="16" Margin="0,-35,20,0" Style="{DynamicResource PopupCloseButtonStyle}"  Click="CloseButtonClick"  Width="16"/>
+                <!--<Rectangle x:Name="channel_bg" Fill="{DynamicResource LiveTVBackgroundColor}" StrokeThickness="0"  Stroke="{DynamicResource LiveTVBorderBrush}"/>-->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border x:Name="ChannelLabel"  Height="30" BorderBrush="#FF616161" BorderThickness="1" Background="#FF454545">
+                        <TextBlock TextWrapping="Wrap" Text="CHANNELS" VerticalAlignment="Center" HorizontalAlignment="Left"  Foreground="#FFE5E5E5" FontSize="14" d:LayoutOverrides="Width" Margin="20,0" FontWeight="Bold"/>
+                    </Border>
+                    <Border x:Name="ChannelButtons" Background="{DynamicResource LiveTVBackgroundColor}" Grid.Column="1">
+                        <touch:SurfaceScrollViewer  Height="30" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top"  Tag="Horizontal" FocusVisualStyle="{x:Null}" Elasticity="0.4,0" >
+                            <StackPanel Orientation="Horizontal">
+                                <touch:SurfaceRadioButton Name="btnNDTV24" Content="NDTV 24X7" GroupName="channels" Style="{DynamicResource ChannelSurfaceRadioButton}" />
+                                <touch:SurfaceRadioButton  Name ="btnProfit" Content="NDTV PROFIT" GroupName="channels" Style="{DynamicResource ChannelSurfaceRadioButton}"/>
+                                <touch:SurfaceRadioButton Name ="btnIndia" Content="NDTV INDIA" GroupName="channels" Style="{DynamicResource ChannelSurfaceRadioButton}"/>
+                                <touch:SurfaceRadioButton Name ="btnGoodTimes" Content="NDTV GOOD TIMES" GroupName="channels" Style="{DynamicResource ChannelSurfaceRadioButton}"/>
+                                <touch:SurfaceRadioButton Name ="btnHindu" Grid.Row="0"  Content="NDTV HINDU" GroupName="channels"  Style="{DynamicResource ChannelSurfaceRadioButton}"   />
+                            </StackPanel>
+                        </touch:SurfaceScrollViewer>
+                    </Border>
+                </Grid>
+                <StackPanel Name="stkSchedule" Grid.Row="1" Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center"  >
+                    <TextBlock Text="NOW PLAYING:" Foreground="#fd4021" Grid.Row="0" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" FontSize="10.667" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,5,0" />
+                    <TextBlock Text="{Binding Path=CurrentShow}" Foreground="White" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" FontSize="10.667" Margin="0" />
+                    <TextBlock Text="COMING UP:" Foreground="#297dae" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" FontSize="10.667" Margin="30,0,5,0" />
+                    <TextBlock Text="{Binding Path=UpcomingShow}" Foreground="White" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" FontSize="10.667"  />
+                </StackPanel>
+                <Grid x:Name="main_pane" Grid.Row="2" Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="550" x:Name="PlayerColumn"/>
+                        <ColumnDefinition x:Name="RelatedVideosColumn"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions >
+                        <RowDefinition Height="*" x:Name="PlayerRow"/>
+                        <RowDefinition Height="Auto" x:Name="RelatedVideosRow"  />
+                    </Grid.RowDefinitions>
+                    <Grid x:Name="GrLiveTV" HorizontalAlignment="Left" MinHeight="340" VerticalAlignment="Top" Margin="20,0,0,0">
+                        <WebBrowser Name="LiveTVBrowser" Grid.Column="0"    ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"></WebBrowser>
+                    </Grid>
+                    <Grid x:Name="GrSchedule" Grid.Column="1" Margin="20,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Border VerticalAlignment="Top">
+                            <Border.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FF151515" Offset="0"/>
+                                    <GradientStop Color="#FF2F2F2F" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Grid x:Name="LatestvideosContainer" Margin="15,0" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="LATEST VIDEOS" Grid.Row="0"  Margin="7,5,7,0" 
+                                           HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource OrangeFroegroundBrush}" Style="{DynamicResource SubHeaderStyle}"/>
+                                <touch:SurfaceListBox  touch:SurfaceScrollViewer.Elasticity="0.4,0" Tag="Horizontal" x:Name="RelatedVideoList" Grid.Row="1" Style="{DynamicResource SurfaceListBoxStyle}" ItemContainerStyle="{DynamicResource SurfaceListBoxItemStyle}" ItemTemplate="{DynamicResource VideoGalleryDataTemplate}"  ItemsSource="{Binding VideoList}" ItemsPanel="{DynamicResource VideoGalleryItemsPanel}" Margin="0,0,0,3" SelectionChanged="VideoListSelectionChanged" />
+                            </Grid>
+                        </Border>
+                        
+                        <view:PreLoader x:Name="preLoader" VerticalAlignment="Center" HorizontalAlignment="Center" IsBusy="{Binding Path=DataContext.IsLoadingComplete, ElementName=LatestvideosContainer, Converter={StaticResource visibilityConverter}}"/>
+
+                        <Grid x:Name="ad_space" Grid.Row="1" Margin="0,20,0,0">
+                            <view:AdBannerControl x:Name="AdControl" CurrentPage="LiveTV" />
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </controls:PopupBaseControl>
+    </Grid>
+</Base:SlateWindow>
+    
+    

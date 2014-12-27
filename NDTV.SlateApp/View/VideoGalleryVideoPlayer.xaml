@@ -1,0 +1,77 @@
+﻿<Base:SlateWindow
+    
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
+    xmlns:converter="clr-namespace:NDTV.SlateApp.Converter"
+    xmlns:Base="clr-namespace:NDTV.SlateApp"
+    mc:Ignorable="d" 
+    x:Class="NDTV.SlateApp.View.VideoGalleryVideoPlayer"    
+    x:Name="VideoPlayerWindow"    
+
+    Width="955"
+    Height="450"
+    
+    Style="{DynamicResource SlateWindowStyle}"
+
+    Margin="0,200,0,0"
+    Title="Video Player "
+    WindowStyle="none"
+    WindowStartupLocation="CenterOwner"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions">
+
+    <Base:SlateWindow.Resources>        
+        <converter:DateConverter x:Key="dateConverter" />
+        <converter:DurationConverter x:Key="durationConverter" />
+    </Base:SlateWindow.Resources>
+    
+    <!--
+    #661c1c1c
+    -->
+
+    <Grid x:Name="LayoutRoot"  Background="White">        
+        <Grid  Background="Black" Margin="8" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            
+            
+            <Grid VerticalAlignment="Top"  HorizontalAlignment="Center" Width="600"  Background="Black">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="560"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                                          
+                    <Button Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Top" Content="Button" Name="CloseButton" Height="16" Style="{DynamicResource PopupCloseButtonStyle}" Width="16" Click="CloseButton_OnClick"/>
+
+                    <Grid Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                
+                
+                        <StackPanel HorizontalAlignment="Center" Orientation="Vertical" Grid.Row="0">
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=VideoTitle}" FontFamily="Rockwell" Foreground="#FFE5E5E5" FontWeight="Bold" FontSize="20" Width="530"/>
+                            <StackPanel Orientation="Horizontal">                       
+                                <TextBlock Text="Published On: "        FontSize ="10" FontWeight="Bold" Foreground="White"/>
+                                <TextBlock Text="{Binding PublishDate, Converter={StaticResource dateConverter}}" FontSize ="10" Foreground="Red"/>
+                                <TextBlock Text=" | Duration: "           FontSize ="10" FontWeight="Bold" Foreground="White"/>
+                                <TextBlock Text="{Binding Duration, Converter={StaticResource durationConverter}}"    FontSize ="10" Foreground="Red"/>                    
+                            </StackPanel>
+                        </StackPanel>
+
+                    <Grid x:Name="VideoBrowserContainer" Width="530" Height="330" VerticalAlignment="Top"  Grid.Row="1" Margin="2">
+                                <WebBrowser Name="LiveTVVideo" />
+                        </Grid>
+                    </Grid>
+                </Grid>
+        </Grid>
+    </Grid>
+    
+</Base:SlateWindow>

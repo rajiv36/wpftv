@@ -1,0 +1,23 @@
+﻿<base:SlateWindow xmlns:base="clr-namespace:NDTV.SlateApp"
+    xmlns:my="clr-namespace:NDTV.SlateApp.View" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ed="clr-namespace:NDTV.SlateApp.Controls"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    mc:Ignorable="d" x:Class="NDTV.SlateApp.View.ImageAlbumCarouselWindow"
+    Title="ImageAlbumCarouselWindow"  
+    Width="955" 
+    Height="550" 
+    WindowStyle="none" 
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterOwner" >
+    <Grid x:Name="LayoutRoot"  ShowGridLines="False">
+        <my:ImageAlbumCarouselControl x:Name="imageAlbumCarouselControl" RaiseAlbumClickEvent="AlbumClickEvent" RaiseImageAlbumCarouselCloseEvent="CarouselCloseEvent" />
+        <my:ImageGalleryControl x:Name="imageGalleryControl" Visibility="Collapsed" RaiseFullScreenEventHandler="ImageGalleryControlFullScreenEvent" RaiseWindowCloseEventHandler="ImageControlCloseEvent"/>
+        <my:FullScreenImageGalleryControl x:Name="fsGalleryControl" Visibility="Collapsed" RaiseCloseUserControlEvent="FullScreenGalleryControlCloseEvent" />
+    </Grid>
+</base:SlateWindow>

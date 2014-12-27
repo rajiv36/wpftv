@@ -1,0 +1,18 @@
+﻿<base:SlateWindow x:Class="NDTV.SlateApp.SplashScreenWindow"
+        xmlns:base="clr-namespace:NDTV.SlateApp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SplashScreenWindow" 
+        WindowStyle="None"  
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+                  Background="Black" Loaded="OnWindowsLoad">
+    <Grid>
+        <Grid x:Name="LandscapeView" Visibility="Collapsed">
+            <Image x:Name="splashScreenLandscapeImageLandscape" Source="Resources/Images/SplashScreen.png" />
+        </Grid>
+        <Grid x:Name="PortraitView" Visibility="Collapsed">
+            <Image x:Name="splashScreenLandscapeImagePortrait" Source="Resources/Images/SplashScreen_Portrait.png" />
+        </Grid>
+    </Grid>
+</base:SlateWindow>

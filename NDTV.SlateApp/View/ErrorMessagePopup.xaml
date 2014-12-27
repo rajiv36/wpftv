@@ -1,0 +1,66 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+	x:Class="NDTV.SlateApp.View.ErrorMessagePopup"
+	x:Name="Window"
+	Title="Error"
+	MinWidth="180" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" VerticalAlignment="Top" ShowInTaskbar="False">
+    <Window.Resources>
+        <Style x:Key="RoundedShadowControl" TargetType="{x:Type ContentControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        <Grid>
+                            <Rectangle Stroke="#CC252525" StrokeThickness="1" RadiusX="6" RadiusY="6" Opacity="0.5"/>
+                            <Rectangle Stroke="#99252525" StrokeThickness="1" Margin="-1" RadiusX="8" RadiusY="8" Opacity="0.5"/>
+                            <Rectangle Stroke="#66252525" StrokeThickness="1" Margin="-2" RadiusX="9" RadiusY="9" Opacity="0.5"/>
+                            <Rectangle Stroke="#33252525" StrokeThickness="1" Margin="-3" RadiusX="10" RadiusY="10" Opacity="0.5"/>
+                            <Rectangle Stroke="#19252525" StrokeThickness="1" Margin="-4" RadiusX="11" RadiusY="11" Opacity="0.5"/>
+                            <Rectangle Stroke="#05252525" StrokeThickness="1" Margin="-5" RadiusX="12" RadiusY="12" Opacity="0.5"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid VerticalAlignment="Center" Margin="5" SnapsToDevicePixels="True" UseLayoutRounding="True" MinWidth="175" HorizontalAlignment="Center" >
+
+        <ContentControl  Style="{DynamicResource RoundedShadowControl}" Opacity="0.9" HorizontalAlignment="Stretch" Width="Auto" Margin="0,0,2,2"/>
+
+        <Border BorderThickness="1"  BorderBrush="#FF6A6A6A">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF2D2D2D" Offset="0"/>
+                    <GradientStop Color="#FF4B4B4B" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <Grid x:Name="LayoutRoot" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" />
+
+                </Grid.RowDefinitions>
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Bottom" Grid.Row="1" Margin="0,10" Height="24">
+                    <Button x:Name="OKButton" Content="OK" Width="90" Margin="0" x:FieldModifier="private" Click="OkButtonClicked" />
+                    <Button x:Name="SendAnonymousFeedbackButton" Content="Report" Width="90" Margin="5,0,0,0" Visibility="Collapsed" x:FieldModifier="private" Click="SendAnonymousFeedbackButtonClicked" />
+                </StackPanel>
+                <Grid Margin="20" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image x:Name="errorTypeImage" Width="32" Height="32" Margin="5,0" />
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="10,5,0,0">
+                        <TextBlock x:Name="ErrorText" TextWrapping="Wrap" FontSize="16" TextAlignment="Left" x:FieldModifier="private" Foreground="#FFE2E2E2" FontFamily="{DynamicResource Segoe360Font}" MaxWidth="300"/>
+                        <TextBlock x:Name="HelpText" TextWrapping="Wrap" TextAlignment="Left" x:FieldModifier="private" Margin="0,4,20,0" Foreground="#FFe0d2ab" FontSize="10"  FontFamily="{DynamicResource Segoe360Font}" MaxWidth="300" Text="{Binding ReportErrorStatus}"/>
+                    </StackPanel>
+                </Grid>
+                <Button Margin="5" x:Name="CloseButtonStyle" Content="Button" HorizontalAlignment="Right" Height="16" Style="{DynamicResource PopupCloseButtonStyle}" Width="16" VerticalAlignment="Top" d:LayoutOverrides="Height" Click="OkButtonClicked"/>
+                <Rectangle Fill="#FF393939" Height="1" VerticalAlignment="Top" Grid.Row="1"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

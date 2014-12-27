@@ -1,0 +1,551 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AnonymousFeedbackMessage" xml:space="preserve">
+    <value>Do you want to share this error with us anonymously?</value>
+  </data>
+  <data name="AnotherInstanceofApplicationRunning" xml:space="preserve">
+    <value>Oops, another instance of the application is running.</value>
+  </data>
+  <data name="ApplicationLoadFailureMessage" xml:space="preserve">
+    <value>Ouch, we were unable to load the application. Please check your internet connection and try again.</value>
+  </data>
+  <data name="BSE" xml:space="preserve">
+    <value>BSE</value>
+  </data>
+  <data name="CancelButtonContent" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CelsiusSuffix" xml:space="preserve">
+    <value>{0}°C</value>
+  </data>
+  <data name="CommentsButtonContent" xml:space="preserve">
+    <value>comments</value>
+  </data>
+  <data name="ContentLoadFailureMessage" xml:space="preserve">
+    <value>Ouch, we were unable to get the latest content. Please check your internet connection and try again.</value>
+  </data>
+  <data name="ContentShareFailureMessage" xml:space="preserve">
+    <value>Argh, we were unable to share this with your friends on {0}. Please check your internet connection and try again.</value>
+  </data>
+  <data name="ContentShareMessage" xml:space="preserve">
+    <value>Am checking out {0} on NDTV Slate.</value>
+  </data>
+  <data name="CricketScoreSummary" xml:space="preserve">
+    <value>{0} - {1} ({2} OVERS)</value>
+  </data>
+  <data name="CurrentPhotoAgainstTotalPhotosIncompleteText" xml:space="preserve">
+    <value>{0}/{1}</value>
+  </data>
+  <data name="FacebookButtonContent" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="False" xml:space="preserve">
+    <value>False</value>
+  </data>
+  <data name="GainersText" xml:space="preserve">
+    <value>Gainers</value>
+  </data>
+  <data name="GeneralFailureMessage" xml:space="preserve">
+    <value>Oops, something went wrong. Please check your internet connection and try again.</value>
+  </data>
+  <data name="ISTText" xml:space="preserve">
+    <value> IST at </value>
+  </data>
+  <data name="LinkedInButtonContent" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="LiveText" xml:space="preserve">
+    <value>LIVE:</value>
+  </data>
+  <data name="LosersText" xml:space="preserve">
+    <value>Losers</value>
+  </data>
+  <data name="MailButtonContent" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="MostActiveText" xml:space="preserve">
+    <value>Most Active</value>
+  </data>
+  <data name="NiftyText" xml:space="preserve">
+    <value>Nifty Stocks</value>
+  </data>
+  <data name="NSE" xml:space="preserve">
+    <value>NSE</value>
+  </data>
+  <data name="OkButtonContent" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ReportErrorFailure" xml:space="preserve">
+    <value>Unable to send anonymous feedback</value>
+  </data>
+  <data name="ReportErrorSubject" xml:space="preserve">
+    <value>Error reported in NDTV slate application</value>
+  </data>
+  <data name="ReportErrorSuccess" xml:space="preserve">
+    <value>Anonymous feedback sent successfully</value>
+  </data>
+  <data name="SensexText" xml:space="preserve">
+    <value>Sensex Stocks</value>
+  </data>
+  <data name="True" xml:space="preserve">
+    <value>True</value>
+  </data>
+  <data name="TwitterButtonContent" xml:space="preserve">
+    <value>Tweet</value>
+  </data>
+  <data name="UpcomingText" xml:space="preserve">
+    <value>UPCOMING:</value>
+  </data>
+  <data name="YearHighText" xml:space="preserve">
+    <value>52-Week High</value>
+  </data>
+  <data name="YearLowText" xml:space="preserve">
+    <value>52-Week Low</value>
+  </data>
+  <data name="NoUpcomingMatchText" xml:space="preserve">
+    <value>No upcoming/live matches.</value>
+  </data>
+  <data name="StockCategoriesError" xml:space="preserve">
+    <value>Unable to retrieve data for the selected category!!</value>
+  </data>
+  <data name="StockItemError" xml:space="preserve">
+    <value>Unable to retrieve data for the selected company!!</value>
+  </data>
+  <data name="CommentsSubTitle" xml:space="preserve">
+    <value>Signed in as {0} on {1}</value>
+  </data>
+  <data name="EmailFormatErrorMessage" xml:space="preserve">
+    <value>Mention a valid email format.</value>
+  </data>
+  <data name="MailBodyVideo" xml:space="preserve">
+    <value>Am watching '{0}' on NDTV Slate. Do check it out! 
+
+{1}
+
+{2}
+
+Thanks,</value>
+    <comment>Parameters
+{0} - &lt;video title&gt;
+{1} - &lt;link&gt;
+{2} - &lt;video brief if available&gt;</comment>
+  </data>
+  <data name="MessageHeader" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="PostButtonContent" xml:space="preserve">
+    <value>Post</value>
+  </data>
+  <data name="PostComment" xml:space="preserve">
+    <value>Post comment</value>
+  </data>
+  <data name="PostCommentHeader" xml:space="preserve">
+    <value>to post a comment.</value>
+  </data>
+  <data name="ReceiversEmail" xml:space="preserve">
+    <value>Recipient's Email ID</value>
+  </data>
+  <data name="ReceiversName" xml:space="preserve">
+    <value>Recipient's Name</value>
+  </data>
+  <data name="SendersEmail" xml:space="preserve">
+    <value>Your Email ID</value>
+  </data>
+  <data name="SendersName" xml:space="preserve">
+    <value>Your Name</value>
+  </data>
+  <data name="MailBodyArticle" xml:space="preserve">
+    <value>Am reading '{0}' on NDTV Slate. Do check it out! 
+
+{1}
+
+{2}
+
+Thanks,</value>
+    <comment>Parameters
+{0} - &lt;title of news article&gt;
+{1} - &lt;link&gt;
+{2} - &lt;article brief if available&gt;</comment>
+  </data>
+  <data name="MailHeaderArticle" xml:space="preserve">
+    <value>Am checking out '{0}' on NDTV Slate</value>
+    <comment>{0} - &lt;title truncated to 15 char&gt;</comment>
+  </data>
+  <data name="MailHeaderVideo" xml:space="preserve">
+    <value>Am checking out '{0}' video on NDTV Slate</value>
+    <comment>{0} - &lt;video title truncated to 15 chars…&gt;</comment>
+  </data>
+  <data name="CommentsIdentifier" xml:space="preserve">
+    <value>{0}-{1}</value>
+  </data>
+  <data name="FacebookArticleShareMessage" xml:space="preserve">
+    <value>Am reading '{0}' on NDTV Slate. Check it out!</value>
+  </data>
+  <data name="FacebookPhotoSetShareMessage" xml:space="preserve">
+    <value>Am viewing '{0}' pics on NDTV Slate. Check it out!</value>
+  </data>
+  <data name="SocialShareTitle" xml:space="preserve">
+    <value>Share this {0}</value>
+  </data>
+  <data name="FacebookVideoShareMessage" xml:space="preserve">
+    <value>Am watching '{0}' on NDTV Slate. Check it out!</value>
+  </data>
+  <data name="CricketShareLink" xml:space="preserve">
+    <value>http://sports.ndtv.com/cricket/scoreboard?filename={0}</value>
+  </data>
+  <data name="FacebookCricketLiveMatchShareMessage" xml:space="preserve">
+    <value>Am checking out the live score of {0} on NDTV Slate. Do take a look!</value>
+  </data>
+  <data name="FacebookCricketRecentMatchShareMessage" xml:space="preserve">
+    <value>Am checking out the score of {0} on NDTV Slate. Do take a look!</value>
+  </data>
+  <data name="CricketFixturesLink" xml:space="preserve">
+    <value>http://sports.ndtv.com/cricket/fixtures</value>
+  </data>
+  <data name="FacebookRecentMatchesShare" xml:space="preserve">
+    <value>Am checking out the details of recent cricket matches on NDTV Slate. Do take a look!</value>
+  </data>
+  <data name="FacebookUpcomingMatchesShare" xml:space="preserve">
+    <value>Am checking out the details of upcoming cricket matches on NDTV Slate. Do take a look!</value>
+  </data>
+  <data name="MailBodyCricketLiveCommentary" xml:space="preserve">
+    <value>Am reading the commentary of {0} on NDTV Slate. Do take a look!
+
+{1}
+
+{2}
+
+Thanks,</value>
+    <comment>Parameters
+{0} - &lt;match title&gt;
+{1} - &lt;link&gt;
+{2} - &lt;match brief if available&gt;</comment>
+  </data>
+  <data name="MailBodyCricketLiveScorecard" xml:space="preserve">
+    <value>Am checking out the live score of {0} on NDTV Slate. Do take a look!
+
+{1}
+
+{2}
+
+Thanks,</value>
+    <comment>Parameters
+{0} - &lt;match title&gt;
+{1} - &lt;link&gt;
+{2} - &lt;match brief if available&gt;</comment>
+  </data>
+  <data name="MailBodyCricketRecentCommentary" xml:space="preserve">
+    <value>Am reading the commentary of {0} on NDTV Slate. Do take a look!
+
+{1}
+
+{2}
+
+Thanks,</value>
+    <comment>Parameters
+{0} - &lt;match title&gt;
+{1} - &lt;link&gt;
+{2} - &lt;match brief if available&gt;</comment>
+  </data>
+  <data name="MailBodyCricketRecentMatchList" xml:space="preserve">
+    <value>Am checking out the details of recent cricket matches on NDTV Slate. Do take a look!
+
+{0}
+
+Thanks,</value>
+    <comment>Parameters
+{0} - &lt;link&gt;</comment>
+  </data>
+  <data name="MailBodyCricketRecentScorecard" xml:space="preserve">
+    <value>Am checking out the score of {0} on NDTV Slate. Do take a look!
+
+{1}
+
+{2}
+
+Thanks,</value>
+    <comment>Parameters
+{0} - &lt;match title&gt;
+{1} - &lt;link&gt;
+{2} - &lt;match brief if available&gt;</comment>
+  </data>
+  <data name="MailBodyCricketUpcomingMatchList" xml:space="preserve">
+    <value>Am checking out the details of upcoming cricket matches on NDTV Slate. Do take a look!
+
+{0}
+
+Thanks,</value>
+    <comment>Parameters
+{0} - &lt;link&gt;</comment>
+  </data>
+  <data name="MailBodyPhotoSet" xml:space="preserve">
+    <value>Am viewing '{0}' on NDTV Slate. Do check it out! 
+
+{1}
+
+{2}
+
+Thanks,</value>
+    <comment>Parameters
+{0} - &lt;photo set title&gt;
+{1} - &lt;link&gt;
+{2} - &lt;photoset brief if available&gt;</comment>
+  </data>
+  <data name="MailBodyWeather" xml:space="preserve">
+    <value>Am checking out the weather update on NDTV Slate. Do take a look!
+
+{0}
+
+Thanks,</value>
+    <comment>Parameters
+{0} - &lt;link&gt;</comment>
+  </data>
+  <data name="MailHeaderCricketLiveCommentary" xml:space="preserve">
+    <value>Am checking out '{0}' on NDTV Slate</value>
+    <comment>{0} - &lt;match title&gt;</comment>
+  </data>
+  <data name="MailHeaderCricketLiveScorecard" xml:space="preserve">
+    <value>Am checking out '{0}' on NDTV Slate.</value>
+    <comment>{0} - &lt;match title&gt;</comment>
+  </data>
+  <data name="MailHeaderCricketRecentCommentary" xml:space="preserve">
+    <value>Am checking out '{0}' on NDTV Slate</value>
+    <comment>{0} - &lt;match title&gt;</comment>
+  </data>
+  <data name="MailHeaderCricketRecentMatchList" xml:space="preserve">
+    <value>Am checking out recent cricket matches on NDTV Slate</value>
+  </data>
+  <data name="MailHeaderCricketRecentScorecard" xml:space="preserve">
+    <value>Am checking out recent cricket matches on NDTV Slate</value>
+  </data>
+  <data name="MailHeaderCricketUpcomingMatchList" xml:space="preserve">
+    <value>Am checking out upcoming cricket matches on NDTV Slate</value>
+  </data>
+  <data name="MailHeaderPhotoSet" xml:space="preserve">
+    <value>Am checking out '{0}' pics on NDTV Slate</value>
+    <comment>{0} - &lt;video title truncated to 15 chars…&gt;</comment>
+  </data>
+  <data name="MailHeaderWeather" xml:space="preserve">
+    <value>Am checking out the latest weather updates on NDTV Slate</value>
+  </data>
+  <data name="MailHeaderTitleLimit" xml:space="preserve">
+    <value>25</value>
+    <comment>Limiting characters in title to the given limit.</comment>
+  </data>
+  <data name="AllComments" xml:space="preserve">
+    <value>All Comments ({0})</value>
+  </data>
+  <data name="CommentsPostError" xml:space="preserve">
+    <value>Oops! Something went wrong. Try again later.</value>
+  </data>
+  <data name="CommentsPostRepeatError" xml:space="preserve">
+    <value>You have already posted this comment.</value>
+  </data>
+  <data name="FirstToComment" xml:space="preserve">
+    <value>Be the first to comment.</value>
+  </data>
+  <data name="SuccessfulPostMessage" xml:space="preserve">
+    <value>Thank you for posting a comment. Your comment will appear post moderation.</value>
+  </data>
+  <data name="LinkedInArticleShareMessage" xml:space="preserve">
+    <value>I'm reading '{0}' on NDTV Slate. Check it out!</value>
+  </data>
+  <data name="LinkedInCricketLiveMatchShareMessage" xml:space="preserve">
+    <value>I'm checking out the live score of {0} on NDTV Slate. Do take a look!</value>
+  </data>
+  <data name="LinkedInCricketRecentMatchShareMessage" xml:space="preserve">
+    <value>I'm checking out the score of {0} on NDTV Slate. Do take a look!</value>
+  </data>
+  <data name="LinkedInPhotoSetShareMessage" xml:space="preserve">
+    <value>I'm viewing '{0}' pics on NDTV Slate. Check it out!</value>
+  </data>
+  <data name="LinkedInRecentMatchesShare" xml:space="preserve">
+    <value>I'm checking out the details of recent cricket matches on NDTV Slate. Do take a look!</value>
+  </data>
+  <data name="LinkedInUpcomingMatchesShare" xml:space="preserve">
+    <value>I'm checking out the details of upcoming cricket matches on NDTV Slate. Do take a look!</value>
+  </data>
+  <data name="LinkedInVideoShareMessage" xml:space="preserve">
+    <value>I'm watching '{0}' on NDTV Slate. Check it out!</value>
+  </data>
+  <data name="FacebookWeather" xml:space="preserve">
+    <value>Am checking out the weather update on NDTV Slate. Do take a look!</value>
+  </data>
+  <data name="TwitterWeatherTitle" xml:space="preserve">
+    <value>Am checking out the weather update on NDTV Slate. Do take a look!</value>
+  </data>
+  <data name="TwitterTitleLimit" xml:space="preserve">
+    <value>114</value>
+  </data>
+  <data name="MailCaptionLimit" xml:space="preserve">
+    <value>150</value>
+  </data>
+  <data name="MailDescriptionLimit" xml:space="preserve">
+    <value>150</value>
+  </data>
+  <data name="MailReceiverNameLimit" xml:space="preserve">
+    <value>30</value>
+  </data>
+  <data name="MailSenderNameLimit" xml:space="preserve">
+    <value>30</value>
+  </data>
+  <data name="LinkedInWeatherShareMessage" xml:space="preserve">
+    <value>Am checking out the weather update on NDTV Slate. Do take a look!</value>
+  </data>
+  <data name="MailBodyLimit" xml:space="preserve">
+    <value>700</value>
+  </data>
+  <data name="TwitterRecentMatchesShare" xml:space="preserve">
+    <value>Am checking out the details of recent cricket matches on NDTV Slate. Do take a look!</value>
+  </data>
+  <data name="TwitterUpcomingMatchesShare" xml:space="preserve">
+    <value>Am checking out the details of upcoming cricket matches on NDTV Slate. Do take a look!</value>
+  </data>
+  <data name="MessageSaved" xml:space="preserve">
+    <value>Message Saved.</value>
+  </data>
+  <data name="DefaultWeatherCity" xml:space="preserve">
+    <value>Delhi</value>
+  </data>
+  <data name="Indian" xml:space="preserve">
+    <value>indian</value>
+  </data>
+  <data name="World" xml:space="preserve">
+    <value>world</value>
+  </data>
+  <data name="ErrorLogIn" xml:space="preserve">
+    <value>Sorry couldn't log into {0}. Please try later.</value>
+  </data>
+  <data name="ErrorShare" xml:space="preserve">
+    <value>Sorry couldn't share the {0}.</value>
+  </data>
+  <data name="MailShareError" xml:space="preserve">
+    <value>Ouch, we are unable to share content via mail. Please check your internet connection and try again.</value>
+  </data>
+  <data name="CommentPostError" xml:space="preserve">
+    <value>Ouch, we are unable to post your comment. Please check your internet connection and try again.</value>
+  </data>
+  <data name="GetCommentsError" xml:space="preserve">
+    <value>Ouch, we are unable to retrieve comments. Please check your internet connection and try again.</value>
+  </data>
+  <data name="LogoutText" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+</root>

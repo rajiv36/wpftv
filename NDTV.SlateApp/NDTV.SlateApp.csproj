@@ -1,0 +1,945 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{85E7B386-8568-4C3D-BE4D-6E17693BE583}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NDTV.SlateApp</RootNamespace>
+    <AssemblyName>NDTV.SlateApp</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Images\icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>NDTV.SlateApp.ApplicationMain</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>EF49188DA221DE6136BCD9A51DEFCD136577ED44</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>ndtv.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestTimestampUrl>http://timestamp.verisign.com/scripts/timestamp.dll</ManifestTimestampUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JavaScriptSerializer, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>Lib\Microsoft.mshtml.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Surface, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Microsoft.Surface.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Surface.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Microsoft.Surface.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Surface.Presentation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Microsoft.Surface.Presentation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Surface.Presentation.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Microsoft.Surface.Presentation.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Surface.Presentation.Generic, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Microsoft.Surface.Presentation.Generic.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="SStuff.FlowControls">
+      <HintPath>Lib\SStuff.FlowControls.dll</HintPath>
+    </Reference>
+    <Reference Include="SStuff.LayoutAlgorithms">
+      <HintPath>Lib\SStuff.LayoutAlgorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="SStuff.WpfEffects">
+      <HintPath>Lib\SStuff.WpfEffects.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="ApplicationMain.cs" />
+    <Compile Include="Controls\ImagePanningControl.cs" />
+    <Compile Include="Controls\PopupBaseControl.cs" />
+    <Compile Include="Controls\PreloadImageControl.cs" />
+    <Compile Include="Controls\RichTextBox.cs" />
+    <Compile Include="Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converter\ChartUrlConverter.cs" />
+    <Compile Include="Converter\DateConverter.cs" />
+    <Compile Include="Converter\DurationConverter.cs" />
+    <Compile Include="Converter\FlashNewsConverter.cs" />
+    <Compile Include="Converter\ImageAlbumDispalyConverter.cs" />
+    <Compile Include="Converter\ImageBackButtonEnableConverter.cs" />
+    <Compile Include="Converter\ImageForwardButtonEnableConverter.cs" />
+    <Compile Include="Converter\ListRangeTrimmingConverter.cs" />
+    <Compile Include="Converter\ListTrimmingConverter.cs" />
+    <Compile Include="Converter\TimeConverter.cs" />
+    <Compile Include="Converter\VisibiltyConverter.cs" />
+    <Compile Include="Framework\Connector\HttpConnector.cs" />
+    <Compile Include="Framework\Connector\HttpRequestState.cs" />
+    <Compile Include="Framework\Controller\ApplicationData.cs" />
+    <Compile Include="Framework\Controller\NDTVController.cs" />
+    <Compile Include="Framework\CustomEventArgs\CarouselAlbumArgs.cs" />
+    <Compile Include="Framework\CustomEventArgs\ImageGalleryArgs.cs" />
+    <Compile Include="Framework\CustomEventArgs\SearchCompletedEventArgs.cs" />
+    <Compile Include="Framework\CustomEventArgs\SearchStartedEventArgs.cs" />
+    <Compile Include="Framework\CustomEventArgs\StockLoadedEventArgs.cs" />
+    <Compile Include="Framework\Interfaces\ILogger.cs" />
+    <Compile Include="Framework\Model\Constants.cs" />
+    <Compile Include="Framework\Model\Entities\Account.cs" />
+    <Compile Include="Framework\Model\Entities\AdBannerItem.cs" />
+    <Compile Include="Framework\Model\Entities\BitLyData.cs" />
+    <Compile Include="Framework\Model\Entities\CategoryItem.cs" />
+    <Compile Include="Framework\Model\Entities\ChannelSchedule.cs" />
+    <Compile Include="Framework\Model\Entities\CommentDetails.cs" />
+    <Compile Include="Framework\Model\Entities\CompanySpecificStockData.cs" />
+    <Compile Include="Framework\Model\Entities\CricketBatsman.cs" />
+    <Compile Include="Framework\Model\Entities\CricketBowler.cs" />
+    <Compile Include="Framework\Model\Entities\CricketCommentaryItem.cs" />
+    <Compile Include="Framework\Model\Entities\CricketInnings.cs" />
+    <Compile Include="Framework\Model\Entities\CricketInningsEquation.cs" />
+    <Compile Include="Framework\Model\Entities\CricketShortScorecard.cs" />
+    <Compile Include="Framework\Model\Entities\FacebookAccount.cs" />
+    <Compile Include="Framework\Model\Entities\FacebookUser.cs" />
+    <Compile Include="Framework\Model\Entities\FallOfWickets.cs" />
+    <Compile Include="Framework\Model\Entities\GoogleAccount.cs" />
+    <Compile Include="Framework\Model\Entities\GoogleUser.cs" />
+    <Compile Include="Framework\Model\Entities\ImageAlbum.cs" />
+    <Compile Include="Framework\Model\Entities\ImageCategoryItem.cs" />
+    <Compile Include="Framework\Model\Entities\ImageItem.cs" />
+    <Compile Include="Framework\Model\Entities\InningsExtra.cs" />
+    <Compile Include="Framework\Model\Entities\InningsSummary.cs" />
+    <Compile Include="Framework\Model\Entities\Item.cs" />
+    <Compile Include="Framework\Model\Entities\LatestNewsItem.cs" />
+    <Compile Include="Framework\Model\Entities\LinkedInAccount.cs" />
+    <Compile Include="Framework\Model\Entities\LinkedInUser.cs" />
+    <Compile Include="Framework\Model\Entities\MatchDetail.cs" />
+    <Compile Include="Framework\Model\Entities\MiniScorecardItem.cs" />
+    <Compile Include="Framework\Model\Entities\NDTVSlateUser.cs" />
+    <Compile Include="Framework\Model\Entities\ProfitFlashNewsItem.cs" />
+    <Compile Include="Framework\Model\Entities\ProfitFlashNewsItemDetails.cs" />
+    <Compile Include="Framework\Model\Entities\ShareData.cs" />
+    <Compile Include="Framework\Model\Entities\StockExchangeSpecificDetails.cs" />
+    <Compile Include="Framework\Model\Entities\StockIndex.cs" />
+    <Compile Include="Framework\Model\Entities\CricketFixtures.cs" />
+    <Compile Include="Framework\Model\Entities\StockItem.cs" />
+    <Compile Include="Framework\Model\Entities\StockItemDetails.cs" />
+    <Compile Include="Framework\Model\Entities\StockMarketData.cs" />
+    <Compile Include="Framework\Model\Entities\TwitterAccount.cs" />
+    <Compile Include="Framework\Model\Entities\TwitterUser.cs" />
+    <Compile Include="Framework\Model\Entities\UserData.cs" />
+    <Compile Include="Framework\Model\Entities\WeatherCities.cs" />
+    <Compile Include="Framework\Model\Entities\WeatherData.cs" />
+    <Compile Include="Framework\Model\Entities\TopStoryItem.cs" />
+    <Compile Include="Framework\Model\Entities\VideoItem.cs" />
+    <Compile Include="Framework\Model\Entities\VideoListCategories.cs" />
+    <Compile Include="Framework\Model\Entities\YahooAccount.cs" />
+    <Compile Include="Framework\Model\Entities\YahooUser.cs" />
+    <Compile Include="Framework\Model\Enumerations.cs" />
+    <Compile Include="Framework\Model\Request\AboutNDTVRequest.cs" />
+    <Compile Include="Framework\Model\Request\CategoriesFeedRequest.cs" />
+    <Compile Include="Framework\Model\Request\ChannelScheduleRequest.cs" />
+    <Compile Include="Framework\Model\Request\CompanySpecificStockDataRequest.cs" />
+    <Compile Include="Framework\Model\Request\CricketCommentaryRequest.cs" />
+    <Compile Include="Framework\Model\Request\CricketFixturesRequest.cs" />
+    <Compile Include="Framework\Model\Request\CricketShortScorecardRequest.cs" />
+    <Compile Include="Framework\Model\Request\FacebookAccessTokenRequest.cs" />
+    <Compile Include="Framework\Model\Request\FacebookShareRequest.cs" />
+    <Compile Include="Framework\Model\Request\FacebookUserDataRequest.cs" />
+    <Compile Include="Framework\Model\Request\FullScoreboardRequest.cs" />
+    <Compile Include="Framework\Model\Request\GetCommentsRequest.cs" />
+    <Compile Include="Framework\Model\Request\GoogleAuthorizeTokenRequest.cs" />
+    <Compile Include="Framework\Model\Request\GoogleTokenRequest.cs" />
+    <Compile Include="Framework\Model\Request\GoogleUserDetailsRequest.cs" />
+    <Compile Include="Framework\Model\Request\ImageAlbumRequest.cs" />
+    <Compile Include="Framework\Model\Request\ImageCategoriesRequest.cs" />
+    <Compile Include="Framework\Model\Request\ImageItemRequest.cs" />
+    <Compile Include="Framework\Model\Request\LatestNewsFeedRequest.cs" />
+    <Compile Include="Framework\Model\Request\LinkedInAuthorizeTokenRequest.cs" />
+    <Compile Include="Framework\Model\Request\LinkedInShareRequest.cs" />
+    <Compile Include="Framework\Model\Request\LinkedInTokenRequest.cs" />
+    <Compile Include="Framework\Model\Request\LinkedInUserDataRequest.cs" />
+    <Compile Include="Framework\Model\Request\LinkShortenRequest.cs" />
+    <Compile Include="Framework\Model\Request\MailShareRequest.cs" />
+    <Compile Include="Framework\Model\Request\PostCommentRequest.cs" />
+    <Compile Include="Framework\Model\Request\ProfitFlashNewsItemRequest.cs" />
+    <Compile Include="Framework\Model\Request\RegisterUserRequest.cs" />
+    <Compile Include="Framework\Model\Request\RelatedVideosRequest.cs" />
+    <Compile Include="Framework\Model\Request\Request.cs" />
+    <Compile Include="Framework\Model\Request\SearchRequest.cs" />
+    <Compile Include="Framework\Model\Request\StockDetailRequest.cs" />
+    <Compile Include="Framework\Model\Request\StockIndexRequest.cs" />
+    <Compile Include="Framework\Model\Request\TopStoryFeedRequest.cs" />
+    <Compile Include="Framework\Model\Request\TwitterAuthorizeTokenRequest.cs" />
+    <Compile Include="Framework\Model\Request\TwitterShareRequest.cs" />
+    <Compile Include="Framework\Model\Request\TwitterTokenRequest.cs" />
+    <Compile Include="Framework\Model\Request\TwitterUserDataRequest.cs" />
+    <Compile Include="Framework\Model\Request\VideoCategoriesRequest.cs" />
+    <Compile Include="Framework\Model\Request\WeatherCitiesRequest.cs" />
+    <Compile Include="Framework\Model\Request\YahooAuthorizeTokenRequest.cs" />
+    <Compile Include="Framework\Model\Request\YahooTokenRequest.cs" />
+    <Compile Include="Framework\Model\Request\YahooUserDataRequest.cs" />
+    <Compile Include="Framework\Model\Response\AboutNDTVResponse.cs" />
+    <Compile Include="Framework\Model\Response\CategoriesFeedResponse.cs" />
+    <Compile Include="Framework\Model\Response\ChannelScheduleResponse.cs" />
+    <Compile Include="Framework\Model\Response\CompanySpecificStockDataResponse.cs" />
+    <Compile Include="Framework\Model\Response\CricketCommentaryResponse.cs" />
+    <Compile Include="Framework\Model\Response\CricketFixturesResponse.cs" />
+    <Compile Include="Framework\Model\Response\CricketShortScorecardResponse.cs" />
+    <Compile Include="Framework\Model\Response\FacebookAccessTokenResponse.cs" />
+    <Compile Include="Framework\Model\Response\FacebookShareResponse.cs" />
+    <Compile Include="Framework\Model\Response\FacebookUserDataResponse.cs" />
+    <Compile Include="Framework\Model\Response\FullScoreboardResponse.cs" />
+    <Compile Include="Framework\Model\Response\GetCommentsResponse.cs" />
+    <Compile Include="Framework\Model\Response\GoogleAuthorizeTokenResponse.cs" />
+    <Compile Include="Framework\Model\Response\GoogleTokenResponse.cs" />
+    <Compile Include="Framework\Model\Response\GoogleUserDetailsResponse.cs" />
+    <Compile Include="Framework\Model\Response\ImageAlbumResponse.cs" />
+    <Compile Include="Framework\Model\Response\ImageCategoriesResponse.cs" />
+    <Compile Include="Framework\Model\Response\ImageItemResponse.cs" />
+    <Compile Include="Framework\Model\Response\LatestNewsFeedResponse.cs" />
+    <Compile Include="Framework\Model\Response\LinkedInAuthorizeTokenResponse.cs" />
+    <Compile Include="Framework\Model\Response\LinkedInShareResponse.cs" />
+    <Compile Include="Framework\Model\Response\LinkedInTokenResponse.cs" />
+    <Compile Include="Framework\Model\Response\LinkedInUserDataResponse.cs" />
+    <Compile Include="Framework\Model\Response\LinkShortenResponse.cs" />
+    <Compile Include="Framework\Model\Response\MailShareResponse.cs" />
+    <Compile Include="Framework\Model\Response\PostCommentResponse.cs" />
+    <Compile Include="Framework\Model\Response\ProfitNewsFlashItemResponse.cs" />
+    <Compile Include="Framework\Model\Response\RegisterUserResponse.cs" />
+    <Compile Include="Framework\Model\Response\RelatedVideosResponse.cs" />
+    <Compile Include="Framework\Model\Response\Response.cs" />
+    <Compile Include="Framework\Model\Response\SearchResponse.cs" />
+    <Compile Include="Framework\Model\Response\StockDetailResponse.cs" />
+    <Compile Include="Framework\Model\Response\StockIndexResponse.cs" />
+    <Compile Include="Framework\Model\Response\TopStoryFeedResponse.cs" />
+    <Compile Include="Framework\Model\Response\TwitterAuthorizeTokenResponse.cs" />
+    <Compile Include="Framework\Model\Response\TwitterShareResponse.cs" />
+    <Compile Include="Framework\Model\Response\TwitterTokenResponse.cs" />
+    <Compile Include="Framework\Model\Response\TwitterUserDataResponse.cs" />
+    <Compile Include="Framework\Model\Response\VideoCategoriesResponse.cs" />
+    <Compile Include="Framework\Interfaces\IProcessor.cs" />
+    <Compile Include="Framework\Model\Request\WeatherDetailsRequest.cs" />
+    <Compile Include="Framework\Model\Response\WeatherCitiesResponse.cs" />
+    <Compile Include="Framework\Model\Response\WeatherDetailsResponse.cs" />
+    <Compile Include="Framework\Model\Response\YahooAuthorizeTokenResponse.cs" />
+    <Compile Include="Framework\Model\Response\YahooTokenResponse.cs" />
+    <Compile Include="Framework\Model\Response\YahooUserDataResponse.cs" />
+    <Compile Include="Framework\Processor\NDTVProcessor.cs" />
+    <Compile Include="Framework\Utilities\AdBannerData.cs" />
+    <Compile Include="Framework\Utilities\ApplicationSettings.cs" />
+    <Compile Include="Framework\Utilities\ConfigUtility.cs" />
+    <Compile Include="Framework\Utilities\ExceptionHandler.cs" />
+    <Compile Include="Framework\Utilities\Helper.cs" />
+    <Compile Include="Framework\Utilities\JavaScriptInterOp.cs" />
+    <Compile Include="Framework\Utilities\Logger.cs" />
+    <Compile Include="Framework\Utilities\OAuthHelper.cs" />
+    <Compile Include="Framework\Utilities\HttpHelper.cs" />
+    <Compile Include="Framework\Utilities\Utility.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NativeMethods.cs" />
+    <Compile Include="SplashScreenWindow.xaml.cs">
+      <DependentUpon>SplashScreenWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\AdBannerViewModel.cs" />
+    <Compile Include="ViewModel\AppViewModel.cs" />
+    <Compile Include="ViewModel\ArticlePageViewModel.cs" />
+    <Compile Include="ViewModel\ChannelScheduleViewModel.cs" />
+    <Compile Include="ViewModel\CommentsViewModel.cs" />
+    <Compile Include="ViewModel\CricketCommentaryViewModel.cs" />
+    <Compile Include="ViewModel\CricketFixturesViewModel.cs" />
+    <Compile Include="ViewModel\CricketFullScoreCardViewModel.cs" />
+    <Compile Include="ViewModel\CricketMainWindowViewModel.cs" />
+    <Compile Include="ViewModel\ErrorMessageViewModel.cs" />
+    <Compile Include="ViewModel\ImageAlbumViewModel.cs" />
+    <Compile Include="ViewModel\ImageSetViewModel.cs" />
+    <Compile Include="ViewModel\ImageViewModel.cs" />
+    <Compile Include="ViewModel\LandingPageViewModel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ViewModel\LoginOptionsViewModel.cs" />
+    <Compile Include="ViewModel\MailShareViewModel.cs" />
+    <Compile Include="ViewModel\RelatedItemsViewModel.cs" />
+    <Compile Include="ViewModel\RelayCommand.cs" />
+    <Compile Include="ViewModel\SearchScreenViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewerViewModel.cs" />
+    <Compile Include="ViewModel\SocialMediaInteractionViewModel.cs" />
+    <Compile Include="ViewModel\SocialShareViewModel.cs" />
+    <Compile Include="ViewModel\StockViewModel.cs" />
+    <Compile Include="ViewModel\VideoGalleryViewModel.cs" />
+    <Compile Include="ViewModel\VideoPageViewModel.cs" />
+    <Compile Include="ViewModel\VideoPlayerViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converter\ImageConverter.cs" />
+    <Compile Include="ViewModel\WeatherViewModel.cs" />
+    <Compile Include="View\AdBannerControl.xaml.cs">
+      <DependentUpon>AdBannerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Article.xaml.cs">
+      <DependentUpon>Article.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CommentsControl.xaml.cs">
+      <DependentUpon>CommentsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CricketCommentary.xaml.cs">
+      <DependentUpon>CricketCommentary.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CricketWindow.xaml.cs">
+      <DependentUpon>CricketWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ErrorMessagePopup.xaml.cs">
+      <DependentUpon>ErrorMessagePopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FullScorecard.xaml.cs">
+      <DependentUpon>FullScorecard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FullScreenImageGalleryControl.xaml.cs">
+      <DependentUpon>FullScreenImageGalleryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ImageAlbumCarouselControl.xaml.cs">
+      <DependentUpon>ImageAlbumCarouselControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ImageAlbumCarouselWindow.xaml.cs">
+      <DependentUpon>ImageAlbumCarouselWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ImageAlbumGalleryWindow.xaml.cs">
+      <DependentUpon>ImageAlbumGalleryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ImageGalleryControl.xaml.cs">
+      <DependentUpon>ImageGalleryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LiveTVView.xaml.cs">
+      <DependentUpon>LiveTVView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SlateWindow.cs" />
+    <Compile Include="View\LoginOptions.xaml.cs">
+      <DependentUpon>LoginOptions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MailShare.xaml.cs">
+      <DependentUpon>MailShare.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MiniScorecard.xaml.cs">
+      <DependentUpon>MiniScorecard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CricketCalendarControl.xaml.cs">
+      <DependentUpon>CricketCalendarControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PreLoader.xaml.cs">
+      <DependentUpon>PreLoader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RelatedVideosAndNewsControl.xaml.cs">
+      <DependentUpon>RelatedVideosAndNewsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LandingPageSearchPopup.xaml.cs">
+      <DependentUpon>LandingPageSearchPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SearchBoxUserControl.xaml.cs">
+      <DependentUpon>SearchBoxUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SearchScreen.xaml.cs">
+      <DependentUpon>SearchScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SensexScorecard.xaml.cs">
+      <DependentUpon>SensexScorecard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsScreen.xaml.cs">
+      <DependentUpon>SettingsScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsViewer.xaml.cs">
+      <DependentUpon>SettingsViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SocialLogin.xaml.cs">
+      <DependentUpon>SocialLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SocialMediaInteraction.xaml.cs">
+      <DependentUpon>SocialMediaInteraction.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SocialShareDialog.xaml.cs">
+      <DependentUpon>SocialShareDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\VideoGallery.xaml.cs">
+      <DependentUpon>VideoGallery.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\VideoPlayerControl.xaml.cs">
+      <DependentUpon>VideoPlayerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\VideoPlayer.xaml.cs">
+      <DependentUpon>VideoPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Weather.xaml.cs">
+      <DependentUpon>Weather.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="App.config" />
+    <None Include="ndtv.pfx" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <Resource Include="Resources\EULA_NDTVSlate.rtf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Fonts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SplashScreenWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AdBannerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Article.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\CommentsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CricketCommentary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\CricketWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ErrorMessagePopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FullScorecard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\FullScreenImageGalleryControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ImageAlbumCarouselControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ImageAlbumCarouselWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ImageAlbumGalleryWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ImageGalleryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LiveTVView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\LoginOptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MailShare.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MiniScorecard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\CricketCalendarControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\PreLoader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\RelatedVideosAndNewsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LandingPageSearchPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SearchBoxUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SearchScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SensexScorecard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SettingsViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SocialLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SocialMediaInteraction.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SocialShareDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\VideoGallery.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\VideoPlayerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\VideoPlayer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Weather.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\advt.jpg" />
+    <Resource Include="Resources\Images\Application.ico" />
+    <Resource Include="Resources\Images\livetvicon.png" />
+    <Resource Include="Resources\Images\ndtv-logo.jpg" />
+    <Resource Include="Resources\Images\pic1.jpg" />
+    <Resource Include="Resources\Images\searchicon.png" />
+    <Resource Include="Resources\Images\settingsicon.png" />
+    <Resource Include="Resources\Images\srk.png" />
+    <Resource Include="Resources\Images\stockicon.png" />
+    <Resource Include="Resources\Images\videopic.jpg" />
+    <Resource Include="Resources\Images\weathericon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\aerrow.png" />
+    <Resource Include="Resources\Images\article_pic.jpg" />
+    <Resource Include="Resources\Images\close.png" />
+    <Resource Include="Resources\Images\close_grey.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\facebook_16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\fantasy.png" />
+    <Resource Include="Resources\Images\gal_01.png" />
+    <Resource Include="Resources\Images\gal_02.png" />
+    <Resource Include="Resources\Images\gal_03.png" />
+    <Resource Include="Resources\Images\gal_04.png" />
+    <Resource Include="Resources\Images\gal_05.png" />
+    <Resource Include="Resources\Images\gal_06.png" />
+    <Resource Include="Resources\Images\linkedin_16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\mail_16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\news_01.jpg" />
+    <Resource Include="Resources\Images\news_02.jpg" />
+    <Resource Include="Resources\Images\news_03.jpg" />
+    <Resource Include="Resources\Images\photo_collapsed.png" />
+    <Resource Include="Resources\Images\photo_fscreenbtn.png" />
+    <Resource Include="Resources\Images\photo_play.png" />
+    <Resource Include="Resources\Images\photo_playbtn.png" />
+    <Resource Include="Resources\Images\photo_player.jpg" />
+    <Resource Include="Resources\Images\photo_player.png" />
+    <Resource Include="Resources\Images\photo_playerReal.jpg" />
+    <Resource Include="Resources\Images\photo_stopbtn.png" />
+    <Resource Include="Resources\Images\player.png" />
+    <Resource Include="Resources\Images\right_aerrow.png" />
+    <Resource Include="Resources\Images\speak.jpg" />
+    <Resource Include="Resources\Images\travel.png" />
+    <Resource Include="Resources\Images\tweet_16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\vid_01.png" />
+    <Resource Include="Resources\Images\vid_02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\imgpic.jpg" />
+    <Resource Include="Resources\Images\stevejobs.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\JavaScriptSerializer.dll" />
+    <Content Include="Lib\Microsoft.Expression.Interactions.dll" />
+    <Content Include="Lib\Microsoft.mshtml.dll" />
+    <Content Include="Lib\Microsoft.Surface.Core.dll" />
+    <Content Include="Lib\Microsoft.Surface.dll" />
+    <Content Include="Lib\Microsoft.Surface.Presentation.Design.dll" />
+    <Content Include="Lib\Microsoft.Surface.Presentation.dll" />
+    <Content Include="Lib\Microsoft.Surface.Presentation.Generic.dll" />
+    <Content Include="Lib\SStuff.FlowControls.dll" />
+    <Content Include="Lib\SStuff.LayoutAlgorithms.dll" />
+    <Content Include="Lib\SStuff.WpfEffects.dll" />
+    <Content Include="Lib\System.Windows.Interactivity.dll" />
+    <Resource Include="Resources\Images\TwitterLogin.png" />
+    <Resource Include="Resources\Images\TwitterLogout.png" />
+    <Resource Include="Resources\Images\YahooLogin.png" />
+    <Resource Include="Resources\Images\YahooLogout.png" />
+    <Resource Include="Resources\Images\PauseBlack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\PlayBlack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\SplashScreen_Portrait.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <EmbeddedResource Include="Resources\Images\Photo Gallery.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\Video Gallery.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\DefaultImageForRelatedNews.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Resource Include="Resources\Images\SplashScreen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\TwitterLogOn.png" />
+    <Resource Include="Resources\Images\YahooLogOn.png" />
+    <Resource Include="Resources\Images\photo_play_Black.png" />
+    <Resource Include="Resources\Images\photo_stopbtn_Black.png" />
+    <Resource Include="Resources\Images\photo_icon.png" />
+    <Resource Include="Resources\Images\video_icon.png" />
+    <Resource Include="Resources\Images\TextSearchIcon.png" />
+    <Resource Include="Resources\Images\Busy_Image.PNG" />
+    <Resource Include="Resources\Images\gridViewButton.png" />
+    <Resource Include="Resources\Images\FacebookLogOn.png" />
+    <Resource Include="Resources\Images\GoogleLogOn.png" />
+    <EmbeddedResource Include="Resources\Images\NDTVDefaultImage.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Resource Include="Resources\Images\LinkedInLogOn.png" />
+    <Resource Include="Resources\Images\back_button.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\back-button-grey.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\back-button-white.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\FacebookLogin.png" />
+    <Resource Include="Resources\Images\FacebookLogout.png" />
+    <Resource Include="Resources\Images\GoogleLogin.png" />
+    <Resource Include="Resources\Images\GoogleLogout.png" />
+    <Content Include="Resources\Images\NDTVDefaultImage_Old.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\Images\refresh.png" />
+    <Resource Include="Resources\Images\Play_Button_Image.png" />
+    <Resource Include="Resources\Images\Play_Button_Video.png" />
+    <Resource Include="Resources\Images\StockIndexDown.png" />
+    <Resource Include="Resources\Images\StockIndexUp.png" />
+    <Resource Include="Resources\Images\BG.png" />
+    <Resource Include="Resources\Images\Ad.JPG" />
+    <EmbeddedResource Include="Resources\Images\Business.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\Cities.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\Cricket.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\Entertainment.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Resource Include="Resources\Images\icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Error.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <EmbeddedResource Include="Resources\Images\India.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\Recent.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\Sports.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\Technology.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\Top Stories.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\Trending.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\World.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\10.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1105.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1106.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1107.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1108.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1109.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1110.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1111.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1112.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1137.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1140.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1187.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1195.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1196.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1197.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\12.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1243.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\1244.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\13.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\14.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\15.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\16.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\2.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\3.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\4.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\45.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\5.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\6.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\7.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\8.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\9.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

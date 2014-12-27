@@ -1,0 +1,609 @@
+﻿<base:SlateWindow
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:base="clr-namespace:NDTV.SlateApp"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" 
+    x:Class="NDTV.SlateApp.View.Article"
+    xmlns:view="clr-namespace:NDTV.SlateApp.View"
+    xmlns:converter="clr-namespace:NDTV.SlateApp.Converter"
+    xmlns:touch="http://schemas.microsoft.com/surface/2008"
+    Title="Article"  WindowStyle="none" 
+    WindowStartupLocation="CenterOwner" 
+    ResizeMode="NoResize"
+    ShowInTaskbar="False" >
+    <base:SlateWindow.Resources>
+        <converter:ImageConverter x:Key="imageConverter"/>
+        <converter:ListTrimmingConverter x:Key="listTrimmer"/>
+        <ControlTemplate x:Key="WindowTemplateKeyControlTemplate" TargetType="{x:Type Window}">
+            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                <Grid>
+                    <AdornerDecorator>
+                        <ContentPresenter/>
+                    </AdornerDecorator>
+                    <ResizeGrip x:Name="WindowResizeGrip" HorizontalAlignment="Right" IsTabStop="false" Visibility="Collapsed" VerticalAlignment="Bottom"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="ResizeMode" Value="CanResizeWithGrip"/>
+                        <Condition Property="WindowState" Value="Normal"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Visibility" TargetName="WindowResizeGrip" Value="Visible"/>
+                </MultiTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Style x:Key="SlateWindowStyle" TargetType="{x:Type Window}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+                        <!--BorderThickness="{TemplateBinding BorderThickness}"-->
+                        <Border BorderThickness="{TemplateBinding BorderThickness}">                           
+                                <AdornerDecorator VerticalAlignment="Stretch" Height="Auto">
+                                    <ContentPresenter/>
+                                </AdornerDecorator>                                                            
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="ResizeMode" Value="CanResizeWithGrip">
+                    <Setter Property="Template" Value="{StaticResource WindowTemplateKeyControlTemplate}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="TabItemFocusStyle">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="3,3,3,1" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="TabControlNormalBorderBrush" Color="#8C8E94"/>
+        <LinearGradientBrush x:Key="ButtonNormalBackground" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#dad9de" Offset="0"/>
+            <GradientStop Color="#EBEBEB" Offset="0.5"/>
+            <GradientStop Color="#DDDDDD" Offset="0.5"/>
+            <GradientStop Color="#dad9de" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="AlternateNormalButtonBackgroundColor" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#454545" Offset="0"/>
+            <GradientStop Color="#454545" Offset="0.5"/>
+            <GradientStop Color="#454545" Offset="0.5"/>
+            <GradientStop Color="#454545" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="SelectedTabItemBackgroundColor" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#e4e3e8" Offset="0.15"/>
+            <GradientStop Color="#eeeef0" Offset=".5"/>
+            <GradientStop Color="#eeeef0" Offset=".5"/>
+            <GradientStop Color="#e4e3e8" Offset="1"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="TabItemSelectedBackgroundBrush" Color="#F9F9F9"/>
+        <SolidColorBrush x:Key="TabItemHotBorderBrush" Color="#3C7FB1"/>
+        <SolidColorBrush x:Key="TabItemDisabledBackgroundBrush" Color="#F4F4F4"/>
+        <SolidColorBrush x:Key="TabItemDisabledBorderBrush" Color="#FFC9C7BA"/>
+        <Style x:Key="UniformTabItemStyle" TargetType="{x:Type TabItem}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource TabItemFocusStyle}"/>
+            <Setter Property="Foreground" Value="#2d2c2c"/>
+            <Setter Property="Padding" Value="6,1,6,1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TabControlNormalBorderBrush}"/>
+            <Setter Property="Background" Value="{StaticResource ButtonNormalBackground}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Grid SnapsToDevicePixels="true">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Unselected"/>
+                                    <VisualState x:Name="Selected"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <!--Background="{TemplateBinding Background}"-->
+                            <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1,1,1,0" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter x:Name="Content" ContentSource="Header" HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource SelectedTabItemBackgroundColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Foreground" Value="#fd4021"/>
+                                <Setter Property="Panel.ZIndex" Value="1"/>
+
+                                <!--Value="{StaticResource TabItemSelectedBackgroundBrush}"-->
+                                <Setter Property="Background" TargetName="Bd" Value="#000000"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="false"/>
+                                    <Condition Property="IsMouseOver" Value="true"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource TabItemHotBorderBrush}"/>
+                            </MultiTrigger>
+                            <Trigger Property="TabStripPlacement" Value="Bottom">
+                                <Setter Property="BorderThickness" TargetName="Bd" Value="1,0,1,1"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Left">
+                                <Setter Property="BorderThickness" TargetName="Bd" Value="1,1,0,1"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Right">
+                                <Setter Property="BorderThickness" TargetName="Bd" Value="0,1,1,1"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="TabStripPlacement" Value="Top"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" Value="-2,-2,-2,-1"/>
+                                <Setter Property="Margin" TargetName="Content" Value="0,0,0,1"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="TabStripPlacement" Value="Bottom"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" Value="-2,-1,-2,-2"/>
+                                <Setter Property="Margin" TargetName="Content" Value="0,1,0,0"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="TabStripPlacement" Value="Left"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" Value="-2,-2,-1,-2"/>
+                                <Setter Property="Margin" TargetName="Content" Value="0,0,1,0"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="TabStripPlacement" Value="Right"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" Value="-1,-2,-2,-2"/>
+                                <Setter Property="Margin" TargetName="Content" Value="1,0,0,0"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource TabItemDisabledBackgroundBrush}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource TabItemDisabledBorderBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CloseButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Image Source="../Resources/Images/close.png"/>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Visibility="Collapsed"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="AlternateTabItemStyle" TargetType="{x:Type TabItem}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource TabItemFocusStyle}"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="6,1,6,1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TabControlNormalBorderBrush}"/>
+            <Setter Property="Background" Value="{StaticResource AlternateNormalButtonBackgroundColor}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Grid SnapsToDevicePixels="true">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Unselected"/>
+                                    <VisualState x:Name="Selected"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <!--Background="{TemplateBinding Background}"-->
+                            <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1,1,1,0" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter x:Name="Content" ContentSource="Header" HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource SelectedTabItemBackgroundColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Foreground" Value="#fd4021"/>
+                                <Setter Property="Panel.ZIndex" Value="1"/>
+
+                                <!--Value="{StaticResource TabItemSelectedBackgroundBrush}"-->
+                                <Setter Property="Background" TargetName="Bd" Value="#000000"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="false"/>
+                                    <Condition Property="IsMouseOver" Value="true"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource TabItemHotBorderBrush}"/>
+                            </MultiTrigger>
+                            <Trigger Property="TabStripPlacement" Value="Bottom">
+                                <Setter Property="BorderThickness" TargetName="Bd" Value="1,0,1,1"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Left">
+                                <Setter Property="BorderThickness" TargetName="Bd" Value="1,1,0,1"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Right">
+                                <Setter Property="BorderThickness" TargetName="Bd" Value="0,1,1,1"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="TabStripPlacement" Value="Top"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" Value="-2,-2,-2,-1"/>
+                                <Setter Property="Margin" TargetName="Content" Value="0,0,0,1"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="TabStripPlacement" Value="Bottom"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" Value="-2,-1,-2,-2"/>
+                                <Setter Property="Margin" TargetName="Content" Value="0,1,0,0"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="TabStripPlacement" Value="Left"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" Value="-2,-2,-1,-2"/>
+                                <Setter Property="Margin" TargetName="Content" Value="0,0,1,0"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="TabStripPlacement" Value="Right"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" Value="-1,-2,-2,-2"/>
+                                <Setter Property="Margin" TargetName="Content" Value="1,0,0,0"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="Bd" Value="#454545"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource TabItemDisabledBorderBrush}"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="MailButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Resources/Images/mail_16x16.png" Width="16" Height="16"/>
+                            <ContentPresenter Margin="5,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontFamily" Value="{DynamicResource Segoe360Font}"/>
+        </Style>
+        <Style x:Key="TwitterButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Resources/Images/tweet_16x16.png" Width="16" Height="16"/>
+                            <ContentPresenter Margin="5,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontFamily" Value="{DynamicResource Segoe360Font}"/>
+        </Style>
+        <Style x:Key="FacebookButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Resources/Images/facebook_16x16.png" Width="16" Height="16"/>
+                            <ContentPresenter Margin="5,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontFamily" Value="{DynamicResource Segoe360Font}"/>
+        </Style>
+        <Style x:Key="LinkedInButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Resources/Images/linkedin_16x16.png" Width="16" Height="16"/>
+                            <ContentPresenter Margin="5,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontFamily" Value="{DynamicResource Segoe360Font}"/>
+        </Style>
+        <Style x:Key="CommentsButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <StackPanel Orientation="Horizontal">
+
+                            <ContentPresenter Margin="5,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                            <TextBlock Text="5" Foreground="#b13e3e" FontSize="9" Margin="2,-3,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontFamily" Value="{DynamicResource Segoe360Font}"/>
+        </Style>
+        <Style x:Key="GrayCloseButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Image Source="../Resources/Images/close_grey.png" />
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Visibility="Collapsed"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DataTemplate x:Key="ArticleItemTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2"/>
+                    <ColumnDefinition Width="125"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" MinWidth="10"/>
+                </Grid.ColumnDefinitions>
+                <Border Style="{DynamicResource ThumbnailBorderStyle}" Width="125" Height="100"  VerticalAlignment="Center" Grid.Row="1" Grid.Column="1">
+                    <Grid>
+                        <TextBlock Text="Loading.." Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"/>
+                        <Image  x:Name="Img" Source="{Binding ImageLinkStatic,Converter={StaticResource imageConverter},ConverterParameter=NDTVDefaultImage}"  HorizontalAlignment="Stretch"  Stretch="Fill" />
+                    </Grid>
+                </Border>
+                <StackPanel Margin="5,0,0,0" MaxHeight="100" Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" >
+                    <TextBlock Text="NDTV Correspondent, " Margin="0,0,7,7" Style="{DynamicResource GrayNewsTextStyle}" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding PublishedDate}" Margin="0,-2,7,3" Style="{DynamicResource RedNewsTextStyle}"  />
+                        <TextBlock Text="Delhi" Margin="0,-2,0,3" Style="{DynamicResource GrayNewsTextStyle}"  />
+                    </StackPanel>
+                    <TextBlock MaxHeight="60" Text="{Binding Title}" Style="{DynamicResource TextBoxClickable}" Margin="-0.361,0,12,10" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" FontFamily="{DynamicResource Segoe360Font}" FontSize="14"/>
+                </StackPanel>
+            </Grid>
+
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding LinkForIPad}" Value="True">
+                    <Setter Property="Visibility" Value="Visible" TargetName="Img"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PotraitArticleItemTemplate">
+            <Grid Background="Transparent">
+  
+                <StackPanel Margin="5">
+                    <Border Width="130" Height="100" HorizontalAlignment="Left"   BorderBrush="#FFcccccc" Padding="4" Background="White" >
+                        <Grid>
+                        <TextBlock Text="Loading.." Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"/>
+                        <Image x:Name="Img" Source="{Binding ImageLinkStatic,Converter={StaticResource imageConverter},ConverterParameter=NDTVDefaultImage}" HorizontalAlignment="Stretch"  Stretch="Fill" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" />
+                        </Grid>
+                    </Border>
+
+                    <TextBlock Text="NDTV Correspondent, " Margin="0,5" Style="{DynamicResource GrayNewsTextStyle}"  />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding PublishedDate}" Margin="0,0,7,0" Style="{DynamicResource RedNewsTextStyle}"  />
+                        <TextBlock Text="Delhi" Margin="0,0,0,0" Style="{DynamicResource GrayNewsTextStyle}"  />
+                    </StackPanel>
+                    <TextBlock MaxHeight="60" Text="{Binding Title}"  Margin="-0.361,0,12,0" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" FontFamily="{DynamicResource Segoe360Font}" FontSize="14"/>
+
+                </StackPanel>
+            </Grid>
+          
+        </DataTemplate>
+
+        <!-- A style added to give a feel of an hyperlink for a textblock on mouseover-->
+        <Style x:Key="TextBoxClickable" TargetType="TextBlock">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="FontFamily" Value="{DynamicResource Rockwell}" />
+            <Setter Property="FontSize" Value="14px" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#000000" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Foreground" Value="Black" />
+
+        </Style>
+
+    </base:SlateWindow.Resources>
+
+    <Grid Background="White" x:Name="LayoutRoot">
+        <Grid x:Name="LandscapeContainer" Background="White" ShowGridLines="False" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="510"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Background="White" ShowGridLines="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="320"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="375"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button Content="Button" HorizontalAlignment="Right" Height="13" Style="{DynamicResource GrayCloseButtonStyle}" Click="CloseArticle" Width="13" Margin="0,-5,10,0" Grid.Column="1" VerticalAlignment="Top" Grid.Row="1"/>
+                <StackPanel Grid.Row="1" Orientation="Vertical" Grid.RowSpan="2" DataContext="TopStoryActiveItem">
+                    <WebBrowser x:Name="browserControl" Height="500" 
+                            Visibility="Collapsed" LoadCompleted="BrowserControlLoadCompleted" />
+                    <!--Width="655" -->
+                </StackPanel>
+                <Grid x:Name="preloaderGrid" Visibility="Visible" Grid.Row="1" Grid.RowSpan="2" Margin="20,20,20,20">
+                    <Rectangle Stroke="Black" Opacity="0.8">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                <GradientStop Color="#FF161616" Offset="1"/>
+                                <GradientStop Color="#FF011629"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+
+                    <Rectangle Stroke="Black" Opacity="0.5" Grid.RowSpan="3" d:IsHidden="True" >
+                        <Rectangle.Fill>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#FF161616" Offset="1"/>
+                                <GradientStop Color="#FF011629"/>
+                            </RadialGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <view:PreLoader x:Name="preLoader" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
+
+                <Grid  Grid.Row="1" Grid.Column="1" Margin="3,0,0,0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="RELATED NEWS" FontFamily="{DynamicResource Segoe360Font}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource HighlightMaroonBrush}"
+                               Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
+                    <Border Background="#ebebeb" BorderThickness="1" BorderBrush="#cccccc" Grid.Row="1"  Margin="8,0,8,0" Padding="5">
+                        <touch:SurfaceListBox Style="{DynamicResource SurfaceListBoxStyle}" ItemContainerStyle="{DynamicResource SurfaceListBoxItemStyle}"  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                          x:Name="itemsControlArticles"  ItemTemplate="{DynamicResource ArticleItemTemplate}" Tag="Landscape" SelectionMode="Single"
+                                          ItemsSource="{Binding TopStoriesContainer1}" SelectedIndex="{Binding SelectedIndex,Mode=OneWay}" SelectionChanged="ArticleClick" />
+                    </Border>
+                </Grid>
+
+                <!-- Advertisement Section-->
+                <Grid Grid.Column="1" Grid.Row="2" x:Name="advertisementSection">
+                    <!-- <Image Source="../Resources/Images/speak.jpg" VerticalAlignment="Center" Width="300" Height="100" HorizontalAlignment="Left" Margin="0,7,7,7" />-->
+                    <view:AdBannerControl CurrentPage="CricketFullCommentary" x:Name="adBanner"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1">
+                <view:SocialMediaInteraction VerticalAlignment="Bottom"/>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="PotraitContainer" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="900"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="185"/>
+
+            </Grid.ColumnDefinitions>
+            <Button HorizontalAlignment="Right" Height="13" Style="{DynamicResource GrayCloseButtonStyle}" Click="CloseArticle" Width="13" Margin="10,15" Grid.Column="1" VerticalAlignment="Center" />
+            <Grid Grid.Row="1" Margin="0,0,3,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="120"/>
+                </Grid.RowDefinitions>
+                <WebBrowser x:Name="browserControlPotriat" Visibility="Collapsed"
+                           LoadCompleted="BrowserControlLoadCompleted" Height="780"/>
+                <view:PreLoader x:Name="preLoaderPotriat" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Grid  Grid.Row="1" x:Name="advertisementSectionPotriat">
+                    <view:AdBannerControl CurrentPage="CricketFullCommentary" x:Name="adBannerPotriat"/>
+                </Grid>
+            </Grid>
+            <Grid  Grid.Row="1" Grid.Column="1" Margin="3,0,5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="RELATED NEWS" FontFamily="{DynamicResource Segoe360Font}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource HighlightMaroonBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
+                <Border Background="#ebebeb" BorderThickness="1" BorderBrush="#FFcccccc" Grid.Row="1" Padding="10" Margin="0,10,0,20">
+                    <touch:SurfaceListBox Style="{DynamicResource SurfaceListBoxStyle}" ItemContainerStyle="{DynamicResource SurfaceListBoxItemStyle}"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="itemsControlArticlesPotriat"  
+                                          ItemTemplate="{DynamicResource PotraitArticleItemTemplate}" Tag="Potriat" SelectionMode="Single"
+                                          ItemsSource="{Binding TopStoriesContainer1}" SelectedIndex="{Binding SelectedIndex,Mode=OneWay}" SelectionChanged="ArticleClick" />
+                    
+                </Border>
+            </Grid>
+            <Grid Grid.Row="2" Grid.ColumnSpan="2">
+                <view:SocialMediaInteraction/>
+            </Grid>
+        </Grid>
+       
+            <Rectangle x:Name="ModalPopup" Style="{DynamicResource ModalBG}" />       
+    </Grid>
+</base:SlateWindow>
+

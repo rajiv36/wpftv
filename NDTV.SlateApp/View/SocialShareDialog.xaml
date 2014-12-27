@@ -1,0 +1,39 @@
+﻿<Window x:Class="NDTV.SlateApp.View.SocialShareDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:resources="clr-namespace:NDTV.SlateApp.Properties"
+        xmlns:Custom="http://schemas.microsoft.com/surface/2008"
+        xmlns:controls="clr-namespace:NDTV.SlateApp.Controls"
+        Width="500" WindowStartupLocation="CenterOwner" WindowStyle="None" ResizeMode="NoResize" Height="200" ShowInTaskbar="False">
+    <Window.Resources>
+        <resources:Resources x:Key="ResourceStrings"/>
+    </Window.Resources>
+    <controls:PopupBaseControl HeaderText="{Binding ShareTitle}" Style="{DynamicResource PopupBaseSubContainerStyle}" CloseButtonClicked="CloseButtonClicked">
+       
+            <Grid x:Name="LayoutRoot">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="10" />
+                </Grid.RowDefinitions>
+                
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="2" VerticalAlignment="Center">
+                    <Custom:SurfaceButton Style="{DynamicResource LoginScreenSurfaceButton}" Content="{Binding Path=PostButtonContent, Source={StaticResource ResourceStrings} }" Width="75" Height="30"
+                    Command="{Binding PostCommand}" IsEnabled="{Binding IsPostEnabled}"/>
+                    <Custom:SurfaceButton Style="{DynamicResource LoginScreenSurfaceButton}" Content="{Binding Path=CancelButtonContent, Source={StaticResource ResourceStrings} }" Width="75" Height="30" 
+                    Command="{Binding CancelCommand}" Margin="10,0,0,0" />
+                </StackPanel>
+                <Grid Margin="20,10,20,5" Grid.Row="1" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Custom:SurfaceTextBox VerticalContentAlignment="Stretch" Margin="10,10,0,0" Grid.Column="1" Text="{Binding PostMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       Foreground="Black" HorizontalAlignment="Stretch" Width="Auto" Height="80" VerticalAlignment="Stretch" FontSize="16" TextWrapping="Wrap" SelectsAllOnFocus="False"
+                                       Style="{DynamicResource InputTextBoxStyle}" x:Name="PostMessageText"/>
+                <Image Grid.Column="0" VerticalAlignment="Top" Source="{Binding ImageLink}" Width="48" Height="48" Margin="0,10,10,0"/>
+                </Grid>
+            </Grid>      
+    </controls:PopupBaseControl>
+</Window>

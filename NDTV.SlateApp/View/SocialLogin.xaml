@@ -1,0 +1,14 @@
+﻿<Window x:Class="NDTV.SlateApp.View.SocialLogin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+        xmlns:resources="clr-namespace:NDTV.SlateApp.Properties"
+        xmlns:controls="clr-namespace:NDTV.SlateApp.Controls"
+        xmlns:view="clr-namespace:NDTV.SlateApp.View" 
+        Width="500" Height="480" WindowStartupLocation="CenterOwner" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False">
+    <controls:PopupBaseControl HeaderText="Login" Style="{DynamicResource PopupBaseSubContainerStyle}" CloseButtonClicked="CloseButtonClick" x:Name="SocialLoginWindow">
+        <Grid x:Name="LayoutRoot">            
+            <view:PreLoader x:Name="preLoader" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible"/>
+            <WebBrowser x:Name="webBrowserControl" Visibility="Collapsed"/>
+        </Grid>
+    </controls:PopupBaseControl>
+</Window>

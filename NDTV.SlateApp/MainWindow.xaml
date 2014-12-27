@@ -1,0 +1,1509 @@
+﻿    <base:SlateWindow
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:base="clr-namespace:NDTV.SlateApp"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" 
+	xmlns:local="clr-namespace:NDTV.SlateApp" 
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+	xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:localView="clr-namespace:NDTV.SlateApp.View"
+    xmlns:touch="http://schemas.microsoft.com/surface/2008"
+	mc:Ignorable="d"
+	x:Class="NDTV.SlateApp.MainWindow"
+        xmlns:converter="clr-namespace:NDTV.SlateApp.Converter"
+        xmlns:customized="clr-namespace:NDTV.SlateApp.Controls"
+	x:Name="Window"
+	Title="NDTV Slate"
+	WindowStyle="None"  
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="NoResize"
+    xmlns:view="clr-namespace:NDTV.SlateApp.View" 
+    ShowInTaskbar="True"
+    >
+    <base:SlateWindow.Resources>
+        <LinearGradientBrush x:Key="HorizontalOpacityMask" EndPoint="1.021,0.5" StartPoint="-0.007,0.5">
+            <GradientStop Color="Black" Offset="0.766"/>
+            <GradientStop Offset="1"/>
+            <!--<GradientStop Color="#00000000"/>-->
+            <GradientStop Color="Black" Offset="0.21"/>
+            <!--<GradientStop Color="#33000000" Offset="0.052"/>-->
+            <GradientStop Color="#33C1C1C1" Offset="0.945"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="VerticalOpacityMask" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="Black" Offset="0.712"/>
+            <GradientStop Offset="1"/>
+            <!--<GradientStop Color="#00000000" Offset="0.004"/>-->
+            <GradientStop Color="Black" Offset="0.343"/>
+            <!--<GradientStop Color="#33000000" Offset="0.066"/>-->
+            <GradientStop Color="#33C1C1C1" Offset="0.945"/>
+        </LinearGradientBrush>
+        <!-- Converters which i have made use of in my xaml file-->
+        <converter:ImageConverter x:Key="imageConverter"/>
+        <converter:FlashNewsConverter x:Key="flashNewsConverter"/>
+        <converter:ListTrimmingConverter x:Key="listTrimmer"/>
+        <converter:ListRangeTrimmingConverter x:Key="rangeTrimmer"/>
+        <converter:VisibilityConverter x:Key="visibilityConverter"/>
+        <converter:ImageAlbumDispalyConverter x:Key="imageAlbumTotalImages"/>
+        <converter:TimeConverter x:Key="videoTimeSpan"/>
+        <converter:ChartUrlConverter x:Key="ChartLinkConverter"/>
+        <DataTemplate x:Key="PotraitStockTemplate">
+            <Grid Height="30" Margin="0,30,0,0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="15"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image Width="15" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Source="{Binding Converter={StaticResource ChartLinkConverter},Path=Graph,ConverterParameter=StockTicker}" Grid.Column="0" Grid.RowSpan="2"/>
+                <TextBlock x:Name="StockSummaryTextBlock" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontFamily="{DynamicResource Segoe360Font}" FontSize="7.5" Margin="0" TextTrimming="CharacterEllipsis">
+                    <Run Text="{Binding Exchange}"></Run>
+                    <Run Text=":"></Run>
+                    <Run Text="{Binding CurrentStockValue,Mode=OneWay}"></Run>
+                </TextBlock>
+                <TextBlock x:Name="StockChangeTextBlock" Foreground="White" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="{DynamicResource Segoe360Font}" FontSize="7.5" Grid.Row="1" TextTrimming="CharacterEllipsis">
+                    <Run Text="{Binding PriceChange}"></Run>
+                    <Run Text="("></Run>
+                    <Run Text="{Binding PercentageChange}"></Run>
+                    <Run Text="%)"></Run>
+                </TextBlock>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=StockDirection}" Value="Up">
+
+                    <Setter TargetName="StockSummaryTextBlock" Property="Foreground" Value="Green"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=StockDirection}" Value="Down">
+                    <Setter TargetName="StockSummaryTextBlock" Property="Foreground" Value="Red"></Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StockTemplate">
+            <Grid Height="35" Margin="0,35,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image Width="20" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Source="{Binding Converter={StaticResource ChartLinkConverter},Path=Graph,ConverterParameter=StockTicker}" Grid.RowSpan="2"/>
+                <TextBlock x:Name="StockSummaryTextBlock" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontSize="10.667" Margin="0" >
+                    <Run Text="{Binding Exchange}"></Run>
+                    <Run Text=":"></Run>
+                    <Run Text="{Binding CurrentStockValue,Mode=OneWay}"></Run>
+                </TextBlock>
+                <TextBlock x:Name="StockChangeTextBlock" Foreground="White" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontSize="10.667" Margin="0,1,0,0" Grid.Row="1">
+                    <Run Text="{Binding PriceChange}"></Run>
+                    <Run Text="("></Run>
+                    <Run Text="{Binding PercentageChange}"></Run>
+                    <Run Text="%)"></Run>
+                </TextBlock>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=StockDirection}" Value="Up">
+
+                    <Setter TargetName="StockSummaryTextBlock" Property="Foreground" Value="Green"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=StockDirection}" Value="Down">
+                    <Setter TargetName="StockSummaryTextBlock" Property="Foreground" Value="Red"></Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <Style x:Key="ComboBoxFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="4,4,21,4" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SearchToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid UseLayoutRounding="True" SnapsToDevicePixels="True" ClipToBounds="True">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="mo">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="normal">
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Rectangle x:Name="normal" RadiusX="4" RadiusY="4" Stroke="{DynamicResource TopHeaderButtonBorderColor}" Fill="{DynamicResource TopHeaderButtonBackgroundColor}"/>
+                            <Rectangle x:Name="mo" RadiusX="4" RadiusY="4" Stroke="{DynamicResource MouseOverTopHeaderButtonBackgroundColor}" Opacity="0" Fill="{DynamicResource MouseOverTopHeaderButtonBackgroundColor}"/>
+                            <Rectangle x:Name="checkedRect" RadiusX="4" RadiusY="4" Stroke="{DynamicResource MouseOverTopHeaderButtonBackgroundColor}" Opacity="0" Fill="{DynamicResource MouseOverTopHeaderButtonBackgroundColor}"/>
+                            <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" >
+                                <ContentPresenter.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </ContentPresenter.RenderTransform>
+                            </ContentPresenter>
+                            <Path x:Name="checkedArrow" Data="M5.8710938,2.4619789 L10.880859,11.133854 L0.8671875,11.133854 z" Fill="White" HorizontalAlignment="Center" Height="5" RenderTransformOrigin="0.5,0.5" Stretch="Fill" VerticalAlignment="Bottom" Width="10"   Visibility="Collapsed">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Visibility" Value="Visible" TargetName="checkedRect"/>
+                                <Setter Property="Visibility" TargetName="checkedArrow" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SearchCombo" TargetType="{x:Type ComboBox}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+          
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+           
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+                        <Grid x:Name="MainGrid" SnapsToDevicePixels="true">
+              
+                            <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
+                                <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <Border BorderBrush="#FFA5A5A5" BorderThickness="1,0,1,1" Grid.Row="1" CornerRadius="0,0,10,10" Background="White" Padding="10">
+                                        <localView:SearchBoxUserControl/>
+                                    </Border>
+                                </Grid>
+                            </Popup>
+                            <ToggleButton  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{DynamicResource SearchToggleButtonStyle}" >
+                               
+                                    <Image Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Source="Resources/Images/searchicon.png"/>
+                             
+                            </ToggleButton>
+                            <ContentPresenter ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Content="{TemplateBinding SelectionBoxItem}" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" IsHitTestVisible="false" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="LinkButton" TargetType="Button">
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="{x:Type Button}">
+
+                        <TextBlock><InlineUIContainer>
+
+                        		<ContentPresenter />
+
+                        	</InlineUIContainer></TextBlock>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+            <Setter Property="Foreground" Value="Blue" />
+
+            <Setter Property="Cursor" Value="Hand" />
+
+            <Style.Triggers>
+
+                <Trigger Property="IsMouseOver" Value="true">
+
+                    <Setter Property="Foreground" Value="Red" />
+
+                </Trigger>
+
+            </Style.Triggers>
+
+        </Style>
+        <!-- My STories Template which acts as an item class that gets bound to the Items Control-->
+        <Style x:Key="ClickableStackpanel" TargetType="StackPanel">
+            <EventSetter Event="MouseDown" Handler="ArticleClick"/>
+        </Style>
+        <DataTemplate x:Key="TopStoriesItemTemplate">
+            <touch:SurfaceButton Background="Transparent" Click="OnArticlesSurfaceButtonClick" Padding="0" >
+                <Grid Margin="4,0,4,4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0"  Orientation="Horizontal">
+                        <TextBlock Text="Associated Press" VerticalAlignment="Top" d:LayoutOverrides="Width" Foreground="{DynamicResource GrayFontBrush}" FontFamily="{DynamicResource Segoe360Font}" FontSize="10.667"/>
+                        <TextBlock Text="{Binding PublishedDate}" VerticalAlignment="Top" Foreground="{DynamicResource HighlightMaroonBrush}" FontFamily="{DynamicResource Segoe360Font}" FontSize="10.667" d:LayoutOverrides="Width" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    <TextBlock Grid.Row="1"  MaxHeight="100" Text="{Binding Title}" Margin="0,5,0,10" FontSize="18.667" VerticalAlignment="Top" d:LayoutOverrides="Width" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource Rockwell}" FontWeight="Bold" Foreground="{DynamicResource BlackFontBrush}"/>
+
+                    <Border Grid.Row="2" Width="250" MaxHeight="200" Background="#FFf7f7f7" HorizontalAlignment="Left">
+                        <Grid VerticalAlignment="Center" HorizontalAlignment="Left">
+                            <TextBlock Text="Loading.." Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"/>
+                            <Image x:Name="Img"  MaxHeight="200" Stretch="Fill" Visibility="Visible" Source="{Binding ImageLinkStatic}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" />
+                            <!--<customized:PreloadImageControl x:Name="Img"  DefaultImageSource="Resources/Images/Busy_Image.PNG" ImageSource="{Binding ImageLinkStatic}" 
+                                  VerticalAlignment="Center" HorizontalAlignment="Center"  LoadedImageStretch="UniformToFill"  Visibility="Visible" />-->
+                        </Grid>
+                        <Border.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ImageLinkStatic}" Value="{x:Null}">
+                                        <Setter Property="Border.Visibility" Value="Hidden"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+                    <TextBlock Grid.Row="3" TextWrapping="Wrap" Text="{Binding Description}" MaxHeight="50" TextTrimming="CharacterEllipsis" Margin="0,5,0,0" VerticalAlignment="Stretch" d:LayoutOverrides="Width" Foreground="{DynamicResource BlackFontBrush}"  FontFamily="{DynamicResource Georgia}" FontSize="13.333"/>
+
+                    <!--<customized:RichTextBox MaxHeight="100" VerticalAlignment="Top" Text="{Binding Description}"  FontFamily="{DynamicResource Georgia}" d:LayoutOverrides="Width" Style="{DynamicResource RichTextBoxClickable}" /> A customized textbox which maintains format -->
+                    <Rectangle Grid.Row="4" Fill="{DynamicResource BlackFontBrush}" Height="2" VerticalAlignment="Bottom" Margin="0,20,0,15" StrokeThickness="0" SnapsToDevicePixels="True" UseLayoutRounding="True"/>
+                </Grid>
+            </touch:SurfaceButton>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PotraitTopStoriesItemTemplate">
+            <touch:SurfaceButton Background="Transparent" Click="OnArticlesSurfaceButtonClick" Padding="0" >
+                <StackPanel Width="Auto" HorizontalAlignment="Left" Margin="0,8,0,8" >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Associated Press" VerticalAlignment="Top" d:LayoutOverrides="Width" Foreground="{DynamicResource GrayFontBrush}" FontFamily="{DynamicResource Segoe360Font}" FontSize="10.667"/>
+                        <TextBlock Text="{Binding PublishedDate}" VerticalAlignment="Top" Foreground="{DynamicResource HighlightMaroonBrush}" FontFamily="{DynamicResource Segoe360Font}" FontSize="10.667" d:LayoutOverrides="Width" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    <TextBlock MaxHeight="100" Text="{Binding Title}" Margin="0,5,0,10" FontSize="18.667" VerticalAlignment="Top" d:LayoutOverrides="Width" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource Rockwell}" FontWeight="Bold" Foreground="{DynamicResource BlackFontBrush}"/>
+                    <Border VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="200" Background="#FFf7f7f7">
+                        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="Loading.." Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"/>
+                            <Image x:Name="Img" MaxHeight="200" Stretch="Uniform" Visibility="Visible" Source="{Binding ImageLinkStatic}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                            <!--<customized:PreloadImageControl x:Name="Img"  DefaultImageSource="Resources/Images/Busy_Image.PNG" ImageSource="{Binding ImageLinkStatic}" 
+                                  VerticalAlignment="Center" HorizontalAlignment="Center"  LoadedImageStretch="UniformToFill"  Visibility="Visible" />-->
+                        </Grid>
+                        <Border.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ImageLinkStatic}" Value="{x:Null}">
+                                        <Setter Property="Border.Visibility" Value="Hidden"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+                    <!--<Image Style="{DynamicResource ImageClickable}" x:Name="Img"   MaxHeight="200" Stretch="Uniform" Visibility="Visible" Source="{Binding ImageLinkStatic}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
+                    <TextBlock TextWrapping="Wrap" MaxHeight="50" TextTrimming="CharacterEllipsis" Margin="0,5,0,0" VerticalAlignment="Stretch" d:LayoutOverrides="Width" Foreground="{DynamicResource BlackFontBrush}" FontFamily="{DynamicResource Georgia}" FontSize="13.333">
+                    <Run TextOptions.TextFormattingMode="Ideal" Text="{Binding Description}"/>
+                    </TextBlock>
+                    <!--<customized:RichTextBox MaxHeight="100" VerticalAlignment="Top" Text="{Binding Description}"  FontFamily="{DynamicResource Georgia}" d:LayoutOverrides="Width" Style="{DynamicResource RichTextBoxClickable}" /> A customized textbox which maintains format -->
+                    <Rectangle Fill="{DynamicResource BlackFontBrush}" Height="2" VerticalAlignment="Bottom" Margin="0,15,0,0" StrokeThickness="0" SnapsToDevicePixels="True" UseLayoutRounding="True"/>
+                </StackPanel>
+            </touch:SurfaceButton>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PortriatTopStoriesItemTemplateSingleArticle">
+            <touch:SurfaceButton Background="Transparent" Click="OnArticlesSurfaceButtonClick" Padding="0" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Associated Press" VerticalAlignment="Top" d:LayoutOverrides="Width" Foreground="{DynamicResource GrayFontBrush}" FontFamily="{DynamicResource Segoe360Font}" FontSize="10.667"/>
+                        <TextBlock Text="{Binding PublishedDate}" VerticalAlignment="Top" Foreground="{DynamicResource HighlightMaroonBrush}" FontFamily="{DynamicResource Segoe360Font}" FontSize="10.667" d:LayoutOverrides="Width" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    <TextBlock  Grid.Row="1" MaxHeight="100" Text="{Binding Title}" Margin="0,5,0,10" FontSize="18.667" VerticalAlignment="Top" d:LayoutOverrides="Width" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource Rockwell}" FontWeight="Bold" Foreground="{DynamicResource BlackFontBrush}"/>
+                    <TextBlock Text="Loading.." Grid.Row="2" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"/>
+                    <Image Grid.Row="2" x:Name="Img"  Width="250" MaxHeight="200" Stretch="Fill" Visibility="Visible" HorizontalAlignment="Left" Source="{Binding ImageLinkStatic}"  VerticalAlignment="Stretch" />
+                    <TextBlock Grid.Row="3" TextWrapping="Wrap" MaxHeight="50" TextTrimming="CharacterEllipsis" Margin="0,5,0,0" VerticalAlignment="Stretch" d:LayoutOverrides="Width" Foreground="{DynamicResource BlackFontBrush}" FontFamily="{DynamicResource Georgia}" FontSize="13.333">
+                    <Run TextOptions.TextFormattingMode="Ideal" Text="{Binding Description}"/>
+                    </TextBlock>
+                    <!--<customized:RichTextBox MaxHeight="100" VerticalAlignment="Top" Text="{Binding Description}"  FontFamily="{DynamicResource Georgia}" d:LayoutOverrides="Width" Style="{DynamicResource RichTextBoxClickable}" /> A customized textbox which maintains format -->
+                    <Rectangle Grid.Row="4" Fill="{DynamicResource BlackFontBrush}" Height="2" VerticalAlignment="Bottom" Margin="0,15,0,0" StrokeThickness="0" SnapsToDevicePixels="True" UseLayoutRounding="True"/>
+                </Grid>
+            </touch:SurfaceButton>
+        </DataTemplate>
+
+        <!-- A style added to give a feel of an hyperlink for a textblock on mouseover-->
+        <Style x:Key="TextBoxClickable" TargetType="TextBlock">
+            <!--<Setter Property="Cursor" Value="Hand" />Removed because we do not want hand cursor there-->
+            <Setter Property="Foreground" Value="Black" />
+            <EventSetter Event="MouseDown" Handler="ArticleClick"/>
+            <!--
+            <Style.Triggers>
+                <MultiTrigger>
+                    <Setter Property="TextDecorations" Value="Underline" />
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True" />
+                        <Condition Property="IsEnabled" Value="True" />
+                    </MultiTrigger.Conditions>
+                </MultiTrigger>
+            </Style.Triggers>
+            Removed because we do not want the text to be underlined there
+            -->
+        </Style>
+        <Style x:Key="ImageClickable" TargetType="Image">
+            <!--<Setter Property="Cursor" Value="Hand" />Removed because we do not want hand cursor there-->
+            <EventSetter Event="MouseDown" Handler="ArticleClick"/>
+        </Style>
+        <Style x:Key="TextBoxClickableTop" TargetType="TextBlock">
+            <!--<Setter Property="Cursor" Value="Hand" />Removed because we do not want hand cursor there-->
+            <EventSetter Event="MouseDown" Handler="ArticleClick"/>
+        </Style>
+        <Style x:Key="RichTextBoxClickable" TargetType="RichTextBox">
+            <!--<Setter Property="Cursor" Value="Hand" />Removed because we do not want hand cursor there-->
+            <Setter Property="Foreground" Value="Black" />
+            <EventSetter Event="MouseDown" Handler="ArticleClick"/>
+        </Style>
+        <!-- Close button-->
+        <Style x:Key="GrayCloseButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Image Source="Resources/Images/close_grey.png" />
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Visibility="Collapsed"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate x:Key="ItemTemplate">
+            <StackPanel>
+                <Image Source="{Binding Property1}" HorizontalAlignment="Left" Height="64" Width="64"/>
+                <TextBlock Text="{Binding Property2}"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- The Videos item template-->
+        <DataTemplate x:Key="VidoeThumbnailItemTemplate">
+            <touch:SurfaceButton Click="OnRelatedVideosSurfaceButtonClick" Width="120" Margin="0,0,20,0" >
+                <Border Margin="0,-6,0,0"  >
+                    <Grid Margin="{DynamicResource ThumbnailMargin}" SnapsToDevicePixels="True" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="90"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border HorizontalAlignment="Left"  Style="{DynamicResource ThumbnailBorderStyle}" Height="80" Width="120">
+                            <Grid>
+                                <TextBlock Text="Loading.." Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"/>
+                                <Image Stretch="Fill" Source="{Binding ThumbnailLink}"/>
+                                <Border Background="#BB4E4848" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" >
+                                    <Grid Height="20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Height="16" Width="16" Stretch="Uniform" 
+                                                 Source="Resources/Images/video_icon.png" />
+                                        <TextBlock  Foreground="White" Grid.Column="1" Text="{Binding Path=Duration,Converter={StaticResource videoTimeSpan}}" Padding="3" HorizontalAlignment="Right" FontSize="9" VerticalAlignment="Center" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <TextBlock MaxHeight="30"  Text="{Binding Title}" Foreground="{DynamicResource BlackFontBrush}" VerticalAlignment="Top" 
+                                   Grid.Row="1" Margin="0,-2,0,0" Style="{DynamicResource ThumbnailTitleTextStyle}" />
+                    </Grid>
+                </Border>
+            </touch:SurfaceButton>
+        </DataTemplate>
+        <!-- The photos item template-->
+        <DataTemplate x:Key="AlbumThumbnailItemTemplate">
+            <touch:SurfaceButton Click="AlbumItemSurfaceButtonClick" Width="120" Margin="0,0,20,0" >
+                <Border Margin="0,-6,0,0"  >
+                    <Grid Margin="{DynamicResource ThumbnailMargin}"  SnapsToDevicePixels="True" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="90"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border HorizontalAlignment="Left" Style="{DynamicResource ThumbnailBorderStyle}" Height="80" Width="120">
+                            <Grid>
+                                <TextBlock Text="Loading.." Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"/>
+                                <Image Stretch="Fill" Source="{Binding ThumbnailLink}"/>
+                                <Border Background="#BB4E4848" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" >
+                                    <Grid Height="20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Height="16" Width="16" Stretch="Uniform" 
+                                                Source="Resources/Images/photo_icon.png"  />
+                                        <TextBlock  Foreground="White" Grid.Column="1" Text="{Binding Path=TotalImagesInAlbum,Converter={StaticResource imageAlbumTotalImages}}" Padding="3" HorizontalAlignment="Right" FontSize="9" VerticalAlignment="Center" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <TextBlock MaxHeight="30"  Text="{Binding AlbumTitle}" Foreground="{DynamicResource BlackFontBrush}" VerticalAlignment="Top" 
+                                   Grid.Row="1" Margin="0,-2,0,0" Style="{DynamicResource ThumbnailTitleTextStyle}" />
+
+                    </Grid>
+                </Border>
+            </touch:SurfaceButton>
+        </DataTemplate>
+
+        <!-- The Videos item template-->
+        <DataTemplate x:Key="VidoeThumbnailItemTemplatePotriat">
+            <touch:SurfaceButton Click="OnRelatedVideosSurfaceButtonClick" Width="110" Margin="0,0,5,0" >
+                <Border Margin="0,-6,0,0"  >
+                    <Grid Margin="{DynamicResource ThumbnailMargin}" SnapsToDevicePixels="True" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="90"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border HorizontalAlignment="Left"  Style="{DynamicResource ThumbnailBorderStyle}" Height="80" Width="110">
+                            <Grid>
+                                <TextBlock Text="Loading.." Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"/>
+                                <Image Stretch="Fill" Source="{Binding ThumbnailLink}"/>
+                                <Border Background="#BB4E4848" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" >
+                                    <Grid Height="20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Height="16" Width="16" Stretch="Uniform" 
+                                                 Source="Resources/Images/video_icon.png" />
+                                        <TextBlock  Foreground="White" Grid.Column="1" Text="{Binding Path=Duration,Converter={StaticResource videoTimeSpan}}" Padding="3" HorizontalAlignment="Right" FontSize="9" VerticalAlignment="Center" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <TextBlock MaxHeight="30" TextWrapping="Wrap" Text="{Binding Title}" Foreground="{DynamicResource BlackFontBrush}" FontFamily="{DynamicResource Rockwell}" FontSize="10" VerticalAlignment="Top" Grid.Row="1" Margin="0,-2,0,0" TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                </Border>
+            </touch:SurfaceButton>
+        </DataTemplate>
+        <!-- The photos item template-->
+        <DataTemplate x:Key="AlbumThumbnailItemTemplatePotriat">
+            <touch:SurfaceButton Click="AlbumItemSurfaceButtonClick" Width="110" Margin="0,0,5,0" >
+                <Border Margin="0,-6,0,0"  >
+                    <Grid Margin="{DynamicResource ThumbnailMargin}"  SnapsToDevicePixels="True" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="90"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border HorizontalAlignment="Left" Style="{DynamicResource ThumbnailBorderStyle}" Height="80" Width="110">
+                            <Grid>
+                                <TextBlock Text="Loading.." Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"/>
+                                <Image Stretch="Fill" Source="{Binding ThumbnailLink}"/>
+                                <Border Background="#BB4E4848" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" >
+                                    <Grid Height="20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Height="16" Width="16" Stretch="Uniform" 
+                                                Source="Resources/Images/photo_icon.png"  />
+                                        <TextBlock  Foreground="White" Grid.Column="1" Text="{Binding Path=TotalImagesInAlbum,Converter={StaticResource imageAlbumTotalImages}}" Padding="3" HorizontalAlignment="Right" FontSize="9" VerticalAlignment="Center" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <TextBlock MaxHeight="28" TextWrapping="Wrap" Text="{Binding AlbumTitle}" Foreground="{DynamicResource BlackFontBrush}" FontFamily="{DynamicResource Rockwell}" FontSize="10" VerticalAlignment="Top" Grid.Row="1" Margin="0,1,0,0" TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                </Border>
+            </touch:SurfaceButton>
+        </DataTemplate>
+
+        <!-- Items Panel referred to in the Items Gallery-->
+        <ItemsPanelTemplate x:Key="ItemsPanelTemplateImageGallery">
+            <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+
+        <LinearGradientBrush x:Key="MenuBackground" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#F6F6F6" Offset="0.25"/>
+            <GradientStop Color="#EAE8E8" Offset="0.25"/>
+            <GradientStop Color="#DCD9D9" Offset="0.8"/>
+            <GradientStop Color="White" Offset="1"/>
+        </LinearGradientBrush>
+        <Style x:Key="MenuStyle1" TargetType="{x:Type Menu}">
+            <Setter Property="Background" Value="{StaticResource MenuBackground}"/>
+            <Setter Property="FontFamily" Value="{DynamicResource {x:Static SystemFonts.MenuFontFamilyKey}}"/>
+            <Setter Property="FontSize" Value="{DynamicResource {x:Static SystemFonts.MenuFontSizeKey}}"/>
+            <Setter Property="FontStyle" Value="{DynamicResource {x:Static SystemFonts.MenuFontStyleKey}}"/>
+            <Setter Property="FontWeight" Value="{DynamicResource {x:Static SystemFonts.MenuFontWeightKey}}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Menu}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <Border.Background>
+                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                    <GradientStop Color="#FFCA0004"/>
+                                    <GradientStop Color="#FF470202" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <StackPanel Orientation="Horizontal" Width="100" Height="26" >
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" d:LayoutOverrides="Width"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <LinearGradientBrush x:Key="MenuItemSelectionFill" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#34C5EBFF" Offset="0"/>
+            <GradientStop Color="#3481D8FF" Offset="1"/>
+        </LinearGradientBrush>
+        <Geometry x:Key="Checkmark">M 0,5.1 L 1.7,5.2 L 3.4,7.1 L 8,0.4 L 9.2,0 L 3.3,10.8 Z</Geometry>
+        <ControlTemplate x:Key="{ComponentResourceKey ResourceId=SubmenuItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
+            <Grid SnapsToDevicePixels="true">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="ValidationStates">
+                        <VisualState x:Name="Valid"/>
+                        <VisualState x:Name="InvalidFocused"/>
+                        <VisualState x:Name="InvalidUnfocused"/>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <Rectangle x:Name="Bg" Fill="{TemplateBinding Background}" RadiusY="2" RadiusX="2" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1"/>
+                <Rectangle x:Name="InnerBorder" Margin="1" RadiusY="2" RadiusX="2"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="Auto" MinWidth="0"/>
+                        <ColumnDefinition Width="0.746*"/>
+                        <ColumnDefinition Width="37"/>
+                        <ColumnDefinition SharedSizeGroup="MenuItemIGTColumnGroup" Width="Auto"/>
+                        <ColumnDefinition Width="0"/>
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter Grid.Column="3" x:Name="Icon" ContentSource="Icon" Margin="1" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                    <Border x:Name="GlyphPanel" BorderBrush="#CDD3E6" BorderThickness="1" Background="#E6EFF4" CornerRadius="3" Height="22" Margin="1" Visibility="Hidden" Width="22">
+                        <Path x:Name="Glyph" Data="{StaticResource Checkmark}" Fill="#0C12A1" FlowDirection="LeftToRight" Height="11" Width="9"/>
+                    </Border>
+                    <ContentPresenter Grid.Column="2" ContentSource="Header" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    <TextBlock Grid.Column="4" Margin="{TemplateBinding Padding}" Text="{TemplateBinding InputGestureText}" />
+                </Grid>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Icon" Value="{x:Null}">
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="true">
+                    <Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="IsHighlighted" Value="true">
+                    <Setter Property="Fill" TargetName="Bg" Value="{StaticResource MenuItemSelectionFill}"/>
+                    <Setter Property="Stroke" TargetName="Bg" Value="#8071CBF1"/>
+                    <Setter Property="Stroke" TargetName="InnerBorder" Value="#40FFFFFF"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="#FF9A9A9A"/>
+                    <Setter Property="Background" TargetName="GlyphPanel" Value="#EEE9E9"/>
+                    <Setter Property="BorderBrush" TargetName="GlyphPanel" Value="#DBD6D6"/>
+                    <Setter Property="Fill" TargetName="Glyph" Value="#848589"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <LinearGradientBrush x:Key="MenuItemPressedFill" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#28717070" Offset="0"/>
+            <GradientStop Color="#50717070" Offset="0.75"/>
+            <GradientStop Color="#90717070" Offset="1"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="SubMenuBackgroundBrush" Color="#363636"/>
+        <Geometry x:Key="UpArrow">M 0,4 L 3.5,0 L 7,4 Z</Geometry>
+        <Style x:Key="MenuScrollButton" BasedOn="{x:Null}" TargetType="{x:Type RepeatButton}">
+            <Setter Property="ClickMode" Value="Hover"/>
+            <Setter Property="MinWidth" Value="0"/>
+            <Setter Property="MinHeight" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <DockPanel Background="Transparent" SnapsToDevicePixels="true">
+                            <Rectangle x:Name="R1" DockPanel.Dock="Right" Fill="Transparent" Width="1"/>
+                            <Rectangle x:Name="B1" DockPanel.Dock="Bottom" Fill="Transparent" Height="1"/>
+                            <Rectangle x:Name="L1" DockPanel.Dock="Left" Fill="Transparent" Width="1"/>
+                            <Rectangle x:Name="T1" DockPanel.Dock="Top" Fill="Transparent" Height="1"/>
+                            <ContentPresenter x:Name="ContentContainer" HorizontalAlignment="Center" Margin="2,2,2,2" VerticalAlignment="Center"/>
+                        </DockPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Fill" TargetName="R1" Value="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
+                                <Setter Property="Fill" TargetName="B1" Value="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
+                                <Setter Property="Fill" TargetName="L1" Value="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"/>
+                                <Setter Property="Fill" TargetName="T1" Value="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"/>
+                                <Setter Property="Margin" TargetName="ContentContainer" Value="3,3,1,1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <MenuScrollingVisibilityConverter x:Key="MenuScrollingVisibilityConverter"/>
+        <Geometry x:Key="DownArrow">M 0,0 L 3.5,4 L 7,0 Z</Geometry>
+        <Style x:Key="{ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}" BasedOn="{x:Null}" TargetType="{x:Type ScrollViewer}">
+            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Grid SnapsToDevicePixels="true">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Column="0" Grid.Row="1">
+                                <ScrollContentPresenter Margin="{TemplateBinding Padding}"/>
+                            </Border>
+                            <RepeatButton Grid.Column="0" CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" Command="{x:Static ScrollBar.LineUpCommand}" Focusable="false" Grid.Row="0" Style="{StaticResource MenuScrollButton}">
+                                <RepeatButton.Visibility>
+                                    <MultiBinding ConverterParameter="0" Converter="{StaticResource MenuScrollingVisibilityConverter}" FallbackValue="Visibility.Collapsed">
+                                        <Binding Path="ComputedVerticalScrollBarVisibility" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        <Binding Path="VerticalOffset" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        <Binding Path="ExtentHeight" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        <Binding Path="ViewportHeight" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                    </MultiBinding>
+                                </RepeatButton.Visibility>
+                                <Path Data="{StaticResource UpArrow}" Fill="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}"/>
+                            </RepeatButton>
+                            <RepeatButton Grid.Column="0" CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" Command="{x:Static ScrollBar.LineDownCommand}" Focusable="false" Grid.Row="2" Style="{StaticResource MenuScrollButton}">
+                                <RepeatButton.Visibility>
+                                    <MultiBinding ConverterParameter="100" Converter="{StaticResource MenuScrollingVisibilityConverter}" FallbackValue="Visibility.Collapsed">
+                                        <Binding Path="ComputedVerticalScrollBarVisibility" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        <Binding Path="VerticalOffset" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        <Binding Path="ExtentHeight" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        <Binding Path="ViewportHeight" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                    </MultiBinding>
+                                </RepeatButton.Visibility>
+                                <Path Data="{StaticResource DownArrow}" Fill="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}"/>
+                            </RepeatButton>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="{ComponentResourceKey ResourceId=SubmenuContent, TypeInTargetAssembly={x:Type FrameworkElement}}" TargetType="{x:Type ContentControl}">
+            <Border BorderBrush="#FF959595" BorderThickness="1" Background="{StaticResource SubMenuBackgroundBrush}">
+                <Grid>
+                    <Rectangle Fill="#F1F1F1" HorizontalAlignment="Left" Margin="2" RadiusY="2" RadiusX="2" Width="28"/>
+                    <Rectangle Fill="#E2E3E3" HorizontalAlignment="Left" Margin="30,2,0,2" Width="1"/>
+                    <Rectangle Fill="White" HorizontalAlignment="Left" Margin="31,2,0,2" Width="1"/>
+                    <ContentPresenter Grid.ColumnSpan="2" Margin="1,0"/>
+                </Grid>
+            </Border>
+        </ControlTemplate>
+        <ControlTemplate x:Key="{ComponentResourceKey ResourceId=TopLevelHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
+            <Grid SnapsToDevicePixels="true">
+                <Rectangle x:Name="OuterBorder" RadiusY="2" RadiusX="2"/>
+                <Rectangle x:Name="Bg" Fill="{TemplateBinding Background}" Margin="1" RadiusY="1" RadiusX="1" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1"/>
+                <Rectangle x:Name="InnerBorder" Margin="2"/>
+                <DockPanel>
+                    <ContentPresenter x:Name="Icon" ContentSource="Icon" Margin="4,0,6,0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                    <Path x:Name="GlyphPanel" Data="{StaticResource Checkmark}" Fill="{TemplateBinding Foreground}" FlowDirection="LeftToRight" Margin="7,0,0,0" Visibility="Collapsed" VerticalAlignment="Center"/>
+                    <!--<ContentPresenter ContentSource="Header" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>-->
+                    <TextBlock SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"  Text="{Binding ActiveSelectedCategoryItem.Title}" Foreground="White" Margin="5,0,0,0" 
+                              Width="80" TextWrapping="Wrap" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Image Source="Resources/Images/aerrow.png" HorizontalAlignment="Right" Width="9" Height="5" Margin="3,0,5,0"/>
+                </DockPanel>
+                <Popup x:Name="PART_Popup" AllowsTransparency="true" Focusable="false" HorizontalOffset="1" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}" Placement="Bottom" VerticalOffset="-1">
+                    <Microsoft_Windows_Themes:SystemDropShadowChrome x:Name="Shdw" Color="Transparent">
+                        <ContentControl x:Name="SubMenuBorder" IsTabStop="false" Template="{DynamicResource {ComponentResourceKey ResourceId=SubmenuContent, TypeInTargetAssembly={x:Type FrameworkElement}}}">
+                            <ScrollViewer x:Name="SubMenuScrollViewer" CanContentScroll="true" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
+                                <Grid RenderOptions.ClearTypeHint="Enabled">
+                                    <Canvas HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+                                        <Rectangle Fill="{StaticResource SubMenuBackgroundBrush}" Height="{Binding ActualHeight, ElementName=SubMenuBorder}" Width="{Binding ActualWidth, ElementName=SubMenuBorder}"/>
+                                    </Canvas>
+                                    <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Cycle" Grid.IsSharedSizeScope="true" Margin="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.TabNavigation="Cycle"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </ContentControl>
+                    </Microsoft_Windows_Themes:SystemDropShadowChrome>
+                </Popup>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsSuspendingPopupAnimation" Value="true">
+                    <Setter Property="PopupAnimation" TargetName="PART_Popup" Value="None"/>
+                </Trigger>
+                <Trigger Property="Icon" Value="{x:Null}">
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="true">
+                    <Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+                    <Setter Property="Margin" TargetName="Shdw" Value="0,0,5,5"/>
+                    <Setter Property="Color" TargetName="Shdw" Value="#71000000"/>
+                </Trigger>
+                <Trigger Property="IsHighlighted" Value="true">
+                    <Setter Property="Stroke" TargetName="Bg" Value="#90717070"/>
+                    <Setter Property="Stroke" TargetName="OuterBorder" Value="#50FFFFFF"/>
+                    <Setter Property="Stroke" TargetName="InnerBorder" Value="#50FFFFFF"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocused" Value="true">
+                    <Setter Property="Stroke" TargetName="Bg" Value="#E0717070"/>
+                    <Setter Property="Fill" TargetName="Bg" Value="{StaticResource MenuItemPressedFill}"/>
+                    <Setter Property="Stroke" TargetName="InnerBorder" Value="#50747272"/>
+                </Trigger>
+                <Trigger Property="IsSubmenuOpen" Value="true">
+                    <Setter Property="Stroke" TargetName="Bg" Value="#E0717070"/>
+                    <Setter Property="Fill" TargetName="Bg" Value="{StaticResource MenuItemPressedFill}"/>
+                    <Setter Property="Stroke" TargetName="InnerBorder" Value="#50747272"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="#FF9A9A9A"/>
+                    <Setter Property="Fill" TargetName="GlyphPanel" Value="#848589"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="{ComponentResourceKey ResourceId=TopLevelItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
+            <Grid SnapsToDevicePixels="true">
+                <Rectangle x:Name="OuterBorder" RadiusY="2" RadiusX="2"/>
+                <Rectangle x:Name="Bg" Fill="{TemplateBinding Background}" Margin="1" RadiusY="1" RadiusX="1" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1"/>
+                <Rectangle x:Name="InnerBorder" Margin="2"/>
+                <DockPanel>
+                    <ContentPresenter x:Name="Icon" ContentSource="Icon" Margin="4,0,6,0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                    <Path x:Name="GlyphPanel" Data="{StaticResource Checkmark}" Fill="{TemplateBinding Foreground}" FlowDirection="LeftToRight" Margin="7,0,0,0" Visibility="Collapsed" VerticalAlignment="Center"/>
+                    <ContentPresenter ContentSource="Header" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </DockPanel>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Icon" Value="{x:Null}">
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="true">
+                    <Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="IsHighlighted" Value="true">
+                    <Setter Property="Stroke" TargetName="Bg" Value="#90717070"/>
+                    <Setter Property="Stroke" TargetName="OuterBorder" Value="#50FFFFFF"/>
+                    <Setter Property="Stroke" TargetName="InnerBorder" Value="#50FFFFFF"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocused" Value="true">
+                    <Setter Property="Stroke" TargetName="Bg" Value="#E0717070"/>
+                    <Setter Property="Fill" TargetName="Bg" Value="{StaticResource MenuItemPressedFill}"/>
+                    <Setter Property="Stroke" TargetName="InnerBorder" Value="#50747272"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="#FF9A9A9A"/>
+                    <Setter Property="Fill" TargetName="GlyphPanel" Value="#848589"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Geometry x:Key="RightArrow">M 0,0 L 4,3.5 L 0,7 Z</Geometry>
+        <ControlTemplate x:Key="{ComponentResourceKey ResourceId=SubmenuHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
+            <Grid SnapsToDevicePixels="true">
+                <Rectangle x:Name="Bg" Fill="{TemplateBinding Background}" RadiusY="2" RadiusX="2" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1"/>
+                <Rectangle x:Name="InnerBorder" Margin="1" RadiusY="2" RadiusX="2" Stroke="Transparent" StrokeThickness="1"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition MinWidth="24" SharedSizeGroup="MenuItemIconColumnGroup" Width="Auto"/>
+                        <ColumnDefinition Width="4"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="37"/>
+                        <ColumnDefinition SharedSizeGroup="MenuItemIGTColumnGroup" Width="Auto"/>
+                        <ColumnDefinition Width="17"/>
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter x:Name="Icon" ContentSource="Icon" Margin="1" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                    <Border x:Name="GlyphPanel" BorderBrush="#CDD3E6" BorderThickness="1" Background="#E6EFF4" CornerRadius="3" Height="22" Margin="1" Visibility="Hidden" Width="22">
+                        <Path x:Name="Glyph" Data="{StaticResource Checkmark}" Fill="#0C12A1" FlowDirection="LeftToRight" Height="11" Width="9"/>
+                    </Border>
+                    <ContentPresenter Grid.Column="2" ContentSource="Header" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    <TextBlock Grid.Column="4" Margin="{TemplateBinding Padding}" Text="{TemplateBinding InputGestureText}" Visibility="Collapsed"/>
+                    <Path Grid.Column="5" Data="{StaticResource RightArrow}" Fill="{TemplateBinding Foreground}" Margin="4,0,0,0" VerticalAlignment="Center"/>
+                </Grid>
+                <Popup x:Name="PART_Popup" AllowsTransparency="true" Focusable="false" HorizontalOffset="-2" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}" Placement="Right" VerticalOffset="-3">
+                    <Microsoft_Windows_Themes:SystemDropShadowChrome x:Name="Shdw" Color="Transparent">
+                        <ContentControl x:Name="SubMenuBorder" IsTabStop="false" Template="{DynamicResource {ComponentResourceKey ResourceId=SubmenuContent, TypeInTargetAssembly={x:Type FrameworkElement}}}">
+                            <ScrollViewer x:Name="SubMenuScrollViewer" CanContentScroll="true" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
+                                <Grid RenderOptions.ClearTypeHint="Enabled">
+                                    <Canvas HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+                                        <Rectangle Fill="{StaticResource SubMenuBackgroundBrush}" Height="{Binding ActualHeight, ElementName=SubMenuBorder}" Width="{Binding ActualWidth, ElementName=SubMenuBorder}"/>
+                                    </Canvas>
+                                    <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Cycle" Grid.IsSharedSizeScope="true" Margin="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.TabNavigation="Cycle"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </ContentControl>
+                    </Microsoft_Windows_Themes:SystemDropShadowChrome>
+                </Popup>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsSuspendingPopupAnimation" Value="true">
+                    <Setter Property="PopupAnimation" TargetName="PART_Popup" Value="None"/>
+                </Trigger>
+                <Trigger Property="IsHighlighted" Value="true">
+                    <Setter Property="Stroke" TargetName="InnerBorder" Value="#D1DBF4FF"/>
+                </Trigger>
+                <Trigger Property="Icon" Value="{x:Null}">
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="true">
+                    <Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+                    <Setter Property="Margin" TargetName="Shdw" Value="0,0,5,5"/>
+                    <Setter Property="Color" TargetName="Shdw" Value="#71000000"/>
+                </Trigger>
+                <Trigger Property="IsHighlighted" Value="true">
+                    <Setter Property="Fill" TargetName="Bg" Value="{StaticResource MenuItemSelectionFill}"/>
+                    <Setter Property="Stroke" TargetName="Bg" Value="#8571CBF1"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="#FF9A9A9A"/>
+                    <Setter Property="Background" TargetName="GlyphPanel" Value="#EEE9E9"/>
+                    <Setter Property="BorderBrush" TargetName="GlyphPanel" Value="#DBD6D6"/>
+                    <Setter Property="Fill" TargetName="Glyph" Value="#848589"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Style x:Key="MenuItemStyle1" TargetType="{x:Type MenuItem}">
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=SubmenuItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}"/>
+            <Style.Triggers>
+                <Trigger Property="Role" Value="TopLevelHeader">
+                    <Setter Property="Padding" Value="7,2,8,3"/>
+                    <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}"/>
+                </Trigger>
+                <Trigger Property="Role" Value="TopLevelItem">
+                    <Setter Property="Padding" Value="7,2,8,3"/>
+                    <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}"/>
+                </Trigger>
+                <Trigger Property="Role" Value="SubmenuHeader">
+                    <Setter Property="Padding" Value="2,3,2,3"/>
+                    <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=SubmenuHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}"/>
+                </Trigger>
+                <Trigger Property="Role" Value="SubmenuItem">
+                    <Setter Property="Padding" Value="2,3,2,3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <ControlTemplate x:Key="ComponentResourceKey2" TargetType="{x:Type MenuItem}">
+            <Grid SnapsToDevicePixels="true">
+                <Rectangle x:Name="OuterBorder" RadiusY="2" RadiusX="2"/>
+                <Rectangle x:Name="Bg" Fill="{TemplateBinding Background}" Margin="1" RadiusY="1" RadiusX="1" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1"/>
+                <Rectangle x:Name="InnerBorder" Margin="2"/>
+                <DockPanel>
+                    <ContentPresenter x:Name="Icon" ContentSource="Icon" Margin="4,0,6,0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                    <Path x:Name="GlyphPanel" Data="{StaticResource Checkmark}" Fill="{TemplateBinding Foreground}" FlowDirection="LeftToRight" Margin="7,0,0,0" Visibility="Collapsed" VerticalAlignment="Center"/>
+                    <ContentPresenter ContentSource="Header" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </DockPanel>
+                <Popup x:Name="PART_Popup" AllowsTransparency="true" Focusable="false" HorizontalOffset="1" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}" Placement="Bottom" VerticalOffset="-1">
+                    <Microsoft_Windows_Themes:SystemDropShadowChrome x:Name="Shdw" Color="Transparent">
+                        <ContentControl x:Name="SubMenuBorder" IsTabStop="false" Template="{DynamicResource {ComponentResourceKey ResourceId=SubmenuContent, TypeInTargetAssembly={x:Type FrameworkElement}}}">
+                            <ScrollViewer x:Name="SubMenuScrollViewer" CanContentScroll="true" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
+                                <Grid RenderOptions.ClearTypeHint="Enabled">
+                                    <Canvas HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+                                        <Rectangle Fill="{StaticResource SubMenuBackgroundBrush}" Height="{Binding ActualHeight, ElementName=SubMenuBorder}" Width="{Binding ActualWidth, ElementName=SubMenuBorder}"/>
+                                    </Canvas>
+                                    <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Cycle" Grid.IsSharedSizeScope="true" Margin="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.TabNavigation="Cycle"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </ContentControl>
+                    </Microsoft_Windows_Themes:SystemDropShadowChrome>
+                </Popup>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsSuspendingPopupAnimation" Value="true">
+                    <Setter Property="PopupAnimation" TargetName="PART_Popup" Value="None"/>
+                </Trigger>
+                <Trigger Property="Icon" Value="{x:Null}">
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="true">
+                    <Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+                    <Setter Property="Margin" TargetName="Shdw" Value="0,0,5,5"/>
+                    <Setter Property="Color" TargetName="Shdw" Value="#71000000"/>
+                </Trigger>
+                <Trigger Property="IsHighlighted" Value="true">
+                    <Setter Property="Stroke" TargetName="Bg" Value="#90717070"/>
+                    <Setter Property="Stroke" TargetName="OuterBorder" Value="#50FFFFFF"/>
+                    <Setter Property="Stroke" TargetName="InnerBorder" Value="#50FFFFFF"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocused" Value="true">
+                    <Setter Property="Stroke" TargetName="Bg" Value="#E0717070"/>
+                    <Setter Property="Fill" TargetName="Bg" Value="{StaticResource MenuItemPressedFill}"/>
+                    <Setter Property="Stroke" TargetName="InnerBorder" Value="#50747272"/>
+                </Trigger>
+                <Trigger Property="IsSubmenuOpen" Value="true">
+                    <Setter Property="Stroke" TargetName="Bg" Value="#E0717070"/>
+                    <Setter Property="Fill" TargetName="Bg" Value="{StaticResource MenuItemPressedFill}"/>
+                    <Setter Property="Stroke" TargetName="InnerBorder" Value="#50747272"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="#FF9A9A9A"/>
+                    <Setter Property="Fill" TargetName="GlyphPanel" Value="#848589"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Style x:Key="MenuItemStyle2" TargetType="{x:Type MenuItem}">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=SubmenuItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}"/>
+            <Style.Triggers>
+                <Trigger Property="Role" Value="TopLevelHeader">
+                    <Setter Property="Padding" Value="7,2,8,3"/>
+                    <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}"/>
+                </Trigger>
+                <Trigger Property="Role" Value="TopLevelItem">
+                    <Setter Property="Padding" Value="7,2,8,3"/>
+                    <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}"/>
+                </Trigger>
+                <Trigger Property="Role" Value="SubmenuHeader">
+                    <Setter Property="Padding" Value="2,3,2,3"/>
+                    <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=SubmenuHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}"/>
+                </Trigger>
+                <Trigger Property="Role" Value="SubmenuItem">
+                    <Setter Property="Padding" Value="2,3,2,3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SeparatorStyle1" TargetType="{x:Type Separator}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Separator}">
+                        <Grid Margin="0,6,0,4" SnapsToDevicePixels="true">
+                            <Rectangle Fill="#262626" Height="1" Margin="0,0,1,1"/>
+                            <Rectangle Fill="#4b4b4b" Height="1" Margin="0,1,1,0"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="LiveButton" TargetType="{x:Type Button}">
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="{x:Type Button}">
+
+                        <TextBlock><InlineUIContainer>
+
+								<ContentPresenter />
+
+							</InlineUIContainer></TextBlock>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+            <Setter Property="Foreground" Value="Blue" />
+
+            <Setter Property="Cursor" Value="Hand" />
+
+            <Style.Triggers>
+
+                <Trigger Property="IsMouseOver" Value="true">
+
+                    <Setter Property="Foreground" Value="Red" />
+
+                </Trigger>
+
+            </Style.Triggers>
+
+        </Style>
+        <Style x:Key="TempBtnCommentary" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle Fill="{DynamicResource TopHeaderBackgroundColor}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TempBtnScore" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle Fill="{DynamicResource TopHeaderBackgroundColor}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD" />
+    </base:SlateWindow.Resources>
+
+    <Grid>
+        <Grid x:Name="LandscapeContainer" x:Uid="LandscapeContainer" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="top_header" Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle x:Name="top_header_bg" Fill="{DynamicResource TopHeaderBackgroundColor}" Grid.ColumnSpan="3"/>
+                <!-- Start of the first row with NDTV image, LiveTV if present and various buttons(stock,temperature,search,settings)-->
+                <Image x:Name="logo" HorizontalAlignment="Left" VerticalAlignment="Top" Source="Resources/Images/ndtv-logo.jpg" Stretch="None" Margin="20,0,0,0"/>
+                <StackPanel x:Name="live_tv" Grid.Column="1" Orientation="Horizontal" d:LayoutOverrides="Height">
+                    <Button x:Name="LiveTVButton" Height="35" Style="{DynamicResource TopHeaderButtonStyle}" VerticalAlignment="Center" Foreground="#FFCECECE" d:LayoutOverrides="Width">
+                        <Grid Height="20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Image Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="None" Source="Resources/Images/livetvicon.png" Grid.RowSpan="2"/>
+                            <Rectangle Fill="{DynamicResource HighlightRedBrush}" Grid.Column="1" Grid.RowSpan="2" Grid.Row="1"/>
+                            <TextBlock TextWrapping="Wrap" Text="LIVE TV" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" FontSize="10.667" Margin="5,0" Grid.Row="1" Foreground="{DynamicResource WhiteBrush}"/>
+                        </Grid>
+                    </Button>
+                    <!-- LiveTV and Score Summary -->
+
+                    <Button x:Name="CricketTicketButton" MaxWidth="175" Margin="5,0,0,0" Height="35" Style="{DynamicResource TopHeaderButtonStyle}" VerticalAlignment="Center" Foreground="#FFCECECE" d:LayoutOverrides="Width">
+                        <Grid HorizontalAlignment="Left"  VerticalAlignment="Center" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" d:LayoutOverrides="Height" VerticalAlignment="Center">
+                                <TextBlock TextWrapping="Wrap" Text="{Binding MatchStatus}" d:LayoutOverrides="Width" Foreground="{DynamicResource HighlightYellowBrush}" VerticalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontSize="10" HorizontalAlignment="Left" FontWeight="Bold" />
+                                <TextBlock TextWrapping="Wrap" Text="{Binding ScoreSummary}" Foreground="{DynamicResource WhiteBrush}" VerticalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontSize="9" HorizontalAlignment="Left" />
+                            </StackPanel>
+                            <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding ScoreDetails}" d:LayoutOverrides="Width, Height" Grid.Row="1" Foreground="{DynamicResource GrayFontBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontSize="9" Margin="0,2,0,0"/>
+                        </Grid>
+                    </Button>
+                </StackPanel>
+                <StackPanel x:Name="rhs_buttons" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" Grid.Column="2" Orientation="Horizontal">
+                    <Button MinWidth="130" Tag="{Binding ToAnimate}" x:Name="stock" Height="35" VerticalAlignment="Center" Style="{DynamicResource StockButtonStyle}" >
+                        <ItemsControl ItemTemplate="{DynamicResource StockTemplate}" ItemsSource="{Binding Path=StockTickerDetails}" DataContext="{Binding Path=.}">
+                        </ItemsControl>
+                    </Button>
+                    <Button x:Name="weather" Height="35" Style="{DynamicResource TopHeaderButtonStyle}" VerticalAlignment="Center" Foreground="#FFCECECE" Margin="10,0,0,0" Click="OnWeatherButtonClick">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Image Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform" Source="{Binding WeatherIcon}" Grid.RowSpan="2"/>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Temperature}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontFamily="{DynamicResource Segoe360Font}" Margin="0" Foreground="{DynamicResource WhiteBrush}"/>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding WeatherCity}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontFamily="{DynamicResource Segoe360Font}" FontSize="10.667" Margin="0,1,0,0" Foreground="{DynamicResource HighlightBlueBrush}" Grid.Row="1"/>
+                        </Grid>
+                    </Button>
+                    <localView:LandingPageSearchPopup x:Name="LandscapeSearchBox" Height="35" Width="40" Margin="5,0,0,0"/>
+                    <Button x:Name="refresh" Click="OnRefreshClicked" Command="{Binding LandingPageRefreshRelayCommander}" Height="35" Width="40" Style="{DynamicResource TopHeaderButtonStyle}" Foreground="#FFCECECE" VerticalAlignment="Center" Margin="10,0,0,0" >
+                        
+                            <Image Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform" Source="Resources/Images/refresh.png"/>
+                     
+                    </Button>
+                    <Button x:Name="settings" Height="35" Style="{DynamicResource TopHeaderButtonStyle}" VerticalAlignment="Center" Foreground="#FFCECECE" Margin="10,0,0,0" Click="OnSettingsClick">
+                       
+                            <Image Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform" Source="Resources/Images/settingsicon.png"/>
+                      
+                    </Button>
+                    <Button Content="Close" HorizontalAlignment="Right" Height="20" Style="{DynamicResource GrayCloseButtonStyle}" VerticalAlignment="Center" Click="CloseMainPage" Width="20" Margin="13,3,3,3" />
+                </StackPanel>
+                <!-- End of the first row-->
+            </Grid>
+            <Grid x:Name="latest_news_grid" Grid.Row="1" Margin="0,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="130"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle x:Name="latest_news_band" Fill="{DynamicResource LatestNewsBackgroundColor}" Height="40" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
+                <!--Start of 2nd row with Latest News and the Categories section -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,2,0,0">
+                    <Grid Visibility="{Binding Path=LatestNews,Converter={StaticResource flashNewsConverter},ConverterParameter=0}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="LATEST NEWS:" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" FontSize="13.333" Foreground="{DynamicResource HighlightMaroonBrush}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="{Binding Path=LatestNews,Converter={StaticResource flashNewsConverter},ConverterParameter=1}" FontFamily="{DynamicResource Segoe360Font}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0,0,0">
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
+                <!-- Categories section-->
+
+                <Menu HorizontalAlignment="Right"  Grid.Column="1" Margin="0,0,0,0" Height="26" Style="{DynamicResource MenuStyle1}" DockPanel.Dock="Top">
+                    <Menu.Items>
+                        <MenuItem  Width="100" Height="26" Header="_CATEGORIES" Style="{DynamicResource MenuItemStyle1}" VerticalAlignment="Center" 
+                              HorizontalAlignment="Center" Margin="0"  x:Name="menuItem" Command="{Binding Path=LandingPageMenuItemRelayCommander}"
+                              ItemsSource="{Binding Category.CategoryItemList}">
+                            <MenuItem.Resources>
+                                <Image x:Key="catImage" HorizontalAlignment="Right" Height="16" Width="16" Source="{Binding ThumbNailImageLink}" x:Shared="false"/>
+                                <Separator Style="{DynamicResource SeparatorStyle1}" x:Key="catSeparator"/>
+                                <Style TargetType="{x:Type MenuItem}">
+                                    <Setter Property="Header" Value="{Binding Path=Title}"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Icon" Value="{StaticResource catImage}"/>
+                                    <EventSetter Event="Click" Handler="MenuItemClicked"/>
+                                </Style>
+                            </MenuItem.Resources>
+                        </MenuItem>
+                    </Menu.Items>
+                </Menu>
+                <!-- End of the 2nd section-->
+            </Grid>
+            <Grid ShowGridLines="False" Grid.Row="2" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="300"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!-- First column with the news details-->
+                <TextBlock Text="{Binding ActiveSelectedCategoryItem.Title}" FontFamily="{DynamicResource Segoe360Font}" FontSize="20" FontWeight="Bold" Margin="20,10" 
+                               Foreground="{DynamicResource HighlightMaroonBrush}" Visibility="Visible"/>
+                <touch:SurfaceScrollViewer Tag="Vertical" Grid.Row="1" Padding="0" FocusVisualStyle="{x:Null}" Elasticity="0,.4" x:Name="topStoryScroll" Margin="0,0,20,5" HorizontalScrollBarVisibility="Disabled" 
+                          ScrollChanged="ScrollViewer_ScrollChanged">
+                    <Grid  >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ItemsControl Margin="20,0"  x:Name="topStoryColumn1" ItemTemplate="{DynamicResource TopStoriesItemTemplate}" ItemsSource="{Binding TopStoriesContainer1}" />
+                        <!-- Second column with the news details-->
+                        <ItemsControl Margin="20,0,0,0"  Grid.Column="1" x:Name="topStoryColumn2" ItemTemplate="{DynamicResource TopStoriesItemTemplate}" ItemsSource="{Binding TopStoriesContainer2}" />
+                    </Grid>
+                </touch:SurfaceScrollViewer>
+                <!-- Third column with the video details/Photo details-->
+                <Grid Grid.Column="2" Grid.RowSpan="2" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <!--<Image HorizontalAlignment="Left" Height="250" VerticalAlignment="Bottom" Width="300" Source="Resources/Images/advt.jpg" Margin="0,1,0,1"/>-->
+                    <Grid>
+                        <view:AdBannerControl CurrentPage="Home" Margin="0,1,0,1" x:Name="LandscapeAdBanner" />
+                        <Grid.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsLandingPageLoaded}" Value="False">
+                                        <Setter Property="Grid.Visibility" Value="Hidden"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsLandingPageLoaded}" Value="True">
+                                        <Setter Property="Grid.Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                    </Grid>
+                    <Grid Grid.Row="1" ClipToBounds="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Rectangle Fill="{DynamicResource GrayBrush}" Grid.RowSpan="4"/>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="VIDEOS" VerticalAlignment="Bottom" Margin="10,5,0,0" FontWeight="Bold" Foreground="{DynamicResource HighlightMaroonBrush}" FontSize="12" MouseLeftButtonDown="OnVideosClick"/>
+                        <!--MouseLeftButtonDown="OnRelatedVideosClick"-->
+
+                        <touch:SurfaceScrollViewer  FocusVisualStyle="{x:Null}" Width="280" x:Name="videosScroll" Grid.Row="1" Margin="10,2,0,0" HorizontalAlignment="Left" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" >
+                            <ItemsControl ItemTemplate="{DynamicResource VidoeThumbnailItemTemplate}" ItemsSource="{Binding Path=VideoItems,Converter={StaticResource listTrimmer},ConverterParameter=10}" ItemsPanel="{DynamicResource ItemsPanelTemplateImageGallery}" />
+                        </touch:SurfaceScrollViewer>
+
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" MouseLeftButtonDown="ImageCarouselViewClick" Text="PHOTOS" VerticalAlignment="Bottom" Margin="10,5,0,0" FontWeight="Bold" Foreground="{DynamicResource HighlightMaroonBrush}" FontSize="12" Grid.Row="2"/>
+                        <!--MouseLeftButtonDown="ImageAlbumClick"-->
+
+                        <touch:SurfaceScrollViewer Width="280" FocusVisualStyle="{x:Null}" x:Name="photosScroll" Grid.Row="3" Margin="10,2,0,0" HorizontalAlignment="Left" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" >
+                            <ItemsControl ItemTemplate="{DynamicResource AlbumThumbnailItemTemplate}" ItemsSource="{Binding Path=PhotoAlbums,Converter={StaticResource listTrimmer},ConverterParameter=10}" ItemsPanel="{DynamicResource ItemsPanelTemplateImageGallery}"/>
+                        </touch:SurfaceScrollViewer>
+
+                    </Grid>
+                    <!--</ScrollViewer>-->
+                </Grid>
+            </Grid>
+
+            <view:PreLoader IsBusy="{Binding Path=DataContext.IsLandingPageLoaded, ElementName=LandscapeContainer, Converter={StaticResource visibilityConverter}}" 
+                            x:Name="preLoader" Grid.Row="2"/>
+
+        </Grid>
+
+        <Grid x:Name="PotraitContainer"  x:Uid="PotraitContainer" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="Potraitheader" Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle x:Name="Potraittopheaderbg" Fill="{DynamicResource TopHeaderBackgroundColor}" Grid.ColumnSpan="3"/>
+                <!-- Start of the first row with NDTV image, LiveTV if present and various buttons(stock,temperature,search,settings)-->
+                <Image x:Name="Potraitlogo" HorizontalAlignment="Left" VerticalAlignment="Center" Source="Resources/Images/ndtv-logo.jpg" Stretch="Uniform" Height="25"  Margin="5,0,0,0"/>
+                <StackPanel x:Name="Potraitlive_tv" Grid.Column="1" Orientation="Horizontal" d:LayoutOverrides="Height" Margin="5,0,0,0">
+                    <Button x:Name="PortraitLiveTVButton" Height="30" Style="{DynamicResource TopHeaderButtonStyle}" VerticalAlignment="Center" Foreground="#FFCECECE" d:LayoutOverrides="Width">
+                        <Grid Height="20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Image Width="16" Height="16" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform" Source="Resources/Images/livetvicon.png" Grid.RowSpan="2"/>
+                            <Rectangle Fill="{DynamicResource HighlightRedBrush}" Grid.Column="1" Grid.RowSpan="2" Grid.Row="1"/>
+                            <TextBlock TextWrapping="Wrap" Text="LIVE TV" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" FontSize="9" Margin="5,0" Grid.Row="1" Foreground="{DynamicResource WhiteBrush}"/>
+                        </Grid>
+                    </Button>
+                    <!-- LiveTV and Score Summary -->
+                    <Button HorizontalAlignment="Left" MaxWidth="120" x:Name="PotraitCricketTicketButton" Height="30" Foreground="#FFCECECE" Style="{DynamicResource TopHeaderButtonStyle}" VerticalAlignment="Center" Margin="5,0,0,0" >
+                        <Grid HorizontalAlignment="Left"  VerticalAlignment="Center" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0"  VerticalAlignment="Center">
+                                <TextBlock  Text="{Binding MatchStatus}" d:LayoutOverrides="Width" Foreground="{DynamicResource HighlightYellowBrush}" VerticalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontSize="9" HorizontalAlignment="Left" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                <TextBlock  Text="{Binding ScoreSummary}" Foreground="{DynamicResource WhiteBrush}" VerticalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontSize="9" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+                            <TextBlock Visibility="Visible" Text="{Binding ScoreDetails}" d:LayoutOverrides="Width, Height" Grid.Row="1" Foreground="{DynamicResource GrayFontBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{DynamicResource Segoe360Font}" FontSize="9" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" />
+                        </Grid>
+                    </Button>
+                </StackPanel>
+                <StackPanel  HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2,0" Grid.Column="2" Orientation="Horizontal">
+                    <Button Width="85" Tag="{Binding ToAnimate}" x:Name="PotraitStock" Height="30" Style="{DynamicResource PortraitStockButtonStyle}"  >
+                        <ItemsControl ItemTemplate="{DynamicResource PotraitStockTemplate}" ItemsSource="{Binding Path=StockTickerDetails}" DataContext="{Binding Path=.}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Button>
+                    <Button x:Name="PotraitWeather" Height="30"  Style="{DynamicResource PotraitTopHeaderButtonStyle}" VerticalAlignment="Center" Foreground="#FFCECECE" Margin="5,0,0,0" Click="OnWeatherButtonClick" Width="55">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Image Width="12" Height="12" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform" Source="{Binding WeatherIcon}" Grid.RowSpan="2"/>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Temperature}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontFamily="{DynamicResource Segoe360Font}" FontSize="8" Margin="0" Foreground="{DynamicResource WhiteBrush}" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding WeatherCity}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontFamily="{DynamicResource Segoe360Font}" FontSize="7" Margin="0,1,0,0" Foreground="{DynamicResource HighlightBlueBrush}" Grid.Row="1" TextTrimming="CharacterEllipsis"/>
+                        </Grid>
+                    </Button>
+                    <localView:LandingPageSearchPopup  HorizontalAlignment="Left"  VerticalAlignment="Center" x:Name="PortraitSearchBox" Height="30" Width="30" Margin="5,0,0,0"/>
+                    <Button x:Name="PotriatRefresh" Click="OnRefreshClicked" Command="{Binding LandingPageRefreshRelayCommander}" Height="30" Style="{DynamicResource PotraitTopHeaderButtonStyle}" Foreground="#FFCECECE" VerticalAlignment="Center" Margin="5,0,0,0" >
+                        <Grid>
+                            <Image Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform" Source="Resources/Images/refresh.png"/>
+                        </Grid>
+                    </Button>
+                   
+                    <Button x:Name="PotraitSettings" Height="30" Width="25" Style="{DynamicResource PotraitTopHeaderButtonStyle}" VerticalAlignment="Center" Foreground="#FFCECECE" Margin="5,0,0,0" Click="OnSettingsClick">
+                        <Grid>
+                            <Image  Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Source="Resources/Images/settingsicon.png"/>
+                        </Grid>
+                    </Button>
+                    <Button Content="PotriatClose" HorizontalAlignment="Right" Height="20" Style="{DynamicResource GrayCloseButtonStyle}" VerticalAlignment="Center" Click="CloseMainPage"  Width="20" Margin="8,3,3,3" />
+                </StackPanel>
+                <!-- End of the first row-->
+            </Grid>
+            <Grid  Grid.Row="1" Margin="0,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="130"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Fill="{DynamicResource LatestNewsBackgroundColor}" Height="40" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
+                <!--Start of 2nd row with Latest News and the Categories section -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,2,0,0">
+                    <Grid Visibility="{Binding Path=LatestNews,Converter={StaticResource flashNewsConverter},ConverterParameter=0}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="LATEST NEWS:" FontFamily="{DynamicResource Segoe360Font}" FontWeight="Bold" FontSize="13.333" Foreground="{DynamicResource HighlightMaroonBrush}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="{Binding Path=LatestNews,Converter={StaticResource flashNewsConverter},ConverterParameter=1}" FontFamily="{DynamicResource Segoe360Font}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0,0,0">
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
+                <!-- Categories section-->
+
+                <Menu HorizontalAlignment="Right"  Grid.Column="1" Margin="0,0,10,0" Height="26" Style="{DynamicResource MenuStyle1}" DockPanel.Dock="Top">
+                    <Menu.Items>
+                        <MenuItem  Width="100" Height="26" Header="_CATEGORIES" Style="{DynamicResource MenuItemStyle1}" VerticalAlignment="Center" 
+                              HorizontalAlignment="Center" Margin="0" Command="{Binding Path=LandingPageMenuItemRelayCommander}"
+                              ItemsSource="{Binding Category.CategoryItemList}">
+                            <MenuItem.Resources>
+                                <Image x:Key="catImage" HorizontalAlignment="Right" Height="16" Width="16" Source="{Binding ThumbNailImageLink}" x:Shared="false"/>
+                                <Separator Style="{DynamicResource SeparatorStyle1}" x:Key="catSeparator"/>
+                                <Style TargetType="{x:Type MenuItem}">
+                                    <Setter Property="Header" Value="{Binding Path=Title}"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Icon" Value="{StaticResource catImage}"/>
+                                    <EventSetter Event="Click" Handler="MenuItemClicked"/>
+                                </Style>
+                            </MenuItem.Resources>
+                        </MenuItem>
+                    </Menu.Items>
+                </Menu>
+                <!-- End of the 2nd section-->
+            </Grid>
+            <Grid Grid.Row="2" x:Name="DataContainer" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="360"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Margin="10,0" x:Name="NewsItem">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{Binding ActiveSelectedCategoryItem.Title}" FontSize="20" FontWeight="Bold" Margin="0,0,5,0" 
+                               Foreground="{DynamicResource HighlightMaroonBrush}" Visibility="Visible"/>
+                    <touch:SurfaceScrollViewer Tag="Vertical" Grid.Row="1" Padding="0" FocusVisualStyle="{x:Null}" Grid.ColumnSpan="2" Elasticity="0,.4" x:Name="PotraittopStoryScroll" Margin="0,0,20,5" HorizontalScrollBarVisibility="Disabled" 
+                          ScrollChanged="ScrollViewer_ScrollChanged">
+                        <ItemsControl x:Name="PotraitStoryColumn" ItemTemplate="{DynamicResource PotraitTopStoriesItemTemplate}" ItemsSource="{Binding TopStoriesContainer4}" Margin="0,0,15,0">
+                        </ItemsControl>
+                    </touch:SurfaceScrollViewer>
+
+                </Grid>
+                <Grid x:Name="PotraitRightPane" Grid.Column="1" Margin="0,0,10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="350"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <touch:SurfaceScrollViewer x:Name="topStoryScrollPortriat" Padding="0" FocusVisualStyle="{x:Null}" Elasticity="0,.4">
+                        <ContentControl Content="{Binding TopStoriesContainer3}" Width="300" ContentTemplate="{DynamicResource PortriatTopStoriesItemTemplateSingleArticle}"/>
+                    </touch:SurfaceScrollViewer>
+                    <!--<Image Margin="0,10" Grid.Row="1"  HorizontalAlignment="Center" Height="250" VerticalAlignment="Center" Width="300" Source="Resources/Images/advt.jpg" />-->
+                    <Grid Grid.Row="1">
+                        <view:AdBannerControl Margin="0,10" CurrentPage="Home" x:Name="PortraitAdBanner"/>
+                        <Grid.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsLandingPageLoaded}" Value="False">
+                                        <Setter Property="Grid.Visibility" Value="Hidden"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsLandingPageLoaded}" Value="True">
+                                        <Setter Property="Grid.Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                    </Grid>
+                    <Rectangle Fill="{DynamicResource BlackFontBrush}" Height="2" Grid.Row="2" VerticalAlignment="Bottom"  StrokeThickness="0" SnapsToDevicePixels="True" UseLayoutRounding="True"/>
+                    <Grid Grid.Row="3" Margin="0,10,0,0" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="17"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Rectangle Fill="{DynamicResource GrayBrush}" Grid.RowSpan="4"/>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="VIDEOS" VerticalAlignment="Bottom" Margin="10,0,0,0" FontWeight="Bold" Foreground="{DynamicResource HighlightMaroonBrush}" FontSize="12" MouseLeftButtonDown="OnVideosClick"/>
+
+                        <touch:SurfaceScrollViewer  FocusVisualStyle="{x:Null}" x:Name="PotraitVideoScroll" Grid.Row="1" Margin="5,2,0,0" HorizontalAlignment="Left" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" >
+                            <ItemsControl ItemTemplate="{DynamicResource VidoeThumbnailItemTemplatePotriat}" ItemsSource="{Binding Path=VideoItems,Converter={StaticResource listTrimmer},ConverterParameter=10}" ItemsPanel="{DynamicResource ItemsPanelTemplateImageGallery}" MouseLeftButtonDown="OnRelatedVideosClick"/>
+                        </touch:SurfaceScrollViewer>
+
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" MouseLeftButtonDown="ImageCarouselViewClick" Text="PHOTOS" VerticalAlignment="Bottom" Margin="10,5,0,0" FontWeight="Bold" Foreground="{DynamicResource HighlightMaroonBrush}" FontSize="12" Grid.Row="2"/>
+
+                        <touch:SurfaceScrollViewer  FocusVisualStyle="{x:Null}" x:Name="PotraitImageScroll" Grid.Row="3" Margin="5,2,0,0" HorizontalAlignment="Left" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" >
+                            <ItemsControl  MouseLeftButtonDown="ImageAlbumClick" ItemTemplate="{DynamicResource AlbumThumbnailItemTemplatePotriat}" ItemsSource="{Binding Path=PhotoAlbums,Converter={StaticResource listTrimmer},ConverterParameter=10}" ItemsPanel="{DynamicResource ItemsPanelTemplateImageGallery}"/>
+                        </touch:SurfaceScrollViewer>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <view:PreLoader Grid.Row="2" x:Name="PotriatPreLoader" IsBusy="{Binding Path=DataContext.IsLandingPageLoaded, ElementName=PotraitContainer, Converter={StaticResource visibilityConverter}}"/>
+        </Grid>
+        <Rectangle Fill="#FF000000" Opacity=".85" Visibility="Collapsed" x:Name="ModalBG"/>
+    </Grid>
+</base:SlateWindow>

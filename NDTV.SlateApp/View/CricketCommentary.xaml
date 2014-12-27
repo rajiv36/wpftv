@@ -1,0 +1,71 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="NDTV.SlateApp.View.CricketCommentary"
+    xmlns:view="clr-namespace:NDTV.SlateApp.View"
+	x:Name="UserControl"
+	xmlns:touch="http://schemas.microsoft.com/surface/2008"
+	xmlns:local="clr-namespace:NDTV.SlateApp"
+	>
+
+
+    <Grid x:Name="LayoutRoot" Margin="{DynamicResource ScoreCardControlMargin}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <ContentControl x:Name="MatchHeader" Style="{DynamicResource CricketHeaderControl}" Content="{Binding Path=MatchTitle}" Tag="{Binding Path=MatchSubtitle}" />
+           
+        </StackPanel>
+        <touch:SurfaceButton  x:Name="CloseButton" Style="{DynamicResource BackButtonStyle}" Click="CloseCommentary" />
+        <Grid ShowGridLines="False" Grid.Column="0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="{DynamicResource RelatedVideoGridLength}" x:Name="TopGridColumnOne"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <Border HorizontalAlignment="Left" Background="#FFc00705" Padding="2,0">
+                    <TextBlock x:Name="MatchResult" Text="{Binding CurrentMatchEquation}" Grid.Row="1" VerticalAlignment="Center" FontSize="12" FontFamily="{DynamicResource Segoe360Font}" FontWeight="SemiBold" Foreground="White"/>
+                </Border>
+                <Grid Grid.Column="0" Grid.Row="0" Margin="0,5,0,0" VerticalAlignment="Bottom" >
+                    <TextBlock Style="{DynamicResource GrayWeatherTextStyle}" FontSize="11" Text="FULL COMMENTARY" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <Button x:Name="btnfullcommentary" Click="ShowFullScorecardFromFullCommentary" Content="FULL SCORECARD" Height="22" 
+                        Style="{DynamicResource ScorecardCommentaryButtonStyle}" Width="110" VerticalAlignment="Bottom" d:LayoutOverrides="Height" HorizontalAlignment="Right"/>
+                </Grid>
+            </StackPanel>
+            <touch:SurfaceScrollViewer x:Name="CommentaryListViewer" Tag="Vertical" Grid.Row="1"  FocusVisualStyle="{x:Null}" Elasticity="0,.4"  Margin="0,0,0,10" HorizontalScrollBarVisibility="Disabled" >
+                <ItemsControl ItemTemplate="{DynamicResource CommentaryDataTemplate}" ItemsSource="{Binding CommentaryList}"  />
+            </touch:SurfaceScrollViewer>
+            <Border x:Name="NoCommentaryContainer" BorderBrush="DarkGray" Grid.Row="1" BorderThickness="0,1,0,1" Margin="15" >
+                <ContentControl Style="{DynamicResource EmbossedTextStyle}" Content="Commentary Not Available" />
+            </Border>
+            <!--Pre loader control-->
+
+            <view:PreLoader x:Name="preLoader" VerticalAlignment="Center" HorizontalAlignment="Center" IsBusy="{Binding Path=DataContext.IsCommentaryLoadingInProgress, ElementName=CommentaryListViewer}" Grid.Row="1"/>
+
+            <!--Pre loader control ended-->
+            <Grid x:Name="RelatedVideosGrid" Grid.Column="1" Grid.RowSpan="2" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <view:RelatedVideosAndNewsControl x:Name="RelatedVideosAndNews" Margin="0,0,0,0" />
+                <view:AdBannerControl x:Name="AdvertisementControl" Grid.Row="1" CurrentPage="CricketFullCommentary"/>
+
+            </Grid>
+        </Grid>
+
+       
+    </Grid>
+</UserControl>

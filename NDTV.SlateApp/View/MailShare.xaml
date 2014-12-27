@@ -1,0 +1,89 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:base="clr-namespace:NDTV.SlateApp"
+    xmlns:resources="clr-namespace:NDTV.SlateApp.Properties"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:Custom="http://schemas.microsoft.com/surface/2008"
+    xmlns:converter="clr-namespace:NDTV.SlateApp.Converter"
+	x:Class="NDTV.SlateApp.View.MailShare"
+    xmlns:controls="clr-namespace:NDTV.SlateApp.Controls"
+	x:Name="Window"    
+	Title="MailShare"
+    WindowStyle="None" ResizeMode="NoResize"
+	Width="500" Height="480" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+
+    <Window.Resources>
+        <resources:Resources x:Key="ResourceStrings"/>
+        <converter:BoolToVisibilityConverter x:Key="VisibilityConverter"/>
+        <FontFamily x:Key="SegoeWPFont">Sogoe WP</FontFamily>
+        <Style x:Key="ShareLabelStyle" TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FF292929"/>
+            <Setter Property="FontFamily" Value="{DynamicResource Segoe360Font}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Width" Value="175"/>
+        </Style>
+        <Thickness x:Key="MailShareItemMargin">0,15,0,0</Thickness>
+        <Thickness x:Key="ShareTextBoxMargin">15,0,0,0</Thickness>
+        <Style TargetType="StackPanel" x:Key="ShareContentPanel">
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Margin" Value="{DynamicResource MailShareItemMargin}"/>
+        </Style>
+        <SolidColorBrush x:Key="ErrorMessageBrush" Color="#FFFF2F00"/>
+    </Window.Resources>
+    <controls:PopupBaseControl HeaderText="Mail Share" Style="{DynamicResource PopupBaseSubContainerStyle}" CloseButtonClicked="CloseButtonClicked">
+
+        <Grid x:Name="LayoutRoot">
+            <StackPanel>
+
+                <StackPanel Style="{DynamicResource ShareContentPanel}">
+                    <TextBlock  Text="{Binding Source={StaticResource ResourceStrings}, Path=SendersName}" Style="{DynamicResource ShareLabelStyle}" />
+                    <Custom:SurfaceTextBox Foreground="Black" Text="{Binding Path=SenderName}"  Margin="{DynamicResource ShareTextBoxMargin}" 
+                                        Style="{DynamicResource InputTextBoxStyle}" x:Name="SenderName" />
+                </StackPanel>
+
+                <StackPanel Style="{DynamicResource ShareContentPanel}">
+                    <TextBlock  Text="{Binding Source={StaticResource ResourceStrings}, Path=SendersEmail}" Style="{DynamicResource ShareLabelStyle}" VerticalAlignment="Top" Margin="0,5,0,0" />
+                    <StackPanel Margin="{DynamicResource ShareTextBoxMargin}" >
+                        <Custom:SurfaceTextBox x:Name="senderMail" Text="{Binding Path=SenderEmail}" Foreground="Black" SelectionBrush="#FFFFC7A6" Style="{DynamicResource InputTextBoxStyle}" BorderThickness="0" Margin="0"  />
+                        <TextBlock TextWrapping="Wrap" Text="{Binding Source={StaticResource ResourceStrings}, Path=EmailFormatErrorMessage}" FontSize="10.667" Foreground="{DynamicResource ErrorMessageBrush}" Margin="0,2,0,0"
+                               Visibility="{Binding Path=IsSenderMandatory, Converter={StaticResource VisibilityConverter}}"/>
+                    </StackPanel>
+                    <TextBlock  Text="*" Style="{DynamicResource ShareLabelStyle}" Width="Auto" Margin="2,0" Foreground="{DynamicResource ErrorMessageBrush}" FontSize="16" />
+                </StackPanel>
+
+                <StackPanel Style="{DynamicResource ShareContentPanel}">
+                    <TextBlock  Text="{Binding Source={StaticResource ResourceStrings}, Path=ReceiversName}" Style="{DynamicResource ShareLabelStyle}" />
+                    <Custom:SurfaceTextBox  Margin="{DynamicResource ShareTextBoxMargin}" Foreground="Black" 
+                                       Text="{Binding Path=ReceiverName}"  Style="{DynamicResource InputTextBoxStyle}" x:Name = "ReceiversName" />
+                </StackPanel>
+
+                <StackPanel Style="{DynamicResource ShareContentPanel}">
+                    <TextBlock  Text="{Binding Source={StaticResource ResourceStrings}, Path=ReceiversEmail}" Style="{DynamicResource ShareLabelStyle}" VerticalAlignment="Top" Margin="0,5,0,0" />
+                    <StackPanel Margin="{DynamicResource ShareTextBoxMargin}" >
+                        <Custom:SurfaceTextBox x:Name="receiverMail" Text="{Binding Path=ReceiverEmail}"  Style="{DynamicResource InputTextBoxStyle}"  Foreground="Black"/>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding Source={StaticResource ResourceStrings}, Path=EmailFormatErrorMessage}" FontSize="10.667" Foreground="{DynamicResource ErrorMessageBrush}" Margin="0,2,0,0"
+                               Visibility="{Binding Path=IsReceiverMandatory, Converter={StaticResource VisibilityConverter}}"/>
+                    </StackPanel>
+                    <TextBlock  Text="*" Style="{DynamicResource ShareLabelStyle}" Width="Auto" Margin="2,0" Foreground="{DynamicResource ErrorMessageBrush}" FontSize="16" />
+                </StackPanel>
+
+                <StackPanel Style="{DynamicResource ShareContentPanel}">
+                    <TextBlock  Text="{Binding Source={StaticResource ResourceStrings}, Path=MessageHeader}" Style="{DynamicResource ShareLabelStyle}" 
+                            VerticalAlignment="Top" Margin="0,2,0,0" />
+                    <Custom:SurfaceTextBox Text="{Binding Path=MailBody, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Margin="{DynamicResource ShareTextBoxMargin}" Style="{DynamicResource InputTextBoxStyle}" 
+                                       Height="75" VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" SelectsAllOnFocus="False" x:Name="MailBodyText"/>
+                </StackPanel>
+
+                <StackPanel Style="{DynamicResource ShareContentPanel}">
+                    <TextBlock Style="{DynamicResource ShareLabelStyle}" />
+                    <Custom:SurfaceButton Style="{DynamicResource SearchSurfaceButtonStyle}" Click="SendButtonClick" Content="Send" Width="75" Margin="15,0,0,0" Command="{Binding Path=SendMail}" IsEnabled="{Binding IsSendEnabled}"/>
+                    <Custom:SurfaceButton Style="{DynamicResource SearchSurfaceButtonStyle}" Content="Cancel" Width="75" Margin="10,0,0,0" Command="{Binding CancelCommand}"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+     </controls:PopupBaseControl>
+
+</Window>

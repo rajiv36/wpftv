@@ -1,0 +1,788 @@
+﻿<base:SlateWindow
+    xmlns:base="clr-namespace:NDTV.SlateApp"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Custom="http://schemas.microsoft.com/surface/2008" mc:Ignorable="d"
+	x:Class="NDTV.SlateApp.View.SettingsScreen"
+    xmlns:my="clr-namespace:NDTV.SlateApp.View"
+	x:Name="Window"
+	Title="SettingsScreen"
+	Width="640" Height="480" FontFamily="Segoe360">
+    <base:SlateWindow.Resources>
+		<Style x:Key="TabItemFocusVisual">
+			<Setter Property="Control.Template">
+				<Setter.Value>
+					<ControlTemplate>
+						<Rectangle Margin="3,3,3,1" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		
+		<SolidColorBrush x:Key="LighterOrangeBrush" Color="#FFFDB972"/>
+		<SolidColorBrush x:Key="SilverBrush" Color="#FFFBFBFD"/>
+		<System:Double x:Key="AboutLabelFontSize">12</System:Double>
+		<Style x:Key="SettingsTabItemStyle" TargetType="{x:Type TabItem}">
+			<Setter Property="FocusVisualStyle" Value="{StaticResource TabItemFocusVisual}"/>
+			<Setter Property="Foreground" Value="Black"/>
+			<Setter Property="Width" Value="150"/>
+			<Setter Property="Height" Value="30"/>
+			
+		
+			<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+			<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type TabItem}">
+		
+						<Grid HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" d:LayoutOverrides="Width, Height" Background="#00000000">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="20"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="20"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="2"/>
+							</Grid.RowDefinitions>
+							<Rectangle x:Name="rectangle" Grid.ColumnSpan="3" Fill="#FF444444" Visibility="Collapsed"/>
+							<TextBlock x:Name="shadow" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{TemplateBinding Header}" VerticalAlignment="Center" Foreground="#FF333333" FontSize="{DynamicResource AboutLabelFontSize}" Grid.Column="1" RenderTransformOrigin="0.5,0.5">
+								<TextBlock.RenderTransform>
+									<TransformGroup>
+										<ScaleTransform/>
+										<SkewTransform/>
+										<RotateTransform/>
+										<TranslateTransform X="1" Y="1"/>
+									</TransformGroup>
+								</TextBlock.RenderTransform>
+							</TextBlock>
+							<TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{TemplateBinding Header}" VerticalAlignment="Center" Foreground="{DynamicResource SilverBrush}" FontSize="{DynamicResource AboutLabelFontSize}" Grid.Column="1"/>
+							<ContentControl Content="ContentControl" VerticalAlignment="Top" d:LayoutOverrides="Width" Grid.Column="1" Grid.Row="1" Style="{DynamicResource HorizontalSeperator}"/>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="Selector.IsSelected" Value="False"/>
+							<Trigger Property="IsMouseOver" Value="true"/>
+							<Trigger Property="IsSelected" Value="true">
+								<Setter Property="Panel.ZIndex" Value="1"/>
+								<Setter Property="Visibility" TargetName="rectangle" Value="Visible"/>
+								<Setter Property="Foreground" TargetName="textBlock" Value="{DynamicResource LighterOrangeBrush}"/>
+							</Trigger>
+							
+							<Trigger Property="IsEnabled" Value="false">
+								<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style x:Key="HorizontalSeperator" TargetType="{x:Type ContentControl}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type ContentControl}">
+						<StackPanel Opacity="0.2">
+							<Rectangle Fill="Black" Height="1"/>
+							<Rectangle Fill="White" Height="1" Opacity="0.5"/>
+						</StackPanel>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style x:Key="SettingsTabStyle" TargetType="{x:Type TabControl}">
+			<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+			<Setter Property="Padding" Value="4,4,4,4"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			
+			<Setter Property="Background" Value="#F9F9F9"/>
+			<Setter Property="HorizontalContentAlignment" Value="Center"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type TabControl}">
+						<Grid ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition x:Name="ColumnDefinition0"/>
+								<ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+								<RowDefinition x:Name="RowDefinition1" Height="*"/>
+							</Grid.RowDefinitions>
+							<Border x:Name="PanelContainer" CornerRadius="4,0,0,4">
+								<Border.Background>
+									<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+										<GradientStop Color="#FF2B2B29" Offset="0"/>
+										<GradientStop Color="#FF4D4D4F" Offset="0.996"/>
+									</LinearGradientBrush>
+								</Border.Background>
+								<TabPanel x:Name="HeaderPanel" Grid.Column="0" IsItemsHost="true" Margin="2,15,2,0" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
+							</Border>
+							<Border x:Name="ContentPanel" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local" CornerRadius="0,4,4,0">
+								<Border.Background>
+									<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+										<GradientStop Color="#FF131313" Offset="0"/>
+										<GradientStop Color="#FF373737" Offset="1"/>
+									</LinearGradientBrush>
+								</Border.Background>
+								<ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" d:IsHidden="True"/>
+							</Border>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="TabStripPlacement" Value="Bottom">
+								<Setter Property="Grid.Row" TargetName="HeaderPanel" Value="1"/>
+								<Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+								<Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+								<Setter Property="Height" TargetName="RowDefinition1" Value="Auto"/>
+								<Setter Property="Margin" TargetName="HeaderPanel" Value="2,0,2,2"/>
+							</Trigger>
+							<Trigger Property="TabStripPlacement" Value="Left">
+								<Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
+								<Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+								<Setter Property="Grid.Column" TargetName="HeaderPanel" Value="0"/>
+								<Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
+								<Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto"/>
+								<Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
+								<Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+								<Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
+								<Setter Property="Margin" TargetName="HeaderPanel" Value="2,15,0,2"/>
+							</Trigger>
+							<Trigger Property="TabStripPlacement" Value="Right">
+								<Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
+								<Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+								<Setter Property="Grid.Column" TargetName="HeaderPanel" Value="1"/>
+								<Setter Property="Grid.Column" TargetName="ContentPanel" Value="0"/>
+								<Setter Property="Width" TargetName="ColumnDefinition0" Value="*"/>
+								<Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto"/>
+								<Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+								<Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
+								<Setter Property="Margin" TargetName="HeaderPanel" Value="0,2,2,2"/>
+							</Trigger>
+							<Trigger Property="IsEnabled" Value="false">
+								<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<SolidColorBrush x:Key="SettingsBorderBrush" Color="#FF989491"/>
+		<Thickness x:Key="SettingsItemMargin">15,30</Thickness>
+        <Style TargetType="{x:Type TextBlock}" x:Key="HelpTB">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="{DynamicResource SilverBrush}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+         <Style x:Key="SearchSurfaceButtonStyle" TargetType="{x:Type Custom:SurfaceButton}">
+        	<Setter Property="MinWidth" Value="75"/>
+        	<Setter Property="MinHeight" Value="22"/>
+        	<Setter Property="Margin" Value="0"/>
+        	<Setter Property="Padding" Value="0"/>
+        	<Setter Property="IsTabStop" Value="False" />
+        	<Setter Property="Focusable" Value="True" />
+        	<Setter Property="FontSize" Value="14"/>
+        	<Setter Property="Foreground" Value="#FFFFFFFF"/>
+			<!--<Setter Property="ContentTemplate" Value="{DynamicResource EmbossedTemplate}"/>-->
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="{x:Type Custom:SurfaceButton}">
+        				<ControlTemplate.Resources>
+        					<Storyboard x:Key="Press">
+        						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PressedBrush">
+        							<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+        						</ObjectAnimationUsingKeyFrames>
+        						<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="PressedBrush">
+        							<EasingColorKeyFrame KeyTime="0" Value="#FFFFDAAC"/>
+        							<EasingColorKeyFrame KeyTime="0:0:0.3" Value="#7FFFDAAC"/>
+        						</ColorAnimationUsingKeyFrames>
+        					</Storyboard>
+        					<Storyboard x:Key="Release">
+        						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PressedBrush">
+        							<DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Collapsed}"/>
+        						</ObjectAnimationUsingKeyFrames>
+        						<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="PressedBrush">
+        							<EasingColorKeyFrame KeyTime="0:0:0.3" Value="#00FFDAAC"/>
+        						</ColorAnimationUsingKeyFrames>
+        					</Storyboard>
+        				</ControlTemplate.Resources>
+        				<Grid x:Name="Grid" Background="Transparent" SnapsToDevicePixels="True">
+
+        					<Border BorderBrush="{x:Null}" BorderThickness="1" CornerRadius="4">
+        						<Border BorderBrush="#FF175D81" BorderThickness="1" Padding="10,3" CornerRadius="3">
+        							<Border.Background>
+        								<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+        									<GradientStop Color="#FF166893" Offset="0.016"/>
+        									<GradientStop Color="#FF0F5D85" Offset="1"/>
+        								</LinearGradientBrush>
+        							</Border.Background>
+		    							
+        							<ContentPresenter   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+		    							
+        						</Border>
+        					</Border>
+        					<Border x:Name="PressedBrush" BorderBrush="#FFFF9B35" BorderThickness="1" HorizontalAlignment="Stretch" Width="Auto" Visibility="Collapsed" Opacity="1" CornerRadius="4">
+        						<Border.Background>
+        							<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+        								<GradientStop Color="#00FFDAAC" Offset="0"/>
+        								<GradientStop Color="#00FFDAAC" Offset="1"/>
+        							</LinearGradientBrush>
+        						</Border.Background>
+        					</Border>
+        				</Grid>
+        				<ControlTemplate.Triggers>
+        					<Trigger Property="IsPressed"
+        						Value="True">
+        						<Trigger.EnterActions>
+        							<BeginStoryboard Storyboard="{StaticResource Press}" />
+        						</Trigger.EnterActions>
+        						<Trigger.ExitActions>
+        							<BeginStoryboard Storyboard="{StaticResource Release}" />
+        						</Trigger.ExitActions>
+
+        					</Trigger>
+        					<Trigger Property="IsEnabled"
+        						Value="False">
+        						<Setter Property="Foreground"
+        							Value="{DynamicResource {x:Static Custom:SurfaceColors.ButtonForegroundDisabledBrushKey}}"/>
+        					</Trigger>
+        				</ControlTemplate.Triggers>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
+        <Style x:Key="SettingsSurfaceButtonStyle" TargetType="{x:Type Custom:SurfaceButton}">
+        	<Setter Property="MinWidth" Value="75"/>
+        	<Setter Property="MinHeight" Value="22"/>
+        	<Setter Property="Margin" Value="0"/>
+        	<Setter Property="Padding" Value="0"/>
+        	<Setter Property="IsTabStop" Value="False" />
+        	<Setter Property="Focusable" Value="True" />
+        	<Setter Property="FontSize" Value="12"/>
+        	<Setter Property="Foreground" Value="#FFFFFFFF"/>
+			<!--<Setter Property="ContentTemplate" Value="{DynamicResource EmbossedTemplate}"/>-->
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="{x:Type Custom:SurfaceButton}">
+        				<ControlTemplate.Resources>
+        					<Storyboard x:Key="Press">
+        						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PressedBrush">
+        							<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+        						</ObjectAnimationUsingKeyFrames>
+        						<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="PressedBrush">
+        							<EasingColorKeyFrame KeyTime="0" Value="#FFFFDAAC"/>
+        							<EasingColorKeyFrame KeyTime="0:0:0.3" Value="#7FFFDAAC"/>
+        						</ColorAnimationUsingKeyFrames>
+        					</Storyboard>
+        					<Storyboard x:Key="Release">
+        						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PressedBrush">
+        							<DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Collapsed}"/>
+        						</ObjectAnimationUsingKeyFrames>
+        						<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="PressedBrush">
+        							<EasingColorKeyFrame KeyTime="0:0:0.3" Value="#00FFDAAC"/>
+        						</ColorAnimationUsingKeyFrames>
+        					</Storyboard>
+        				</ControlTemplate.Resources>
+        				<Grid x:Name="Grid" Background="Transparent" SnapsToDevicePixels="True">
+
+        					<Border CornerRadius="4">
+        						<Border.BorderBrush>
+        							<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+        								<GradientStop Color="#FF787878"/>
+        								<GradientStop Color="#FF2F2F2F" Offset="0.992"/>
+        							</LinearGradientBrush>
+        						</Border.BorderBrush>
+        						<Border Padding="10,3,10,4" CornerRadius="3" BorderThickness="1">
+        							<Border.BorderBrush>
+        								<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+        									<GradientStop Color="#FF474747" Offset="0"/>
+        									<GradientStop Color="#FF2D2D2D" Offset="1"/>
+        								</LinearGradientBrush>
+        							</Border.BorderBrush>
+        							<Border.Background>
+        								<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+        									<GradientStop Color="#FF666666" Offset="0.016"/>
+        									<GradientStop Color="#FF353535" Offset="1"/>
+        								</LinearGradientBrush>
+        							</Border.Background>
+		    							
+        							<ContentPresenter   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0"/>
+		    							
+        						</Border>
+        					</Border>
+        					<Border x:Name="PressedBrush" BorderBrush="#FFFF9B35" BorderThickness="1" HorizontalAlignment="Stretch" Width="Auto" Visibility="Collapsed" Opacity="1" CornerRadius="4">
+        						<Border.Background>
+        							<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+        								<GradientStop Color="#00FFDAAC" Offset="0"/>
+        								<GradientStop Color="#00FFDAAC" Offset="1"/>
+        							</LinearGradientBrush>
+        						</Border.Background>
+        					</Border>
+        				</Grid>
+        				<ControlTemplate.Triggers>
+        					<Trigger Property="IsPressed"
+        						Value="True">
+        						<Trigger.EnterActions>
+        							<BeginStoryboard Storyboard="{StaticResource Press}" />
+        						</Trigger.EnterActions>
+        						<Trigger.ExitActions>
+        							<BeginStoryboard Storyboard="{StaticResource Release}" />
+        						</Trigger.ExitActions>
+
+        					</Trigger>
+        					<Trigger Property="IsEnabled"
+        						Value="False">
+        						<Setter Property="Foreground"
+        							Value="{DynamicResource {x:Static Custom:SurfaceColors.ButtonForegroundDisabledBrushKey}}"/>
+        					</Trigger>
+        				</ControlTemplate.Triggers>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
+        <Thickness x:Key="ShareTextBoxMargin">15,0,0,0</Thickness>
+        <FontFamily x:Key="SegoeWPFont">Sogoe WP</FontFamily>
+        <Style x:Key="SurfaceTextContentStyle"
+        	TargetType="{x:Type Custom:SurfaceScrollViewer}">
+        	<Setter Property="IsManipulationEnabled"
+        		Value="False"/>
+        	<Setter Property="PanningMode"
+        		Value="None"/>
+        	<Setter Property="HorizontalAlignment"
+        		Value="Stretch"/>
+        	<Setter Property="VerticalAlignment" 
+        		Value="Stretch"/>
+        	<Setter Property="VerticalContentAlignment"
+        		Value="Top"/>
+        </Style>
+        <Style x:Key="RoundedSurfaceTextBoxStyle" TargetType="{x:Type Custom:SurfaceTextBox}" 
+        	>
+        	<Setter Property="CaretBrush" Value="Black"/>
+        	<Setter Property="MinHeight" Value="0"/>
+        
+        	<Setter Property="TextWrapping" Value="NoWrap"/>
+        	<Setter Property="MinHeight" Value="0"/>
+        	<Setter Property="Height" Value="24"/>
+        	<Setter Property="FontSize" Value="12"/>
+        	<Setter Property="FontFamily" Value="{DynamicResource SegoeWPFont}"/>
+        	<Setter Property="Foreground" Value="Black"/>
+        	<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        	<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        	<Setter Property="KeyboardNavigation.TabNavigation"
+        		Value="None"/>
+				<Setter Property="Margin" Value="0"/>
+        	<Setter Property="AllowDrop"
+        		Value="True"/>
+        		<Setter Property="Padding" Value="5,5,5,0"/>
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="{x:Type Custom:SurfaceTextBox}">
+        				<Grid>
+        					<Border BorderThickness="1" BorderBrush="#FF545454" CornerRadius="4">
+        						<Border x:Name="TextBoxBody" 
+        							SnapsToDevicePixels ="{TemplateBinding SnapsToDevicePixels}" BorderBrush="#FFEBEBEB" CornerRadius="3">
+        							<Border.Background>
+        								<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+        									<GradientStop Color="#FFBEBEBE" Offset="0.004"/>
+        									<GradientStop Color="White" Offset="0.255"/>
+        								</LinearGradientBrush>
+        							</Border.Background>
+        							<Grid>
+              <!-- The implementation places the Content into the ScrollViewer. It must be named PART_ContentHost for the control to function -->
+        								<TextBlock x:Name="watermarkLabel" Text="{TemplateBinding Tag}" Foreground="#FFBCBCBC" Margin="{TemplateBinding Padding}" VerticalAlignment="Stretch" Visibility="Collapsed" />
+										<Custom:SurfaceScrollViewer x:Name="PART_ContentHost" 
+        									Margin="{TemplateBinding Padding}" Style="{StaticResource SurfaceTextContentStyle}"
+        									 />
+        							</Grid>
+        						</Border>
+        					</Border>
+        				</Grid>
+        				<ControlTemplate.Triggers>
+        					
+        					<Trigger Property="IsEnabled"
+        						Value="False">
+        						<Setter Property="Background"	
+        							Value="{DynamicResource {x:Static Custom:SurfaceColors.TextBoxBackgroundDisabledBrushKey}}"/>
+        						<Setter Property="Foreground"
+        							Value="{DynamicResource {x:Static Custom:SurfaceColors.TextBoxForegroundDisabledBrushKey}}"/>
+        						<Setter Property="BorderBrush"
+        							Value="{DynamicResource {x:Static Custom:SurfaceColors.TextBoxBorderDisabledBrushKey}}"/>
+        						<Setter Property="Opacity"	
+        							TargetName="PART_ContentHost"
+        							Value="0.33"  />
+        					</Trigger>
+							<Trigger Property="Text" Value="">
+								<Setter Property="Visibility" Value="Visible" TargetName="watermarkLabel"/>
+							</Trigger>
+        				</ControlTemplate.Triggers>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
+        <Thickness x:Key="FeedbackItemMargin">0,8,0,0</Thickness>
+        <Style x:Key="RoundedTabStyle" TargetType="{x:Type RadioButton}">
+        	<Setter Property="Width" Value="80"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <Grid Height="25">
+                            <Border x:Name="border3" BorderThickness="0" CornerRadius="4,0,0,4">
+                                <Border.Background>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FFBABCBB" Offset="0"/>
+                                        <GradientStop Color="#FFB2B3B5" Offset="1"/>
+                                        <GradientStop Color="White" Offset="0.5"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Grid x:Name="grid" Visibility="Collapsed" Margin="-1,0,-1,-1">
+                                    <Border x:Name="border" BorderBrush="#FFC6C6C6" BorderThickness="2" CornerRadius="0" Margin="3"/>
+                                    <Border x:Name="border1" BorderBrush="#FFBCBCBC" BorderThickness="2" CornerRadius="0" Margin="2"/>
+                                    <Border x:Name="border2" BorderBrush="#FFADADAD" BorderThickness="2" CornerRadius="0" Margin="1"/>
+                                </Grid>
+                            </Border>
+                            <TextBlock TextWrapping="Wrap" Text="{TemplateBinding Content}" VerticalAlignment="Center" d:LayoutOverrides="Width" HorizontalAlignment="Center" FontWeight="Bold" Foreground="#FF3D3D3D" Margin="20,0" FontSize="10.667"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Visibility" TargetName="grid" Value="Visible"/>
+                                <Setter Property="Background" TargetName="border3">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FFCCCCCC" Offset="0"/>
+                                            <GradientStop Color="#FFC8C8C8" Offset="1"/>
+                                            <GradientStop Color="#FFD6D6D6" Offset="0.5"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName="border3">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="DarkGray" Offset="0"/>
+                                            <GradientStop Color="#FFA3A4A5" Offset="1"/>
+                                            <GradientStop Color="#FFEFEFEF" Offset="0.5"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="Tag" Value="right">
+                                <Setter Property="CornerRadius" TargetName="border" Value="0,4,4,0"/>
+                                <Setter Property="CornerRadius" TargetName="border1" Value="0,4,4,0"/>
+                                <Setter Property="CornerRadius" TargetName="border2" Value="0,4,4,0"/>
+                                <Setter Property="Margin" TargetName="grid" Value="-1,0,0,-1"/>
+                                <Setter Property="CornerRadius" TargetName="border3" Value="0,4,4,0"/>
+                            </Trigger>
+                            <Trigger Property="Tag" Value="left">
+                                <Setter Property="CornerRadius" TargetName="border" Value="4,0,0,4"/>
+                                <Setter Property="CornerRadius" TargetName="border1" Value="4,0,0,4"/>
+                                <Setter Property="CornerRadius" TargetName="border2" Value="4,0,0,4"/>
+                                <Setter Property="Margin" TargetName="grid" Value="0,0,-1,-1"/>
+                                <Setter Property="CornerRadius" TargetName="border3" Value="4,0,0,4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="WeatherListBoxItemStyle" TargetType="{x:Type Custom:SurfaceListBoxItem}">
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+			<Setter Property="FontSize" Value="14"/>
+			<Setter Property="Foreground" Value="{DynamicResource SilverBrush}"/>
+            <Setter Property="HorizontalContentAlignment"
+    			Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Custom:SurfaceListBoxItem}">
+                        <ControlTemplate.Resources>
+                            <Storyboard x:Key="Press">
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PressedBrush">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="PressedBrush">
+                                    <EasingColorKeyFrame KeyTime="0" Value="#FFFFDAAC"/>
+                                    <EasingColorKeyFrame KeyTime="0:0:0.3" Value="#7FFFDAAC"/>
+                                </ColorAnimationUsingKeyFrames>
+                            </Storyboard>
+                            <Storyboard x:Key="Release">
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PressedBrush">
+                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Collapsed}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="PressedBrush">
+                                    <EasingColorKeyFrame KeyTime="0:0:0.3" Value="#00FFDAAC"/>
+                                </ColorAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </ControlTemplate.Resources>
+
+                        <Grid x:Name="grid" SnapsToDevicePixels="True" >
+                            <Border x:Name="PressedBrush" BorderBrush="#FFFF9B35" BorderThickness="0,1,0,0" HorizontalAlignment="Stretch" Width="Auto" Visibility="Collapsed" Opacity="1">
+                                <Border.Background>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#00FFDAAC" Offset="0"/>
+                                        <GradientStop Color="#00FFDAAC" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                            </Border>
+                            <Border x:Name="SelectionBorder" BorderBrush="#00FF9B35">
+                                <Grid>
+                                    <ContentPresenter x:Name="contentPresenter" Margin="3"/>
+                                </Grid>
+                            </Border>
+                            <ContentControl x:Name="contentControl" Content="ContentControl" VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="0" Style="{DynamicResource HorizontalSeperator}" HorizontalAlignment="Stretch"/>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="BorderBrush" TargetName="SelectionBorder" Value="#FFFF9B35"/>
+                                <Setter Property="HorizontalAlignment" TargetName="contentControl" Value="Stretch"/>
+                                <Setter Property="VerticalAlignment" TargetName="contentControl" Value="Bottom"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed"
+    							Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard Storyboard="{StaticResource Press}" />
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard Storyboard="{StaticResource Release}" />
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="Tag" Value="MiniThumb">
+                                <Setter Property="Margin" Value="0" TargetName="contentPresenter"/>
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate x:Key="ItemTemplate">
+        	<StackPanel>
+        		<TextBlock Text="{Binding Property1}"/>
+        		<TextBlock Text="{Binding Property2}"/>
+        		<TextBlock Text="{Binding Property3}"/>
+        	</StackPanel>
+        </DataTemplate>
+        <Style x:Key="SocialNetworkSurfaceCheckboxstyle" TargetType="{x:Type Custom:SurfaceCheckBox}">
+        	<Setter Property="MinWidth" Value="75"/>
+        	<Setter Property="MinHeight" Value="22"/>
+        	<Setter Property="Margin" Value="0"/>
+        	<Setter Property="Padding" Value="0"/>
+        	<Setter Property="IsTabStop" Value="False" />
+        	<Setter Property="Focusable" Value="True" />
+        	<Setter Property="FontSize" Value="12"/>
+        	<Setter Property="Foreground" Value="#FFFFFFFF"/>
+			<!--<Setter Property="ContentTemplate" Value="{DynamicResource EmbossedTemplate}"/>-->
+        	<Setter Property="Template">
+        		<Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Custom:SurfaceCheckBox}">
+        				<ControlTemplate.Resources>
+        					<Storyboard x:Key="Press">
+        						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PressedBrush">
+        							<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+        						</ObjectAnimationUsingKeyFrames>
+        						<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="PressedBrush">
+        							<EasingColorKeyFrame KeyTime="0" Value="#FFFFDAAC"/>
+        							<EasingColorKeyFrame KeyTime="0:0:0.3" Value="#7FFFDAAC"/>
+        						</ColorAnimationUsingKeyFrames>
+        					</Storyboard>
+        					<Storyboard x:Key="Release">
+        						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PressedBrush">
+        							<DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Collapsed}"/>
+        						</ObjectAnimationUsingKeyFrames>
+        						<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="PressedBrush">
+        							<EasingColorKeyFrame KeyTime="0:0:0.3" Value="#00FFDAAC"/>
+        						</ColorAnimationUsingKeyFrames>
+        					</Storyboard>
+        				</ControlTemplate.Resources>
+        				<Grid x:Name="Grid" Background="Transparent" SnapsToDevicePixels="True" HorizontalAlignment="Left" VerticalAlignment="Center">
+
+        					<Image x:Name="_checked" Source="{Binding Content,RelativeSource={RelativeSource TemplatedParent}}" Stretch="None" Visibility="Hidden"/>
+        					<Image x:Name="unChecked" Height="Auto" Source="{Binding Tag,RelativeSource={RelativeSource TemplatedParent}}" Stretch="None" VerticalAlignment="Top" Visibility="Hidden"/>
+        					<Border x:Name="PressedBrush" BorderBrush="#FFFF9B35" BorderThickness="1" HorizontalAlignment="Stretch" Width="Auto" Visibility="Collapsed" Opacity="1" CornerRadius="4">
+        						<Border.Background>
+        							<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+        								<GradientStop Color="#00FFDAAC" Offset="0"/>
+        								<GradientStop Color="#00FFDAAC" Offset="1"/>
+        							</LinearGradientBrush>
+        						</Border.Background>
+        					</Border>
+        					<Border x:Name="disabled" BorderBrush="#FF292929" BorderThickness="1" HorizontalAlignment="Stretch" Width="Auto" Visibility="Collapsed" Opacity="1" CornerRadius="4">
+        						<Border.Background>
+        							<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+        								<GradientStop Color="#00FFDAAC" Offset="0"/>
+        								<GradientStop Color="#00373737" Offset="1"/>
+        							</LinearGradientBrush>
+        						</Border.Background>
+        					</Border>
+        					<TextBlock x:Name="textBlock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Processing..." d:LayoutOverrides="Height" VerticalAlignment="Center" Style="{DynamicResource HelpTB}" Visibility="Collapsed"/>
+        				</Grid>
+        				<ControlTemplate.Triggers>
+                    		<Trigger Property="IsChecked" Value="False">
+                    			<Setter Property="Visibility" TargetName="unChecked" Value="Visible"/>
+                    		</Trigger>
+                    		<Trigger Property="IsChecked" Value="True">
+                    			<Setter Property="Visibility" TargetName="_checked" Value="Visible"/>
+                    		</Trigger>
+                    		<Trigger Property="IsPressed"
+                    			Value="True">
+                    			<Trigger.EnterActions>
+                    				<BeginStoryboard Storyboard="{StaticResource Press}" />
+                    			</Trigger.EnterActions>
+                    			<Trigger.ExitActions>
+                    				<BeginStoryboard Storyboard="{StaticResource Release}" />
+                    			</Trigger.ExitActions>
+
+                    		</Trigger>
+                    		<Trigger Property="IsEnabled"
+                    			Value="False">
+                    			<Setter Property="Foreground"
+                    				Value="{DynamicResource {x:Static Custom:SurfaceColors.ButtonForegroundDisabledBrushKey}}"/>
+                    			<Setter Property="Visibility" TargetName="textBlock" Value="Visible"/>
+                    			<Setter Property="Visibility" TargetName="disabled" Value="Visible"/>
+                    			<Setter Property="BorderBrush" TargetName="disabled" Value="#7F999999"/>
+                    			<Setter Property="Opacity" TargetName="_checked" Value="0.05"/>
+                    			<Setter Property="Opacity" TargetName="unChecked" Value="0.05"/>
+                    		</Trigger>
+                    	</ControlTemplate.Triggers>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
+    </base:SlateWindow.Resources>
+
+	<Grid x:Name="LayoutRoot" Width="375">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="5"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Border CornerRadius="5" ClipToBounds="True" BorderBrush="{DynamicResource SettingsBorderBrush}" BorderThickness="2" Grid.Row="1">
+				<TabControl ItemContainerStyle="{DynamicResource SettingsTabItemStyle}" TabStripPlacement="Left" Style="{DynamicResource SettingsTabStyle}">
+					<TabItem Header="Accounts">
+                        <Grid x:Name="SocialMediaInteractionGrid" Margin="{DynamicResource SettingsItemMargin}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+							<!--<StackPanel VerticalAlignment="Top">-->
+								<TextBlock Text="Login to Share " Style="{DynamicResource HelpTB}"/>
+                                <Custom:SurfaceCheckBox Grid.Row="0" x:Name="FacebookLoginButton" Content="/Resources/Images/FacebookLogin.png" Tag="/Resources/Images/FacebookLogin.png"  VerticalAlignment="Top" d:LayoutOverrides="Width" Style="{DynamicResource SocialNetworkSurfaceCheckboxstyle}" HorizontalAlignment="Center" Margin="0,20,0,0" Command="{Binding Login}" CommandParameter="Facebook"/>
+                            <Custom:SurfaceCheckBox Grid.Row="1" x:Name="TwitterLoginButton" Content="/Resources/Images/TwitterLogin.png" Tag="/Resources/Images/TwitterLogin.png"  VerticalAlignment="Top" d:LayoutOverrides="Width" Style="{DynamicResource SocialNetworkSurfaceCheckboxstyle}" HorizontalAlignment="Center" Margin="0,20,0,0" Command="{Binding Login}" CommandParameter="Twitter"/>
+                            <Custom:SurfaceCheckBox Grid.Row="2" x:Name="GoogleLoginButton" Content="/Resources/Images/GoogleLogin.png" Tag="/Resources/Images/GoogleLogin.png"  VerticalAlignment="Top" d:LayoutOverrides="Width" Style="{DynamicResource SocialNetworkSurfaceCheckboxstyle}" HorizontalAlignment="Center" Margin="0,20,0,0" Command="{Binding Login}" CommandParameter="Google" />
+                            <Custom:SurfaceCheckBox Grid.Row="3" x:Name="YahooLoginButton" Content="/Resources/Images/YahooLogin.png" Tag="/Resources/Images/YahooLogin.png"  VerticalAlignment="Top" d:LayoutOverrides="Width" Style="{DynamicResource SocialNetworkSurfaceCheckboxstyle}" HorizontalAlignment="Center" Margin="0,20,0,0" Command="{Binding Login}" CommandParameter="Yahoo"/>
+                            <!--</StackPanel>-->
+                            <!--<StackPanel VerticalAlignment="Top" >-->
+                            <Custom:SurfaceCheckBox Grid.Row="0" x:Name="FacebookLogOffButton" Visibility="Hidden" Content="/Resources/Images/FacebookLogout.png" Tag="/Resources/Images/FacebookLogout.png"  VerticalAlignment="Top" d:LayoutOverrides="Width" Style="{DynamicResource SocialNetworkSurfaceCheckboxstyle}" HorizontalAlignment="Center" Margin="0,20,0,0" Click="FacebookLogoff"/>
+                            <Custom:SurfaceCheckBox Grid.Row="1" x:Name="TwitterLogOffButton" Visibility="Hidden" Content="/Resources/Images/TwitterLogout.png" Tag="/Resources/Images/TwitterLogout.png"  VerticalAlignment="Top" d:LayoutOverrides="Width" Style="{DynamicResource SocialNetworkSurfaceCheckboxstyle}" HorizontalAlignment="Center" Margin="0,20,0,0" Click="GoogleLogoff"/>
+                            <Custom:SurfaceCheckBox Grid.Row="2" x:Name="GoogleLogOffButton" Visibility="Hidden" Content="/Resources/Images/GoogleLogout.png" Tag="/Resources/Images/GoogleLogout.png"  VerticalAlignment="Top" d:LayoutOverrides="Width" Style="{DynamicResource SocialNetworkSurfaceCheckboxstyle}" HorizontalAlignment="Center" Margin="0,20,0,0" Click="GoogleLogoff"/>
+                            <Custom:SurfaceCheckBox Grid.Row="3" x:Name="YahooLogOffButton" Visibility="Hidden" Content="/Resources/Images/YahooLogout.png" Tag="/Resources/Images/YahooLogout.png"  VerticalAlignment="Top" d:LayoutOverrides="Width" Style="{DynamicResource SocialNetworkSurfaceCheckboxstyle}" HorizontalAlignment="Center" Margin="0,20,0,0" Click="YahooLogOff"/>
+                            <!--</StackPanel>-->
+                        </Grid>
+					</TabItem>
+					<TabItem Header="Weather">
+						<Grid Margin="{DynamicResource SettingsItemMargin}">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<StackPanel Orientation="Horizontal" d:LayoutOverrides="Height">
+								<TextBlock Text="Curent city" Style="{DynamicResource HelpTB}"/>
+				<!--{DynamicResource HighlightBlueBrush}-->
+                                <TextBlock x:Name="textBlockCityNameHolder" Style="{DynamicResource HelpTB}" Margin="10,0,0,0" Foreground="#FF2BC3F4" FontFamily="Segoe360"/>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" d:LayoutOverrides="Height" Grid.Row="1" Margin="{DynamicResource FeedbackItemMargin}">
+								<Custom:SurfaceRadioButton Content="India" Margin="0" Style="{DynamicResource RoundedTabStyle}" Tag="Left" IsChecked="True" Checked="IndianCitiesChecked" />
+                                <Custom:SurfaceRadioButton Content="World" Margin="0" Style="{DynamicResource RoundedTabStyle}" Tag="right" Checked="WorldCitiesChecked" />
+								<!--{DynamicResource HighlightBlueBrush}-->
+                            </StackPanel> 
+                            <Custom:SurfaceListBox x:Name="IndianCitiesListBox" Style="{DynamicResource SurfaceListBoxStyle}" d:LayoutOverrides="Height" Grid.Row="2" ItemContainerStyle="{DynamicResource WeatherListBoxItemStyle}" ItemTemplate="{DynamicResource ItemTemplate}" ItemsSource="{Binding IndianCities}" SelectionChanged="SelectedIndianCityChanged"/>
+                            <Custom:SurfaceListBox x:Name="ForeignCitiesListBox" Style="{DynamicResource SurfaceListBoxStyle}" d:LayoutOverrides="Height" Grid.Row="2" ItemContainerStyle="{DynamicResource WeatherListBoxItemStyle}" ItemTemplate="{DynamicResource ItemTemplate}" ItemsSource="{Binding ForeignCities}" SelectionChanged="SelectedForeignCityChanged" Visibility="Collapsed"/>
+                            <!--<Custom:SurfaceListBox x:Name="IndianCitiesListBox" Style="{DynamicResource SurfaceListBoxStyle}" d:LayoutOverrides="Height" Grid.Row="2" ItemContainerStyle="{DynamicResource SurfaceListBoxItemStyle}" ItemTemplate="{DynamicResource ItemTemplate}" ItemsSource="{Binding IndianCities}" SelectionChanged="SelectedIndianCityChanged"/>
+                            <Custom:SurfaceListBox x:Name="ForeignCitiesListBox" Style="{DynamicResource SurfaceListBoxStyle}" d:LayoutOverrides="Height" Grid.Row="2" ItemContainerStyle="{DynamicResource SurfaceListBoxItemStyle}" ItemTemplate="{DynamicResource ItemTemplate}" ItemsSource="{Binding ForeignCities}" SelectionChanged="SelectedForeignCityChanged" Visibility="Collapsed"/>-->
+							<!--Custom:SurfaceButton Content="Update" Style="{DynamicResource SettingsSurfaceButtonStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Grid.Row="3"/>-->
+						</Grid>
+					</TabItem>
+					<TabItem Header="Feedback">
+						<Grid Margin="{DynamicResource SettingsItemMargin}">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<Custom:SurfaceTextBox x:Name="TextBoxUserName"  SelectionBrush="#FFFFC7A6" Style="{DynamicResource RoundedSurfaceTextBoxStyle}" Tag="Username"  />
+                            <Custom:SurfaceTextBox  x:Name="textBoxEmailContainer" SelectionBrush="#FFFFC7A6" Style="{DynamicResource RoundedSurfaceTextBoxStyle}" Tag="email ID" Grid.Row="1" Margin="{DynamicResource FeedbackItemMargin}"  />
+							<TextBlock Text="Feedback"  Margin="{DynamicResource FeedbackItemMargin}" Style="{DynamicResource HelpTB}" Grid.Row="2"/>
+                            <Custom:SurfaceTextBox x:Name="textBoxFeedbackContainer"  SelectionBrush="#FFFFC7A6" Style="{DynamicResource RoundedSurfaceTextBoxStyle}" Grid.Row="3" Margin="{DynamicResource FeedbackItemMargin}" Height="Auto" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True"  />
+                            <Custom:SurfaceButton Click="SubmitFeedBackClick" Content="Submit" Style="{DynamicResource SettingsSurfaceButtonStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Grid.Row="5" Margin="{DynamicResource FeedbackItemMargin}"/>
+						</Grid>
+					</TabItem>
+					<TabItem Header="About">
+						<Grid x:Name="AboutNDTVGrid" Margin="{DynamicResource SettingsItemMargin}">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="30"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="150"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="150"/>
+							</Grid.RowDefinitions>
+							<TextBlock  Text="About Application" Foreground="{DynamicResource LighterOrangeBrush}" Style="{DynamicResource HelpTB}" />
+                            <TextBlock x:Name="AboutApplication" Grid.Row="1" Style="{DynamicResource HelpTB}" Margin="{DynamicResource FeedbackItemMargin}"/>
+                            <TextBlock Grid.Row="2" Text="About NDTV" Foreground="{DynamicResource LighterOrangeBrush}" Style="{DynamicResource HelpTB}" />
+                            <TextBlock x:Name="AboutNdtv" Grid.Row="3"  Margin="{DynamicResource FeedbackItemMargin}" Style="{DynamicResource HelpTB}" />
+                            <TextBlock Grid.Row="4" Text="About Aditi" Foreground="{DynamicResource LighterOrangeBrush}" Style="{DynamicResource HelpTB}" />
+                            <TextBlock x:Name="AboutAditi" Grid.Row="5" Margin="{DynamicResource FeedbackItemMargin}" Style="{DynamicResource HelpTB}" />
+                        </Grid>
+					</TabItem>
+					<TabItem Header="Help">
+						<Grid Margin="{DynamicResource SettingsItemMargin}">
+							<Custom:SurfaceButton Content="View help" Style="{DynamicResource SettingsSurfaceButtonStyle}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,60,0,0"/>
+						</Grid>
+					</TabItem>
+					<TabItem Header="Terms &amp; Conditions">
+                        <Grid x:Name="TermsConditionsGrid" Margin="{DynamicResource SettingsItemMargin}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Terms &amp; Conditions" Foreground="{DynamicResource LighterOrangeBrush}" Style="{DynamicResource HelpTB}" />
+                           	<TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sollicitudin, justo vitae ultrices consectetur, enim orci tincidunt nisi, varius vulputate augue orci eget nulla. Maecenas ut lorem risus, sit amet scelerisque quam. Morbi ornare, dolor in imperdiet dignissim, mi magna blandit orci, iaculis tempus sapien nunc in dui. Etiam volutpat mauris nec dolor fermentum et imperdiet lectus faucibus. Aenean faucibus dui eget odio suscipit pretium non pretium nulla. Aliquam erat volutpat. Aenean mollis sem sit amet mauris lacinia molestie." Grid.Row="1" Style="{DynamicResource HelpTB}" Margin="{DynamicResource FeedbackItemMargin}"/>
+                        </Grid>
+                    </TabItem>
+				</TabControl>
+			</Border>
+			<Path Data="M5.3496094,2.4619789 L9.1054688,8.9658852 L1.59375,8.9658852 z" Fill="{DynamicResource SettingsBorderBrush}" HorizontalAlignment="Right" Height="7" RenderTransformOrigin="0.5,0.5" Stretch="Fill" VerticalAlignment="Top" Width="12" Margin="0,0,19,0" d:LayoutOverrides="GridBox" Stroke="{DynamicResource SettingsBorderBrush}" StrokeDashCap="Round" StrokeLineJoin="Round">
+				<Path.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform/>
+						<SkewTransform/>
+						<RotateTransform/>
+						<TranslateTransform/>
+					</TransformGroup>
+				</Path.RenderTransform>
+			</Path>
+			<Path Data="M5.3496094,2.4619789 L9.1054688,8.9658852 L1.59375,8.9658852 z" Fill="#FF131313" HorizontalAlignment="Right" Height="6" RenderTransformOrigin="0.5,0.5" Stretch="Fill" VerticalAlignment="Top" Width="10" d:LayoutOverrides="VerticalAlignment, GridBox" Margin="0,2,20,-3">
+				<Path.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform/>
+						<SkewTransform/>
+						<RotateTransform/>
+						<TranslateTransform/>
+					</TransformGroup>
+				</Path.RenderTransform>
+			</Path>
+		</Grid>
+		
+	</Grid>
+</base:SlateWindow>

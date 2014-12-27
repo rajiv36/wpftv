@@ -1,0 +1,314 @@
+﻿<base:SlateWindow x:Class="NDTV.SlateApp.View.SearchScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:base="clr-namespace:NDTV.SlateApp"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:NDTV.SlateApp.View"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:touch="http://schemas.microsoft.com/surface/2008"
+        xmlns:converter="clr-namespace:NDTV.SlateApp.Converter"
+        xmlns:controls="clr-namespace:NDTV.SlateApp.Controls"
+        Title="MainWindow" Height="550" Width="950" WindowStyle="None" WindowState="Normal" ResizeMode="NoResize" 
+                  WindowStartupLocation="CenterOwner">
+    <base:SlateWindow.Resources>
+        <converter:ImageConverter x:Key="DefaultImageConverter"></converter:ImageConverter>
+        <converter:DateConverter x:Key="SearchResultsDateConverter"></converter:DateConverter>
+        <ItemsPanelTemplate x:Key="HorizontalItemsPanelTemplate">
+            <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"></VirtualizingStackPanel>
+        </ItemsPanelTemplate>
+        <ItemsPanelTemplate x:Key="VerticalItemsPanelTemplate">
+            <VirtualizingStackPanel IsItemsHost="True" ></VirtualizingStackPanel>
+        </ItemsPanelTemplate>
+        <DataTemplate x:Key="VideoThumbnailItemTemplate">
+            <Border   Width="120" Height="140"  >
+                <Grid Margin="{DynamicResource ThumbnailMargin}" SnapsToDevicePixels="True" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="90"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Border HorizontalAlignment="Left"  Style="{DynamicResource ThumbnailBorderStyle}" Height="80" Width="120">
+                        <Grid>
+                            <Image Stretch="Fill" Source="{Binding ThumbnailLink,Converter={StaticResource DefaultImageConverter},ConverterParameter=NDTVDefaultImage}"/>
+                            <Border Background="#BB4E4848" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" >
+                                <Grid Height="20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                       <Image Height="10" Width="20" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Center" Source="/Resources/Images/video_icon.png" Margin="3,0,0,0"></Image>
+                                       <TextBlock  Foreground="White" Grid.Column="1"  Text="{Binding Path=Duration,Converter={StaticResource videoTimeSpan}}" Padding="3" HorizontalAlignment="Right" FontSize="9" VerticalAlignment="Center" />
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <TextBlock Text="{Binding Title}" VerticalAlignment="Top" Grid.Row="1" Margin="0,-2,0,0" Style="{DynamicResource ThumbnailTitleStyle}" />
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <TextBlock Style="{DynamicResource ThumbnailTitleStyle}" FontWeight="Normal" Text="Date:" FontSize="9.5"></TextBlock>
+                        <TextBlock  Margin="3,0,0,0" Style="{DynamicResource ThumbnailTitleStyle}" FontWeight="Normal"  x:Name="DateIndicator" Text="{Binding PublishDate,Converter={StaticResource SearchResultsDateConverter},ConverterParameter=SearchResultsDateFormat}" FontSize="9.5"></TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="AlbumThumbnailItemTemplate">
+            <Border Width="120" Height="140">
+                <Grid Margin="{DynamicResource ThumbnailMargin}"  SnapsToDevicePixels="True" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="90"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Border HorizontalAlignment="Left" Style="{DynamicResource ThumbnailBorderStyle}" Height="80" Width="120">
+                        <Grid>
+                            <Image Stretch="Fill" Source="{Binding ThumbnailLink,Converter={StaticResource DefaultImageConverter},ConverterParameter=NDTVDefaultImage}"/>
+                            <Border Background="#BB4E4848" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" >
+                                <Grid Height="20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                        <Image Height="10" Width="20" Stretch="Uniform" Source="/Resources/Images/photo_icon.png" Margin="3,0,0,0"></Image>
+                                    <TextBlock Grid.Column="1" Foreground="White" Padding="3" HorizontalAlignment="Right" FontSize="9" VerticalAlignment="Center">
+                                       
+                                        <Run Text="{Binding Path=TotalImagesInAlbum}"/>
+                                        <Run Text="Images"/>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <TextBlock Text="{Binding AlbumTitle}"  VerticalAlignment="Top" Grid.Row="1" Margin="0,-2,0,0" Style="{DynamicResource ThumbnailTitleStyle}"/>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <TextBlock Style="{DynamicResource ThumbnailTitleStyle}" FontWeight="Normal" Text="Date:" FontSize="9.5"></TextBlock>
+                        <TextBlock  Margin="3,0,0,0" Style="{DynamicResource ThumbnailTitleStyle}" FontWeight="Normal"  x:Name="DateIndicator" Text="{Binding PublishedDataTimeOfAlbum,Converter={StaticResource SearchResultsDateConverter},ConverterParameter=SearchResultsDateFormat}" FontSize="9.5"></TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="TopStoriesItemTemplate">
+            <Grid Margin="0,0,0,10" Background="Transparent" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border   Width="140" Height="110" Style="{DynamicResource ThumbnailBorderStyle}">
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Image x:Name="Img"   Stretch="Fill" Visibility="Visible" Source="{Binding ImageLinkStatic,Converter={StaticResource DefaultImageConverter},ConverterParameter=NDTVDefaultImage}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                    </Grid>
+                </Border>
+                <Grid Margin="15,0" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0"  Orientation="Horizontal">
+                        <TextBlock Text="Associated Press" VerticalAlignment="Top"  Foreground="{DynamicResource GrayFontBrush}" FontFamily="{DynamicResource Segoe360Font}" FontSize="10.667"/>
+                        <TextBlock Text="{Binding PublishedDate,Converter={StaticResource SearchResultsDateConverter},ConverterParameter=SearchResultsDateFormat}" VerticalAlignment="Top" Foreground="{DynamicResource HighlightMaroonBrush}" FontFamily="{DynamicResource Segoe360Font}" FontSize="10.667" Margin="5,0,0,0" TextTrimming="WordEllipsis"/>
+                    </StackPanel>
+                    <TextBlock Grid.Row="1"  MaxHeight="100" Text="{Binding Title}" Margin="0,5,0,0" FontSize="18.667" VerticalAlignment="Top"  TextWrapping="Wrap" TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource Rockwell}" FontWeight="Bold" Foreground="{DynamicResource BlackFontBrush}"/>
+                    <TextBlock Grid.Row="3" TextWrapping="Wrap" Text="{Binding Description}" MaxHeight="50" TextTrimming="CharacterEllipsis" Margin="0,5,0,0" VerticalAlignment="Stretch"  Foreground="{DynamicResource BlackFontBrush}" FontFamily="{DynamicResource Georgia}"  FontSize="11"/>
+                </Grid>
+                <Rectangle Opacity=".5" Grid.Row="1" Grid.ColumnSpan="2" Fill="{DynamicResource BlackFontBrush}" Height="1" VerticalAlignment="Bottom"
+                           Margin="0,15,0,0"  SnapsToDevicePixels="True" UseLayoutRounding="True"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="PotraitStoriesItemTemplate">
+            <Grid Margin="0,0,0,15" Background="Transparent" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>               
+                <Border   Width="140" Height="110" Style="{DynamicResource ThumbnailBorderStyle}">
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Image x:Name="Img"   Stretch="Fill" Visibility="Visible" Source="{Binding ImageLinkStatic,Converter={StaticResource DefaultImageConverter},ConverterParameter=NDTVDefaultImage}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                    </Grid>
+                </Border>
+                <Grid Margin="10,0" x:Name="Title" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0"  Orientation="Vertical">
+                        <TextBlock Text="Associated Press," VerticalAlignment="Top"  Foreground="{DynamicResource GrayFontBrush}" FontFamily="{DynamicResource Segoe360Font}" FontSize="10"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Updated:" Foreground="{DynamicResource GrayFontBrush}" FontFamily="{DynamicResource Segoe360Font}" FontSize="10"></TextBlock>
+                                <TextBlock Text="{Binding PublishedDate,Converter={StaticResource SearchResultsDateConverter},ConverterParameter=SearchResultsDateFormat}" VerticalAlignment="Top" Foreground="{DynamicResource HighlightMaroonBrush}" FontFamily="{DynamicResource Segoe360Font}" FontSize="9" Margin="3,0,0,0" TextTrimming="WordEllipsis"/>
+                            </StackPanel>    
+                    </StackPanel>
+                    <TextBlock Grid.Row="1"  MaxHeight="100" Text="{Binding Title}" Margin="0,5,0,0" FontSize="18.667" VerticalAlignment="Top"  TextWrapping="Wrap" TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource Rockwell}" FontWeight="Bold" Foreground="{DynamicResource BlackFontBrush}"/>
+                </Grid>
+                </Grid>
+                <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{Binding Description}" MaxHeight="50" TextTrimming="CharacterEllipsis" Margin="0,5,0,0" VerticalAlignment="Stretch"  Foreground="{DynamicResource BlackFontBrush}" FontFamily="{DynamicResource Georgia}"  FontSize="11"/>
+                
+                <Rectangle Opacity=".5" Grid.Row="2" Grid.ColumnSpan="2" Fill="{DynamicResource BlackFontBrush}" Height="1" VerticalAlignment="Bottom"
+                           Margin="0,15,0,0"  SnapsToDevicePixels="True" UseLayoutRounding="True"/>
+            </Grid>
+        </DataTemplate>
+        <Style x:Key="LandscapeSurfaceListBoxStyle" TargetType="{x:Type touch:SurfaceListBox}" BasedOn="{StaticResource SurfaceListBoxStyle}">
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ItemsPanel" Value="{StaticResource HorizontalItemsPanelTemplate}"/>
+            <Setter Property="Width" Value="270"/>
+            <Setter Property="Height" Value="150"/>
+        </Style>
+        <Style x:Key="PotraitSurfaceListBoxStyle" TargetType="{x:Type touch:SurfaceListBox}" BasedOn="{StaticResource SurfaceListBoxStyle}">
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ItemsPanel" Value="{StaticResource VerticalItemsPanelTemplate}"/>
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="290"/>
+
+        </Style>
+        <Storyboard x:Key="PotraitLandscapeAnimation">
+            <DoubleAnimation From="0" To="1" Storyboard.TargetName="MainContainer" Storyboard.TargetProperty="Opacity" Duration="00:00:00.6"/>
+        </Storyboard>
+    </base:SlateWindow.Resources>
+    <Grid x:Name="LayoutRoot">
+        <controls:PopupBaseControl HeaderText="SEARCH" Style="{DynamicResource PopupBaseContainerStyle}" Background="{StaticResource LayoutRootBackground}" FooterVisible="Collapsed">
+            <Grid x:Name="MainContainer">
+                <Button Content="Button" Grid.Column="1" Name="CloseButton" HorizontalAlignment="Right" Margin="20,-35,20,0" VerticalAlignment="Top" Width="16" Height="16" Style="{DynamicResource PopupCloseButtonStyle}" />
+                <Grid Background="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" MinHeight="45"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid x:Name="SearchHeader" Margin="10,0" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" MaxWidth="250" />
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="SearchBoxBorder" SnapsToDevicePixels="True" Grid.Column="0" Grid.ColumnSpan="2"  Height="22" BorderThickness="1" BorderBrush="#FFb3b3b3" VerticalAlignment="Center" Width="275" Margin="0,3" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <touch:SurfaceTextBox Margin="5,0,0,0" Style="{DynamicResource SearchSurfaceTextBoxStyle}" x:Name="SearchTextBox"  SelectionBrush="#FFF9D18A" Background="Transparent" Foreground="#FF3B3B3B" Text="{Binding SearchString}" MaxLength="200"/>
+                                <touch:SurfaceButton Content="/Resources/Images/TextSearchIcon.png"  x:Name="SearchButton" Grid.Column="1" Style="{DynamicResource SearchImageButton}" Command="{Binding SearchButtonClickCommand}"/>
+                            </Grid>
+                        </Border>
+                        <TextBlock  MaxWidth="250" x:Name="SubHeaderTextBlock" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="17,10" FontWeight="Bold" Foreground="{DynamicResource HighlightMaroonBrush}" FontSize="14" TextTrimming="CharacterEllipsis" >
+                            <Run Text="Search Results for "/>
+                            <Run Text="{Binding QuotedSearchString,Mode=OneWay}"/>
+                        </TextBlock>
+                        <Rectangle Opacity=".5" Grid.Row="2" Grid.ColumnSpan="2" Fill="{DynamicResource BlackFontBrush}" Height="1" VerticalAlignment="Bottom"
+                           Margin="0,5,0,0"  SnapsToDevicePixels="True" UseLayoutRounding="True"/>
+                    </Grid>
+                    <Grid x:Name="ResultsContainer" Grid.Row="1">
+                    <Grid Visibility="Hidden"  x:Name="LandscapeResultsContainer">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="27,0" FontWeight="Bold" Foreground="{DynamicResource HighlightMaroonBrush}" FontSize="12" >
+                                <Run Text="News Results"/>                                
+                            </TextBlock>
+                            <touch:SurfaceListBox Margin="20,0" Tag="Vertical" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Style="{DynamicResource SurfaceListBoxStyle}" ItemContainerStyle="{DynamicResource SurfaceListBoxItemStyle}"  x:Name="NewsArticlesList" 
+                                           ItemsSource="{Binding NewsSearchResults}" ItemTemplate="{StaticResource TopStoriesItemTemplate}" ScrollViewer.ScrollChanged="OnSurfaceListBoxScrollValueChanged"/>
+                            <ContentControl Style="{DynamicResource EmbossedTextStyle}" Grid.Row="1" Content="No Search Results found" Visibility="Collapsed" x:Name="EmptyArticlesListContentControl"/>
+                        </Grid>
+                        <Grid x:Name="VideoImageResultContainer" Grid.Column="1" >
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="Auto" MinHeight="128" />
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="Auto" MinHeight="128"/>
+                                </Grid.RowDefinitions>
+                                    <TextBlock HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" MaxWidth="200" VerticalAlignment="Center" Margin="0,5,10,10" FontWeight="Bold" Foreground="{DynamicResource HighlightMaroonBrush}" FontSize="12" >
+                                <Run Text="Video Results"/>                                
+                                </TextBlock>
+                                <Border Background="{DynamicResource GrayBrush}" Grid.Row="1" Padding="5">
+                                        <touch:SurfaceListBox  Style="{StaticResource LandscapeSurfaceListBoxStyle}" ItemContainerStyle="{DynamicResource SurfaceListBoxItemStyle}"  x:Name="VideosList"  ItemTemplate="{StaticResource VideoThumbnailItemTemplate}" ItemsSource="{Binding VideoSearchResults}" ScrollViewer.ScrollChanged="OnSurfaceListBoxScrollValueChanged"/>
+                                </Border>
+                                <ContentControl Grid.Row="1" Style="{DynamicResource EmbossedTextStyle}" Content="No Search Results found" Visibility="Collapsed" x:Name="EmptyVideosListContentControl"/>
+                                    <TextBlock HorizontalAlignment="Left" Grid.Row="2" TextTrimming="CharacterEllipsis" MaxWidth="200" VerticalAlignment="Center" Margin="0,5,10,10" FontWeight="Bold" Foreground="{DynamicResource HighlightMaroonBrush}" FontSize="12">
+                                <Run Text="Image Results"/>                                
+                                </TextBlock>
+                                <Border Background="{DynamicResource GrayBrush}" Grid.Row="3" Padding="5">
+                                        <touch:SurfaceListBox Style="{StaticResource LandscapeSurfaceListBoxStyle}"  ItemContainerStyle="{DynamicResource SurfaceListBoxItemStyle}"  Grid.Row="3" x:Name="PhotosList" ItemTemplate="{StaticResource AlbumThumbnailItemTemplate}" ItemsSource="{Binding PhotoSearchResults}" ScrollViewer.ScrollChanged="OnSurfaceListBoxScrollValueChanged"/>
+                                </Border>
+                                <ContentControl Grid.Row="3" Style="{DynamicResource EmbossedTextStyle}" Content="No Search Results found" Visibility="Collapsed" x:Name="EmptyPhotosListContentControl"/>
+                                <local:PreLoader Grid.Row="1" IsBusy="{Binding IsVideoContainerBusy}"/>
+                                <local:PreLoader Grid.Row="3" IsBusy="{Binding IsPhotoContainerBusy}"/>
+                            </Grid>
+                        </Grid>
+                        <local:PreLoader Grid.Row="0" IsBusy="{Binding IsNewsArticleContainerBusy}"></local:PreLoader>
+                    </Grid>
+                    <Grid Visibility="Hidden"  x:Name="PortraitResultsContainer" MaxWidth="550">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="*"/>
+                                 <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                            <TextBlock HorizontalAlignment="Left"  TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="27,0" FontWeight="Bold" Foreground="{DynamicResource HighlightMaroonBrush}" FontSize="12" >
+                                <Run Text="News Results"/>                                
+                            </TextBlock>
+                            <touch:SurfaceListBox Margin="20,0" Tag="Vertical" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Style="{DynamicResource SurfaceListBoxStyle}" ItemContainerStyle="{DynamicResource SurfaceListBoxItemStyle}"  x:Name="PortraitNewsArticlesList" 
+                                           ItemsSource="{Binding NewsSearchResults}" ItemTemplate="{StaticResource PotraitStoriesItemTemplate}" ScrollViewer.ScrollChanged="OnSurfaceListBoxScrollValueChanged"/>
+                            <ContentControl Style="{DynamicResource EmbossedTextStyle}" Grid.Row="1" Content="No Search Results found" Visibility="Collapsed" x:Name="PortraitEmptyArticlesListContentControl"/>
+                                <local:AdBannerControl Grid.Row="2" Margin="0,10" HorizontalAlignment="Left" VerticalAlignment="Center" CurrentPage="CricketFullCommentary" />
+                            </Grid>
+                        <Grid x:Name="PortraitVideoImageResultContainer" Grid.Column="1" >
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" MinHeight="30"/>
+                                    <RowDefinition Height="Auto" MinHeight="128" />
+                                        <RowDefinition Height="Auto" MinHeight="30"/>
+                                    <RowDefinition Height="Auto" MinHeight="128"/>
+                                </Grid.RowDefinitions>
+                                    <TextBlock MaxWidth="180" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="0,10,10,10" FontWeight="Bold" Foreground="{DynamicResource HighlightMaroonBrush}" FontSize="12" >
+                                <Run Text="Video Results"/>                                
+                                </TextBlock>
+                                <Border Background="{DynamicResource GrayBrush}" Grid.Row="1" Padding="5">
+                                        <touch:SurfaceListBox  Style="{StaticResource PotraitSurfaceListBoxStyle}" ItemContainerStyle="{DynamicResource SurfaceListBoxItemStyle}"  x:Name="PortraitVideosList"  ItemTemplate="{StaticResource VideoThumbnailItemTemplate}" ItemsSource="{Binding VideoSearchResults}" ScrollViewer.ScrollChanged="OnSurfaceListBoxScrollValueChanged"/>
+                                </Border>
+                                <ContentControl Grid.Row="1" Style="{DynamicResource EmbossedTextStyle}" Content="No Search Results found" Visibility="Collapsed" x:Name="PortraitEmptyVideosListContentControl"/>
+                                 <TextBlock MaxWidth="180" HorizontalAlignment="Left" Grid.Row="2" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="0,10,10,10" FontWeight="Bold" Foreground="{DynamicResource HighlightMaroonBrush}" FontSize="12">
+                                <Run Text="Image Results"/>                                
+                                </TextBlock>
+                                <Border Background="{DynamicResource GrayBrush}" Grid.Row="3" Padding="5">
+                                        <touch:SurfaceListBox Style="{StaticResource PotraitSurfaceListBoxStyle}"  ItemContainerStyle="{DynamicResource SurfaceListBoxItemStyle}"  Grid.Row="3" x:Name="PortraitPhotosList" ItemTemplate="{StaticResource AlbumThumbnailItemTemplate}" ItemsSource="{Binding PhotoSearchResults}" ScrollViewer.ScrollChanged="OnSurfaceListBoxScrollValueChanged"/>
+                                </Border>
+                                <ContentControl Grid.Row="3" Style="{DynamicResource EmbossedTextStyle}" Content="No Search Results found" Visibility="Collapsed" x:Name="PortraitEmptyPhotosListContentControl"/>
+                                <local:PreLoader Grid.Row="1" IsBusy="{Binding IsVideoContainerBusy}"/>
+                                <local:PreLoader Grid.Row="3" IsBusy="{Binding IsPhotoContainerBusy}"/>
+                            </Grid>
+                        </Grid>
+                        <local:PreLoader Grid.Row="0" IsBusy="{Binding IsNewsArticleContainerBusy}"></local:PreLoader>
+                    </Grid>
+                    </Grid>
+                    <Rectangle Fill="#FF000000" Opacity=".85" Visibility="Collapsed" x:Name="ModalBG"/>
+                </Grid>
+            </Grid>
+        </controls:PopupBaseControl>
+    </Grid>
+</base:SlateWindow>
